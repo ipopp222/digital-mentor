@@ -461,7 +461,8 @@ const knowledge = [
   { icon: '▤', title: 'Шаблоны', text: 'Письма, отчеты, планы и чек-листы' },
   { icon: 'А', title: 'Глоссарий', text: 'Термины и аббревиатуры отрасли' },
   { icon: '↗', title: 'Проекты и программы', text: 'Паспорта, показатели и материалы' },
-  { icon: '☎', title: 'Рабочие контакты', text: 'Владельцы направлений и компетенции' }
+  { icon: '☎', title: 'Рабочие контакты', text: 'Владельцы направлений и компетенции' },
+  { icon: 'СО', title: 'Структура отрасли', text: 'Министерство, учреждения, муниципалитеты и НКО', action: 'industry' }
 ];
 
 const ministryDepartments = [
@@ -1234,6 +1235,7 @@ function openKnowledge(index) {
   const item = knowledge[index];
   if (!item) return;
   if (item.title === 'Глоссарий') return renderGlossary();
+  if (item.action === 'industry') return renderIndustryStructure();
   modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">База знаний</span><h2>${item.title}</h2><p class="modal-lead">${item.text}. Здесь собраны файлы и документы, добавленные администратором проекта.</p><div class="meta-strip"><div><span>Раздел</span><b>${item.title}</b></div><div><span>Доступ</span><b>Для специалистов</b></div><div><span>Редактирование</span><b>Только администратор</b></div></div><div class="warning">Перед использованием материала проверьте его дату, версию и утвержденный источник.</div><div id="filesArea"></div></div>`;
   modal.showModal();
   renderFilesArea(`knowledge:${index}`, state.isAdmin, `Документы: ${item.title}`);
