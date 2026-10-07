@@ -123,13 +123,13 @@ const advancedTaskWeeks = [
     ]
   },
   {
-    title: 'Подготовить грантовую заявку', level: 'Ресурсы', text: 'Логика проекта, бюджет и доказательство общественной пользы.',
+    title: 'Открывать возможности для молодёжи', level: 'Ресурсы', text: 'Поиск актуальных программ и понятная навигация от запроса к участию.',
     tasks: [
-      { id: 'grant-problem', title: 'Обосновать проблему проекта', text: 'Подтвердить актуальность данными и голосом аудитории', tag: 'День 41', deliverable: 'Обоснование проблемы со ссылками на источники', steps: ['Соберите данные.', 'Добавьте позицию аудитории.', 'Отделите проблему от её последствий.'] },
-      { id: 'grant-logic', title: 'Построить логику проекта', text: 'Связать цель, задачи, мероприятия и результаты', tag: 'День 42', deliverable: 'Логическая схема проекта', steps: ['Сформулируйте цель.', 'Проверьте вклад каждой задачи.', 'Свяжите действия с показателями.'] },
-      { id: 'grant-calendar', title: 'Составить календарный план', text: 'Распределить подготовку и проведение по этапам', tag: 'День 43', deliverable: 'Календарный план проекта', steps: ['Укажите сроки каждого этапа.', 'Учтите подготовительные действия.', 'Добавьте контрольные точки.'] },
-      { id: 'grant-budget', title: 'Собрать бюджет заявки', text: 'Обосновать расходы и вклад партнёров', tag: 'День 44', deliverable: 'Бюджет с комментариями к расходам', steps: ['Свяжите расход с мероприятием.', 'Проверьте расчёты.', 'Покажите собственный и партнёрский вклад.'] },
-      { id: 'grant-expertise', title: 'Провести внутреннюю экспертизу', text: 'Проверить заявку глазами независимого эксперта', tag: 'День 45', deliverable: 'Доработанная заявка и лист замечаний', steps: ['Передайте текст коллеге.', 'Соберите вопросы и противоречия.', 'Исправьте заявку до подачи.'] }
+      { id: 'grant-problem', title: 'Собрать карту возможностей', text: 'Найти актуальные программы, события и меры поддержки для молодёжи', tag: 'День 41', deliverable: 'Подборка не менее чем из пяти возможностей с официальными источниками', steps: ['Определите основные типы возможностей.', 'Найдите информацию на официальных ресурсах.', 'Зафиксируйте сроки и целевую аудиторию.'] },
+      { id: 'grant-logic', title: 'Проверить условия участия', text: 'Отделить подходящие возможности от формально похожих', tag: 'День 42', deliverable: 'Карточки условий и ограничений выбранных возможностей', steps: ['Проверьте возраст, территорию и статус участника.', 'Уточните сроки и обязательные требования.', 'Отметьте источник и дату проверки.'] },
+      { id: 'grant-calendar', title: 'Подобрать возможность под запрос', text: 'Соединить потребность молодого человека с подходящей программой', tag: 'День 43', deliverable: 'Три обоснованных варианта для конкретного запроса', steps: ['Уточните цель и возможности участника.', 'Сопоставьте запрос с условиями программ.', 'Объясните преимущества и ограничения каждого варианта.'] },
+      { id: 'grant-budget', title: 'Составить маршрут участия', text: 'Превратить найденную возможность в понятную последовательность действий', tag: 'День 44', deliverable: 'Пошаговый маршрут со сроками, документами и контактами', steps: ['Определите ближайший шаг.', 'Соберите требования и контрольные даты.', 'Укажите официальный канал для уточнений.'] },
+      { id: 'grant-expertise', title: 'Проверить навигатор с пользователем', text: 'Убедиться, что маршрут понятен человеку без знания системы', tag: 'День 45', deliverable: 'Обновлённая карточка возможности по итогам обратной связи', steps: ['Передайте маршрут коллеге или представителю аудитории.', 'Попросите объяснить следующий шаг своими словами.', 'Уберите непонятные формулировки и лишние действия.'] }
     ]
   },
   {
@@ -457,7 +457,7 @@ taskWeeks.forEach((week, index) => Object.assign(week, weekValues[index]));
 const tasks = taskWeeks.flatMap((week, weekIndex) => week.tasks.map(task => ({ ...task, week: weekIndex })));
 
 const knowledge = [
-  { icon: '§', title: 'Нормативная база', text: 'Актуальные НПА и официальные источники' },
+  { icon: '§', title: 'Нормативная база', text: 'Актуальные НПА и официальные источники', action: 'regulations' },
   { icon: '▤', title: 'Шаблоны', text: 'Письма, отчеты, планы и чек-листы' },
   { icon: 'А', title: 'Глоссарий', text: 'Термины и аббревиатуры отрасли' },
   { icon: '↗', title: 'Проекты и программы', text: 'Паспорта, показатели и материалы' },
@@ -530,7 +530,7 @@ const youthHousePhotos = [
 ];
 
 const ADMIN_NAME = 'Инесса Артющенко';
-const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', stage: 'Первый день', completed: [], taskNotes: {}, taskEvidence: {}, dailyTaskAssignments: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
+const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', stage: 'Первый день', completed: [], taskNotes: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
 let state = loadState();
 let analytics = loadAnalytics();
 let currentView = 'home';
@@ -545,14 +545,20 @@ const modalContent = document.getElementById('modalContent');
 function loadState() {
   try {
     const loaded = { ...defaultState, ...JSON.parse(localStorage.getItem('digitalMentorState')) };
+    loaded.taskReviews = { ...(loaded.taskReviews || {}) };
+    Object.entries(loaded.taskReviews).forEach(([id, review]) => {
+      if (review?.status === 'accepted' && !review.reviewer) delete loaded.taskReviews[id];
+    });
+    loaded.completed = Object.entries(loaded.taskReviews).filter(([, review]) => review?.status === 'accepted' && review.reviewer).map(([id]) => id);
+    loaded.savedItems = Array.isArray(loaded.savedItems) ? loaded.savedItems : [];
     if (!loaded.userId) loaded.userId = crypto.randomUUID();
     if (loaded.onboarded && !loaded.startedAt) {
       try {
         const savedAnalytics = JSON.parse(localStorage.getItem('digitalMentorAnalytics'));
         loaded.startedAt = savedAnalytics?.users?.[loaded.userId]?.firstSeen || Date.now();
       } catch { loaded.startedAt = Date.now(); }
-      localStorage.setItem('digitalMentorState', JSON.stringify(loaded));
     }
+    localStorage.setItem('digitalMentorState', JSON.stringify(loaded));
     return loaded;
   } catch { return { ...defaultState, userId: crypto.randomUUID() }; }
 }
@@ -564,7 +570,21 @@ function saveState() {
 }
 
 function loadAnalytics() {
-  try { return { users: {}, events: [], ...JSON.parse(localStorage.getItem('digitalMentorAnalytics')) }; }
+  try {
+    const loaded = { users: {}, events: [], ...JSON.parse(localStorage.getItem('digitalMentorAnalytics')) };
+    Object.values(loaded.users).forEach(user => {
+      user.taskReviews = { ...(user.taskReviews || {}) };
+      Object.entries(user.taskReviews).forEach(([id, review]) => {
+        if (review?.status === 'accepted' && !review.reviewer) delete user.taskReviews[id];
+      });
+      user.completed = Object.entries(user.taskReviews).filter(([, review]) => review?.status === 'accepted' && review.reviewer).map(([id]) => id);
+      user.progress = Math.round(user.completed.length / tasks.length * 100);
+      user.taskNotes = { ...(user.taskNotes || {}) };
+      user.taskEvidence = { ...(user.taskEvidence || {}) };
+    });
+    localStorage.setItem('digitalMentorAnalytics', JSON.stringify(loaded));
+    return loaded;
+  }
   catch { return { users: {}, events: [] }; }
 }
 
@@ -586,6 +606,9 @@ function recordUser() {
     lastSeen: Date.now(),
     visits: previous.visits || 0,
     completed: tasks.filter(task => isTaskComplete(task.id)).map(task => task.id),
+    taskReviews: state.taskReviews || {},
+    taskNotes: state.taskNotes || {},
+    taskEvidence: state.taskEvidence || {},
     progress: progress(),
     activeWeek: unlockedWeekIndex() + 1,
     lastView: currentView
@@ -613,7 +636,15 @@ function trackVisit() {
 }
 
 function isTaskComplete(id) {
-  return state.completed.includes(id) && Boolean(state.taskNotes?.[id]?.trim()) && Boolean(state.taskEvidence?.[id]);
+  return state.taskReviews?.[id]?.status === 'accepted';
+}
+
+function taskReviewLabel(id) {
+  const status = state.taskReviews?.[id]?.status;
+  if (status === 'submitted') return 'Проверка выполняется';
+  if (status === 'accepted') return 'Принято';
+  if (status === 'rejected') return 'Не выполнено';
+  return 'Не отправлено';
 }
 
 function completedCount() { return tasks.filter(task => isTaskComplete(task.id)).length; }
@@ -626,7 +657,8 @@ function isWeekComplete(index) {
 function unlockedWeekIndex() {
   let index = 0;
   while (index < taskWeeks.length - 1 && isWeekComplete(index)) index += 1;
-  return index;
+  const calendarTask = tasks[Math.min(mentorDayIndex(), tasks.length - 1)];
+  return Math.max(index, calendarTask?.week || 0);
 }
 
 function activeWeekRemaining() {
@@ -642,6 +674,7 @@ function updateProfile() {
   document.getElementById('progressValue').textContent = `${progress()}%`;
   document.getElementById('progressBar').style.width = `${progress()}%`;
   document.getElementById('taskCount').textContent = activeWeekRemaining();
+  document.getElementById('savedCount').textContent = state.savedItems?.length || 0;
   document.getElementById('adminLinkText').textContent = state.isAdmin ? 'Выйти из режима администратора' : 'Вход администратора';
   document.getElementById('adminBadge').classList.toggle('visible', state.isAdmin);
   document.getElementById('adminNav').classList.toggle('visible', state.isAdmin);
@@ -656,6 +689,7 @@ function setView(view) {
   if (view === 'situations') renderSituations();
   if (view === 'knowledge') renderKnowledge();
   if (view === 'tasks') renderTasks();
+  if (view === 'saved') renderSaved();
   if (view === 'admin') renderAdminDashboard();
   trackActivity('view', view);
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -667,21 +701,19 @@ function renderHome() {
   const dayNumber = dayIndex + 1;
   const activeWeekIndex = unlockedWeekIndex();
   const activeWeek = taskWeeks[activeWeekIndex];
-  let dailyTask = tasks.find(task => task.id === state.dailyTaskAssignments?.[dayNumber]);
-  if (!dailyTask) {
-    dailyTask = tasks.find(task => task.week === activeWeekIndex && !isTaskComplete(task.id));
-    if (dailyTask) {
-      state.dailyTaskAssignments = { ...(state.dailyTaskAssignments || {}), [dayNumber]: dailyTask.id };
-      localStorage.setItem('digitalMentorState', JSON.stringify(state));
-    }
+  const dailyTask = dailyTaskForDay(dayIndex);
+  const isCalendarTask = Boolean(dailyTask.virtual);
+  if (state.dailyTaskAssignments?.[dayNumber] !== dailyTask.id) {
+    state.dailyTaskAssignments = { ...(state.dailyTaskAssignments || {}), [dayNumber]: dailyTask.id };
+    localStorage.setItem('digitalMentorState', JSON.stringify(state));
   }
-  const dailyTaskDone = !dailyTask || isTaskComplete(dailyTask.id);
+  const dailyTaskDone = isCalendarTask ? Boolean(state.dailyCalendarTasks?.[dayNumber]) : isTaskComplete(dailyTask.id);
   const challengeIndex = dayIndex % workChallenges.length;
   const challenge = workChallenges[challengeIndex];
   const reflection = state.dailyReflections?.[dayNumber] || '';
   const missionDone = Boolean(state.dailyMissions?.[dayNumber]);
   const dayDone = 1 + Number(dailyTaskDone) + Number(missionDone) + Number(Boolean(reflection.trim()));
-  const today = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', weekday: 'long' }).format(new Date());
+  const calendarDate = formatRouteDate(dayIndex, true);
   content.innerHTML = `
     <section class="hero">
       <div class="hero-copy">
@@ -697,8 +729,8 @@ function renderHome() {
       <article><span>02</span><small>Зачем</small><h2>Чтобы создавать возможности</h2><p>Помогать молодёжи проявлять инициативу, находить поддержку, объединяться и влиять на развитие территории.</p></article>
       <article class="active-mission"><span>${String(activeWeekIndex + 1).padStart(2, '0')}</span><small>Ваша ценность недели</small><h2>${activeWeek.value}</h2><p>${activeWeek.motto}. ${activeWeek.mission}</p></article>
     </section>
-    <section class="daily-desk" data-my-day="${dayNumber}" data-daily-task="${dailyTask?.id || ''}">
-      <header class="daily-desk-head"><div><span class="eyebrow">${today} · день ${dayNumber} из 90</span><h2>Мой день</h2><p>Один фокус за раз: выберите вкладку и выполните короткий шаг.</p></div><div class="daily-desk-progress"><b data-my-day-progress>${dayDone} / 4</b><span>выполнено</span><i><span data-my-day-progress-bar style="width:${dayDone * 25}%"></span></i></div></header>
+    <section class="daily-desk" data-my-day="${dayNumber}" data-daily-task="${isCalendarTask ? '' : dailyTask.id}" data-daily-focus="${isCalendarTask ? dayNumber : ''}">
+      <header class="daily-desk-head"><div><span class="eyebrow">День ${dayNumber} из 90 · ${calendarDate}</span><h2>Мой день</h2><p>Один фокус за раз: выберите вкладку и выполните короткий шаг.</p></div><div class="daily-desk-progress"><b data-my-day-progress>${dayDone} / 4</b><span>выполнено</span><i><span data-my-day-progress-bar style="width:${dayDone * 25}%"></span></i></div></header>
       <nav class="daily-tabs" aria-label="Шаги моего дня">
         <button class="${myDayTab === 'task' ? 'active' : ''} ${dailyTaskDone ? 'done' : ''}" data-my-day-tab="task"><span>01</span><b>Задание</b><small>${dailyTaskDone ? 'Выполнено' : 'Главное на сегодня'}</small></button>
         <button class="${myDayTab === 'principle' ? 'active' : ''} done" data-my-day-tab="principle"><span>02</span><b>Принцип</b><small>Мысль дня</small></button>
@@ -706,7 +738,7 @@ function renderHome() {
         <button class="${myDayTab === 'reflection' ? 'active' : ''} ${reflection.trim() ? 'done' : ''}" data-my-day-tab="reflection" data-day-status="reflection"><span>04</span><b>Вывод</b><small>${reflection.trim() ? 'Сохранён' : 'Итог дня'}</small></button>
       </nav>
       <div class="daily-panels">
-        <article class="daily-panel task-panel ${myDayTab === 'task' ? 'active' : ''}" data-my-day-panel="task"><span class="daily-panel-mark">Главное действие</span><small>${dailyTask ? `${dailyTask.tag} · Неделя ${dailyTask.week + 1}` : 'Маршрут выполнен'}</small><h2>${dailyTask ? dailyTask.title : 'Все задания завершены'}</h2><p>${dailyTask ? dailyTask.text : 'Перейдите к итоговому тесту и сформируйте профиль профессионального развития.'}</p><button class="primary-button" ${dailyTask ? `data-task-open="${dailyTask.id}"` : 'data-view="tasks"'}>${dailyTask ? (dailyTaskDone ? 'Посмотреть результат' : 'Открыть задание') : 'Перейти к итогу'}</button></article>
+        <article class="daily-panel task-panel ${myDayTab === 'task' ? 'active' : ''}" data-my-day-panel="task"><span class="daily-panel-mark">Главное действие</span><small>${isCalendarTask ? `День ${dayNumber} · Итоговая практика` : `${dailyTask.tag} · Неделя ${dailyTask.week + 1}`}</small><h2>${dailyTask.title}</h2><p>${dailyTask.text}</p><button class="primary-button ${dailyTaskDone ? 'done' : ''}" ${isCalendarTask ? `data-action="complete-calendar-task" data-day="${dayNumber}"` : `data-task-open="${dailyTask.id}"`}>${isCalendarTask ? (dailyTaskDone ? '✓ Практика выполнена' : 'Отметить выполненным') : (dailyTaskDone ? 'Посмотреть результат' : 'Открыть задание')}</button></article>
         <article class="daily-panel principle-panel ${myDayTab === 'principle' ? 'active' : ''}" data-my-day-panel="principle"><span class="daily-panel-mark">Принцип наставника № ${String(dayNumber).padStart(2, '0')}</span><blockquote>${mentorPrinciples[dayIndex]}</blockquote><button class="daily-panel-link" data-view="situations">Все принципы и рабочие ситуации →</button></article>
         <article class="daily-panel daily-mission ${myDayTab === 'mission' ? 'active' : ''}" data-my-day-panel="mission"><div class="daily-panel-top"><span class="daily-panel-mark">Кейс-миссия для новичка</span><button data-action="new-challenge">Другая миссия ↻</button></div><div class="daily-challenge" id="challengeCard" data-index="${challengeIndex}"><span>${challenge.tag}</span><h2>${challenge.title}</h2><p>${challenge.text}</p><i>${String(challengeIndex + 1).padStart(2, '0')} / ${String(workChallenges.length).padStart(2, '0')}</i></div><button class="mission-complete-button ${missionDone ? 'done' : ''}" data-action="complete-daily-mission" data-day="${dayNumber}">${missionDone ? '✓ Миссия выполнена' : 'Отметить миссию выполненной'}</button></article>
         <article class="daily-panel daily-reflection ${myDayTab === 'reflection' ? 'active' : ''}" data-my-day-panel="reflection"><span class="daily-panel-mark">Короткий вывод</span><small>${activeWeek.reflection}</small><label><span>Что сегодня стало понятнее?</span><textarea data-daily-reflection="${dayNumber}" rows="4" placeholder="Один результат, наблюдение или вопрос на завтра">${escapeHtml(reflection)}</textarea></label><div class="reflection-save-status" data-reflection-status>${reflection.trim() ? '✓ Сохранено' : 'Сохраняется автоматически'}</div></article>
@@ -714,7 +746,7 @@ function renderHome() {
     </section>
     <div class="section-head"><div><span class="eyebrow">Следующий шаг</span><h2>Сегодня в фокусе</h2><p>Короткие действия помогают быстрее войти в рабочий ритм.</p></div><button class="text-link" data-view="tasks">Все задания →</button></div>
     <div class="dashboard-grid">
-      <article class="panel"><div class="panel-kicker">${state.stage}</div><h3>${isTaskComplete('contacts') ? 'Узнайте задачи подразделения' : 'Познакомьтесь с руководителем и наставником'}</h3><p>${isTaskComplete('contacts') ? 'Уточните три приоритетные задачи на текущий период и ожидаемый результат вашей работы.' : 'Сохраните подтвержденные рабочие контакты и договоритесь, как лучше задавать вопросы в период адаптации.'}</p><ul class="check-list"><li>Используйте только рабочие каналы</li><li>Не передавайте через бот персональные данные</li><li>Зафиксируйте понятный следующий шаг</li></ul><button class="primary-button" data-view="tasks">Перейти к заданию</button></article>
+      <article class="panel"><div class="panel-kicker">День ${dayNumber} из 90 · ${formatRouteDate(dayIndex)}</div><h3>${isTaskComplete('contacts') ? 'Узнайте задачи подразделения' : 'Познакомьтесь с руководителем и наставником'}</h3><p>${isTaskComplete('contacts') ? 'Уточните три приоритетные задачи на текущий период и ожидаемый результат вашей работы.' : 'Сохраните подтвержденные рабочие контакты и договоритесь, как лучше задавать вопросы в период адаптации.'}</p><ul class="check-list"><li>Используйте только рабочие каналы</li><li>Не передавайте через бот персональные данные</li><li>Зафиксируйте понятный следующий шаг</li></ul><button class="primary-button" data-view="tasks">Перейти к заданию</button></article>
       <article class="panel">
         <div class="panel-kicker">Быстрый доступ</div>
         <div class="quick-grid">
@@ -763,7 +795,9 @@ function updateMyDayProgress() {
   if (!section) return;
   const day = section.dataset.myDay;
   const taskId = section.dataset.dailyTask;
-  const done = 1 + Number(!taskId || isTaskComplete(taskId)) + Number(Boolean(state.dailyMissions?.[day])) + Number(Boolean(state.dailyReflections?.[day]?.trim()));
+  const focusDay = section.dataset.dailyFocus;
+  const taskDone = taskId ? isTaskComplete(taskId) : Boolean(focusDay && state.dailyCalendarTasks?.[focusDay]);
+  const done = 1 + Number(taskDone) + Number(Boolean(state.dailyMissions?.[day])) + Number(Boolean(state.dailyReflections?.[day]?.trim()));
   const label = section.querySelector('[data-my-day-progress]');
   const bar = section.querySelector('[data-my-day-progress-bar]');
   if (label) label.textContent = `${done} / 4`;
@@ -790,9 +824,61 @@ function toggleDailyMission(button) {
   showToast(done ? 'Миссия дня выполнена' : 'Миссия возвращена в работу');
 }
 
-function mentorDayIndex() {
-  const elapsedDays = Math.floor((Date.now() - (state.startedAt || Date.now())) / 86400000);
+function toggleCalendarTask(button) {
+  const day = button.dataset.day;
+  const done = !state.dailyCalendarTasks?.[day];
+  state.dailyCalendarTasks = { ...(state.dailyCalendarTasks || {}), [day]: done };
+  saveState();
+  button.classList.toggle('done', done);
+  button.textContent = done ? '✓ Практика выполнена' : 'Отметить выполненным';
+  const taskTab = document.querySelector('[data-my-day-tab="task"]');
+  taskTab?.classList.toggle('done', done);
+  const taskStatus = taskTab?.querySelector('small');
+  if (taskStatus) taskStatus.textContent = done ? 'Выполнено' : 'Главное на сегодня';
+  updateMyDayProgress();
+  showToast(done ? 'Практика дня выполнена' : 'Практика возвращена в работу');
+}
+
+function mentorDayIndex(now = new Date()) {
+  const started = new Date(state.startedAt || Date.now());
+  const today = new Date(now);
+  const startDate = Date.UTC(started.getFullYear(), started.getMonth(), started.getDate());
+  const currentDate = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  const elapsedDays = Math.floor((currentDate - startDate) / 86400000);
   return Math.min(mentorPrinciples.length - 1, Math.max(0, elapsedDays));
+}
+
+function dailyTaskForDay(dayIndex = mentorDayIndex()) {
+  if (tasks[dayIndex]) return tasks[dayIndex];
+  const dayNumber = dayIndex + 1;
+  return {
+    id: `calendar-day-${dayNumber}`,
+    virtual: true,
+    title: `Практика дня ${dayNumber}: применить принцип в работе`,
+    text: `Выберите одно рабочее действие и выполните его через принцип дня: «${mentorPrinciples[dayIndex]}»`
+  };
+}
+
+function routeDayDate(dayIndex = mentorDayIndex()) {
+  const started = new Date(state.startedAt || Date.now());
+  return new Date(started.getFullYear(), started.getMonth(), started.getDate() + dayIndex);
+}
+
+function formatRouteDate(dayIndex = mentorDayIndex(), long = false) {
+  return new Intl.DateTimeFormat('ru-RU', long
+    ? { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' }
+    : { day: '2-digit', month: '2-digit', year: 'numeric' }
+  ).format(routeDayDate(dayIndex));
+}
+
+function scheduleCalendarRefresh() {
+  const nextDay = new Date();
+  nextDay.setHours(24, 0, 0, 50);
+  setTimeout(() => {
+    if (currentView === 'home') renderHome();
+    if (currentView === 'situations') renderSituations();
+    scheduleCalendarRefresh();
+  }, nextDay.getTime() - Date.now());
 }
 
 function showNextQuote() {
@@ -801,20 +887,23 @@ function showNextQuote() {
   const index = (Number(stage.dataset.index || 0) + 1) % mentorPrinciples.length;
   stage.dataset.index = index;
   stage.querySelector('blockquote').textContent = mentorPrinciples[index];
-  stage.querySelector('div > span').textContent = `Принцип наставника № ${String(index + 1).padStart(2, '0')}`;
+  stage.querySelector('div > span').textContent = `День ${index + 1} из 90 · ${formatRouteDate(index)} · Принцип наставника № ${String(index + 1).padStart(2, '0')}`;
   stage.classList.remove('quote-flip');
   void stage.offsetWidth;
   stage.classList.add('quote-flip');
 }
 
 function renderRoute() {
-  const activeIndex = progress() >= 20 ? 1 : 0;
+  const currentDayIndex = mentorDayIndex();
+  const currentDay = currentDayIndex + 1;
+  let activeIndex = 0;
+  stages.forEach((stage, index) => { if (Number(stage.day) <= currentDay) activeIndex = index; });
   content.innerHTML = `
-    <div class="page-title"><div><span class="eyebrow">От должности к профессиональной миссии</span><h1>Первые 90 дней</h1><p>Маршрут помогает увидеть молодого человека за каждой рабочей задачей и понять собственный вклад.</p></div><div class="route-summary"><b>${progress()}%</b><span>маршрута пройдено</span></div></div>
+    <div class="page-title"><div><span class="eyebrow">От должности к профессиональной миссии</span><h1>Первые 90 дней</h1><p>Маршрут помогает увидеть молодого человека за каждой рабочей задачей и понять собственный вклад.</p></div><div class="route-summary"><b>День ${currentDay}</b><span>${formatRouteDate(currentDayIndex)} · прогресс ${progress()}%</span></div></div>
     <section class="mission-manifesto"><span>Миссия молодёжной политики</span><blockquote>Создавать среду, в которой молодой человек может быть услышан, раскрыть способности, найти поддержку и превратить инициативу в действие.</blockquote><p>В центре системы находится не отчёт и не мероприятие, а молодой человек и изменение, которое произошло благодаря нашей работе.</p></section>
     <div class="timeline">${stages.map((stage, i) => `
       <article class="stage ${i < activeIndex ? 'done' : i === activeIndex ? 'active' : ''}">
-        <div class="stage-dot">${stage.day}</div><div><h3>${stage.title}</h3><p>${stage.text}</p></div><span class="stage-status">${i < activeIndex ? 'Завершено' : i === activeIndex ? 'Сейчас' : `День ${stage.day}`}</span>
+        <div class="stage-dot">${stage.day}</div><div><h3>${stage.title}</h3><p>${stage.text}</p></div><span class="stage-status">${i < activeIndex ? `Пройдено · ${formatRouteDate(Number(stage.day) - 1)}` : i === activeIndex ? `Сейчас · ${formatRouteDate(currentDayIndex)}` : `День ${stage.day} · ${formatRouteDate(Number(stage.day) - 1)}`}</span>
       </article>`).join('')}</div>
     <div class="section-head values-heading"><div><span class="eyebrow">13 ценностей маршрута</span><h2>Как растёт роль специалиста</h2><p>Каждая неделя добавляет не только навык, но и новый профессиональный смысл.</p></div></div>
     <div class="values-route">${taskWeeks.map((week, index) => `<article class="value-card ${index === unlockedWeekIndex() ? 'active' : ''} ${index < unlockedWeekIndex() ? 'done' : ''}"><span>${String(index + 1).padStart(2, '0')}</span><small>Неделя ${index + 1}</small><h3>${week.value}</h3><b>${week.motto}</b><p>${week.youthResult}</p></article>`).join('')}</div>
@@ -827,7 +916,7 @@ function renderSituations(filter = 'Все') {
   const principleIndex = mentorDayIndex();
   content.innerHTML = `
     <div class="page-title"><div><span class="eyebrow">Не ищите папку, выберите задачу</span><h1>Рабочие ситуации</h1><p>10 частых сценариев с понятным следующим шагом.</p></div></div>
-    <section class="quote-stage situations-principle" id="quoteStage" data-index="${principleIndex}"><span class="quote-symbol">«</span><blockquote>${mentorPrinciples[principleIndex]}</blockquote><div><span>День ${principleIndex + 1} из 90 · Принцип наставника № ${String(principleIndex + 1).padStart(2, '0')}</span><button data-action="next-quote" aria-label="Показать следующий принцип">Ещё один принцип →</button></div></section>
+    <section class="quote-stage situations-principle" id="quoteStage" data-index="${principleIndex}"><span class="quote-symbol">«</span><blockquote>${mentorPrinciples[principleIndex]}</blockquote><div><span>День ${principleIndex + 1} из 90 · ${formatRouteDate(principleIndex)} · Принцип наставника № ${String(principleIndex + 1).padStart(2, '0')}</span><button data-action="next-quote" aria-label="Показать следующий принцип">Ещё один принцип →</button></div></section>
     <div class="filter-row">${categories.map(item => `<button class="chip-button ${item === filter ? 'active' : ''}" data-filter="${item}">${item}</button>`).join('')}</div>
     <div class="cards-grid">${list.map(item => `
       <button class="situation-card" data-scenario="${item.id}"><span class="card-number">${item.number}</span><h3>${item.title}</h3><p>${item.description}</p><span class="card-arrow">↗</span></button>`).join('')}</div>`;
@@ -862,7 +951,7 @@ function renderGlossary(query = '') {
     (result[key] ||= []).push(entry);
     return result;
   }, {});
-  const groupMarkup = Object.entries(groups).map(([letter, entries]) => `<section class="glossary-group"><h2>${letter}</h2><div class="glossary-grid">${entries.map(entry => `<article class="glossary-card"><div class="glossary-abbreviation">${escapeHtml(entry.abbreviation)}</div><h3>${escapeHtml(entry.expansion)}</h3><p>${escapeHtml(entry.explanation)}</p></article>`).join('')}</div></section>`).join('');
+  const groupMarkup = Object.entries(groups).map(([letter, entries]) => `<section class="glossary-group"><h2>${letter}</h2><div class="glossary-grid">${entries.map(entry => `<article class="glossary-card"><div class="glossary-abbreviation">${escapeHtml(entry.abbreviation)}</div><h3>${escapeHtml(entry.expansion)}</h3><p>${escapeHtml(entry.explanation)}</p>${saveButton({ id: `glossary:${entry.abbreviation}`, type: 'Термин', title: entry.abbreviation, text: entry.expansion, target: `glossary:${entry.abbreviation}` })}</article>`).join('')}</div></section>`).join('');
   content.innerHTML = `
     <div class="page-title glossary-title"><div><button class="back-link" data-view="knowledge">← База знаний</button><span class="eyebrow">Справочник отрасли</span><h1>Глоссарий молодежной политики</h1><p>185 сокращений, расшифровок и пояснений из документа-источника.</p></div><button class="secondary-button dark" data-action="glossary-materials">Материалы раздела</button></div>
     <div class="glossary-toolbar"><label class="search-box"><span>⌕</span><input id="glossarySearch" type="search" value="${escapeHtml(query)}" placeholder="Например: ГМП, молодежный центр, НКО" autocomplete="off"></label><strong>${matches.length} ${matches.length === 1 ? 'результат' : matches.length < 5 ? 'результата' : 'результатов'}</strong></div>
@@ -889,6 +978,77 @@ function renderIndustryStructure() {
       <div class="map-note"><b>Как читать схему</b><span>Вертикальные линии показывают прямую подведомственность. НКО представлены как самостоятельный общественный сектор отрасли.</span></div>
     </section>
     <div class="industry-stats"><div><b>1</b><span>региональное министерство</span></div><div><b>28</b><span>подразделений ОМСУ</span></div><div><b>4</b><span>действующих МБУ</span></div><div><b>3</b><span>пространства без юрлица</span></div></div>`;
+}
+
+function isSaved(id) {
+  return Boolean(state.savedItems?.some(item => item.id === id));
+}
+
+function saveButton(item) {
+  const saved = isSaved(item.id);
+  return `<button class="save-button ${saved ? 'saved' : ''}" data-save-id="${escapeHtml(item.id)}" data-save-type="${escapeHtml(item.type)}" data-save-title="${escapeHtml(item.title)}" data-save-text="${escapeHtml(item.text || '')}" data-save-target="${escapeHtml(item.target || '')}">${saved ? '★ Сохранено' : '☆ Сохранить себе'}</button>`;
+}
+
+function toggleSaved(button) {
+  const id = button.dataset.saveId;
+  const existing = state.savedItems.find(item => item.id === id);
+  if (existing) {
+    state.savedItems = state.savedItems.filter(item => item.id !== id);
+    showToast('Удалено из сохранённого');
+  } else {
+    state.savedItems = [...state.savedItems, { id, type: button.dataset.saveType, title: button.dataset.saveTitle, text: button.dataset.saveText, target: button.dataset.saveTarget, savedAt: Date.now() }];
+    showToast('Добавлено в сохранённое');
+  }
+  saveState();
+  if (currentView === 'saved') renderSaved();
+  else document.querySelectorAll(`[data-save-id="${CSS.escape(id)}"]`).forEach(item => { item.classList.toggle('saved', !existing); item.textContent = existing ? '☆ Сохранить себе' : '★ Сохранено'; });
+}
+
+function renderSaved() {
+  const items = [...(state.savedItems || [])].sort((a, b) => b.savedAt - a.savedAt);
+  const groups = [...new Set(items.map(item => item.type))];
+  content.innerHTML = `<div class="page-title"><div><span class="eyebrow">Личная подборка</span><h1>Сохранённое</h1><p>Документы, термины, задания и полезные материалы для повторного просмотра.</p></div><div class="route-summary"><b>${items.length}</b><span>сохранено</span></div></div>${items.length ? `<div class="saved-filters"><button class="active" data-saved-filter="all">Все</button>${groups.map(group => `<button data-saved-filter="${escapeHtml(group)}">${escapeHtml(group)}</button>`).join('')}</div><div class="saved-grid">${items.map(item => `<article class="saved-card" data-saved-type="${escapeHtml(item.type)}"><span>${escapeHtml(item.type)}</span><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.text || 'Сохранённый материал')}</p><div><button data-saved-open="${escapeHtml(item.id)}">Открыть →</button>${saveButton(item)}</div></article>`).join('')}</div>` : '<div class="saved-empty"><span>☆</span><h2>Здесь появится ваша подборка</h2><p>Нажимайте «Сохранить себе» у терминов, документов, заданий и других полезных материалов.</p><button data-view="knowledge">Перейти в базу знаний</button></div>'}`;
+}
+
+function openSavedItem(id) {
+  const item = state.savedItems.find(entry => entry.id === id);
+  if (!item) return;
+  const [kind, value, extra] = item.target.split(':');
+  if (kind === 'glossary') return renderGlossary(value);
+  if (kind === 'knowledge') return openKnowledge(Number(value));
+  if (kind === 'npa') return renderNormativeBase(value, extra || '');
+  if (kind === 'task') return openTask(value);
+  if (kind === 'scenario') return openScenario(value);
+  if (kind === 'event') return openEventDirection(value);
+  if (kind === 'industry') return openIndustrySection(value);
+  if (kind === 'file') return downloadFile(value);
+}
+
+function renderNormativeBase(scope = '', query = '') {
+  const sections = {
+    federal: { title: 'Федеральные НПА/законы', short: 'Документы Российской Федерации', mark: 'РФ' },
+    regional: { title: 'Региональные НПА/законы', short: 'Документы Луганской Народной Республики', mark: 'ЛНР' }
+  };
+  const activeScope = Object.hasOwn(sections, scope) ? scope : '';
+  const normalized = normalizeGlossaryText(query);
+  const compactQuery = normalized.replace(/[^a-zа-яё0-9]/gi, '');
+  const documents = activeScope ? normativeDocuments[activeScope] : [];
+  const matches = documents.filter(document => !normalized || [document.title, document.number, document.registrationDate].some(value => {
+    const field = normalizeGlossaryText(value);
+    return field.includes(normalized) || field.replace(/[^a-zа-яё0-9]/gi, '').includes(compactQuery);
+  }));
+  const categories = Object.entries(sections).map(([key, section]) => `<button class="npa-category ${activeScope === key ? 'active' : ''}" data-npa-scope="${key}"><span>${section.mark}</span><div><small>${section.short}</small><h2>${section.title}</h2><p>${normativeDocuments[key].length} документ(ов)</p></div><i>→</i></button>`).join('');
+  const list = matches.map(document => `<article class="npa-document"><div class="npa-document-mark">${escapeHtml(document.type || 'НПА')}</div><div class="npa-document-copy"><div class="npa-document-meta"><span>№ ${escapeHtml(document.number)}</span><span>Регистрация: ${escapeHtml(document.registrationDate)}</span></div><h3>${escapeHtml(document.title)}</h3>${document.description ? `<p>${escapeHtml(document.description)}</p>` : ''}<div class="inline-save">${saveButton({ id: `npa:${activeScope}:${document.number}`, type: 'НПА', title: document.title, text: `№ ${document.number} · ${document.registrationDate}`, target: `npa:${activeScope}:${document.number}` })}</div></div><a href="${escapeHtml(document.file)}" download title="Скачать документ">↓<span>Скачать</span></a></article>`).join('');
+  content.innerHTML = `
+    <div class="page-title npa-title"><div><button class="back-link" data-view="knowledge">← База знаний</button><span class="eyebrow">Проверенные источники</span><h1>Нормативная база</h1><p>Федеральные и региональные документы с быстрым поиском по названию, номеру и дате регистрации.</p></div><div class="npa-total"><b>${normativeDocuments.federal.length + normativeDocuments.regional.length}</b><span>документов<br>в реестре</span></div></div>
+    <section class="npa-categories" aria-label="Уровень нормативных документов">${categories}</section>
+    ${activeScope ? `<section class="npa-register"><header><div><span class="eyebrow">${sections[activeScope].mark} · реестр документов</span><h2>${sections[activeScope].title}</h2></div><strong>${matches.length} из ${documents.length}</strong></header><label class="search-box npa-search"><span>⌕</span><input id="npaSearch" data-npa-search="${activeScope}" type="search" value="${escapeHtml(query)}" placeholder="Введите название, номер или дату регистрации" autocomplete="off"></label>${matches.length ? `<div class="npa-document-list">${list}</div>` : `<div class="npa-empty"><span>§</span><h3>${normalized ? 'Документы не найдены' : 'Реестр подготовлен к наполнению'}</h3><p>${normalized ? 'Проверьте номер, дату или измените поисковый запрос.' : 'После загрузки документов они появятся здесь с названием, номером, датой регистрации и кнопкой скачивания.'}</p>${normalized ? '<button data-npa-clear>Сбросить поиск</button>' : ''}</div>`}</section>` : `<section class="npa-start"><span>01</span><div><h2>Выберите уровень документа</h2><p>Откройте федеральный или региональный реестр. Внутри каждого блока будет собственный список и поиск только по документам выбранного уровня.</p></div></section>`}
+    <div class="npa-source-note"><b>Принцип актуальности</b><span>В реестр добавляются документы с подтверждёнными реквизитами и файлом-источником. Перед применением проверяйте редакцию и дату документа.</span></div>`;
+  const input = document.getElementById('npaSearch');
+  if (query && input) {
+    input.focus();
+    input.setSelectionRange(query.length, query.length);
+  }
 }
 
 function openIndustrySection(section) {
@@ -931,7 +1091,7 @@ function openIndustrySection(section) {
   };
   const item = sections[section];
   if (!item) return;
-  modalContent.innerHTML = `<div class="modal-body structure-detail"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body structure-detail"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
   modal.classList.add('structure-modal');
   if (!modal.open) modal.showModal();
   renderFilesArea(item.fileKey, state.isAdmin, 'Материалы раздела');
@@ -963,7 +1123,7 @@ function renderTasks() {
   const bestResult = state.gameResults?.[blockNumber] || 0;
   const unlocked = unlockedWeekIndex();
   content.innerHTML = `
-    <div class="page-title"><div><span class="eyebrow">90-дневный маршрут · 13 недель</span><h1>Мои задания</h1><p>${completedCount()} из ${tasks.length} выполнено. Следующая неделя откроется после завершения текущей.</p></div><div class="route-summary"><b>${progress()}%</b><span>общий прогресс</span></div></div>
+    <div class="page-title"><div><span class="eyebrow">90-дневный маршрут · 13 недель</span><h1>Мои задания</h1><p>${completedCount()} из ${tasks.length} принято. Новые задания открываются последовательно по календарным дням.</p></div><div class="route-summary"><b>${progress()}%</b><span>общий прогресс</span></div></div>
     <div class="task-view-tabs"><button class="${tasksTab === 'route' ? 'active' : ''}" data-tasks-tab="route"><span>01</span><b>Маршрут 90 дней</b><small>Практические задания и результаты</small></button><button class="${tasksTab === 'mission' ? 'active' : ''}" data-tasks-tab="mission"><span>02</span><b>На своём ли вы месте?</b><small>Откройте свою профессиональную миссию</small></button></div>
     ${tasksTab === 'mission' ? renderMissionTest() : `<article class="game-banner"><div><span class="eyebrow">Интерактивная игра · Блок ${blockNumber + 1}</span><h2>«Маршрут решения»</h2><p>25 рабочих ситуаций, три варианта действий и один безопасный путь. Для специалистов подготовлено 10 разных тематических блоков.</p><span class="game-score">Лучший результат: ${bestResult} / 25</span></div><button class="primary-button" data-action="start-game">Начать игру</button></article>
     <div class="task-weeks">${taskWeeks.map((week, weekIndex) => {
@@ -972,10 +1132,11 @@ function renderTasks() {
       const weekDone = week.tasks.filter(task => isTaskComplete(task.id)).length;
       return `<section class="task-week ${locked ? 'locked' : ''} ${complete ? 'complete' : ''}">
         <header class="task-week-head"><span class="week-number">${String(weekIndex + 1).padStart(2, '0')}</span><div><small>Неделя ${weekIndex + 1} · ${week.level}</small><h2>${week.title}</h2><p>${week.text}</p><em>Ценность: ${week.value} · ${week.motto}</em></div><strong>${locked ? 'Закрыто' : `${weekDone} / ${week.tasks.length}`}</strong></header>
-        ${locked ? `<div class="week-lock"><span>⌁</span><p>Завершите задания недели ${weekIndex}, чтобы открыть этот этап.</p></div>` : `<div class="week-purpose"><div><span>Миссия недели</span><b>${week.mission}</b></div><div><span>Результат для молодёжи</span><b>${week.youthResult}</b></div><div><span>Вопрос к себе</span><b>${week.reflection}</b></div></div><div class="tasks-list">${week.tasks.map(task => {
+        ${locked ? `<div class="week-lock"><span>⌁</span><p>Этап откроется в день ${weekIndex * 5 + 1} · ${formatRouteDate(weekIndex * 5)}.</p></div>` : `<div class="week-purpose"><div><span>Миссия недели</span><b>${week.mission}</b></div><div><span>Результат для молодёжи</span><b>${week.youthResult}</b></div><div><span>Вопрос к себе</span><b>${week.reflection}</b></div></div><div class="tasks-list">${week.tasks.map(task => {
           const done = isTaskComplete(task.id);
+          const reviewStatus = state.taskReviews?.[task.id]?.status || 'draft';
           const note = escapeHtml(state.taskNotes?.[task.id] || '');
-          return `<article class="task-card ${done ? 'done' : ''}" data-task-open="${task.id}"><button class="task-check" data-task="${task.id}" aria-label="${done ? 'Вернуть задание' : 'Отметить выполненным'}">${done ? '✓' : ''}</button><div class="task-main"><h3>${task.title}</h3><p>${task.text} · Открыть задание и добавить документ →</p><div class="task-proof"><span class="${state.taskNotes?.[task.id]?.trim() ? 'ready' : ''}">Заметка</span><span class="${state.taskEvidence?.[task.id] ? 'ready' : ''}">Документ</span></div><label class="task-note"><span>Личная заметка</span><textarea data-task-note="${task.id}" rows="2" placeholder="Опишите полученный результат">${note}</textarea><small>Для завершения нужны заметка и документ</small></label></div><span class="task-tag">${task.tag}</span></article>`;
+          return `<article class="task-card ${done ? 'done' : ''} review-${reviewStatus}" data-task-open="${task.id}"><span class="task-check">${done ? '✓' : reviewStatus === 'submitted' ? '…' : reviewStatus === 'rejected' ? '!' : ''}</span><div class="task-main"><div class="task-title-row"><h3>${task.title}</h3><span class="task-review-status ${reviewStatus}">${taskReviewLabel(task.id)}</span></div><p>${task.text} · Открыть задание и добавить подтверждение →</p><div class="task-proof"><span class="${state.taskNotes?.[task.id]?.trim() ? 'ready' : ''}">Заметка</span><span class="${state.taskEvidence?.[task.id] ? 'ready' : ''}">Документ</span></div><label class="task-note"><span>Личная заметка</span><textarea data-task-note="${task.id}" rows="2" placeholder="Опишите полученный результат" ${['submitted', 'accepted'].includes(reviewStatus) ? 'disabled' : ''}>${note}</textarea><small>Для отправки достаточно заметки или документа</small></label></div><span class="task-tag">${task.tag}</span></article>`;
         }).join('')}</div>`}
       </section>`;
     }).join('')}</div>`}`;
@@ -985,7 +1146,7 @@ function renderMissionTest() {
   const routeComplete = completedCount() === tasks.length;
   const answers = state.missionTestAnswers || {};
   const answered = missionQuestions.filter((_, index) => Object.hasOwn(missionProfiles, answers[index])).length;
-  if (!routeComplete) return `<section class="mission-test-locked"><span>Финальный этап</span><h2>Сначала соберите доказательства своей практики</h2><p>Тест откроется после всех ${tasks.length} заданий. Для каждого задания нужны заметка о результате и приложенный документ.</p><div><b>${completedCount()} / ${tasks.length}</b><i><span style="width:${progress()}%"></span></i></div><button class="secondary-button dark" data-tasks-tab="route">Вернуться к маршруту</button></section>`;
+  if (!routeComplete) return `<section class="mission-test-locked"><span>Финальный этап</span><h2>Сначала соберите доказательства своей практики</h2><p>Тест откроется после всех ${tasks.length} заданий. Каждое задание можно подтвердить личной заметкой или приложенным документом.</p><div><b>${completedCount()} / ${tasks.length}</b><i><span style="width:${progress()}%"></span></i></div><button class="secondary-button dark" data-tasks-tab="route">Вернуться к маршруту</button></section>`;
   return `<section class="mission-test"><div class="mission-test-hero"><span class="eyebrow">Финальная самодиагностика</span><h2>На своём ли вы месте?</h2><p>Ответьте честно и узнайте, в какой профессиональной миссии вы создаёте наибольшую ценность. Это не оценка пригодности и не психологический диагноз, а ориентир для развития.</p><div class="mission-test-progress"><b data-mission-progress>${answered} / ${missionQuestions.length}</b><i><span data-mission-progress-bar style="width:${Math.round(answered / missionQuestions.length * 100)}%"></span></i></div></div>
     <div class="mission-questions">${missionQuestions.map((question, index) => `<fieldset><legend><span>${String(index + 1).padStart(2, '0')}</span>${question.text}</legend>${question.options.map(([text, profile]) => `<label><input type="radio" name="mission-${index}" value="${profile}" data-mission-answer="${index}" ${answers[index] === profile ? 'checked' : ''}><span>${text}</span></label>`).join('')}</fieldset>`).join('')}</div>
     <section class="mission-generate"><div><span>Все ответы будут связаны с результатами 90-дневного маршрута</span><h3>Сформировать мой профиль развития</h3><p>Вы получите профессиональную миссию, рабочий стиль, сильные стороны, зоны роста и темы для обучения.</p></div><button class="primary-button" data-action="generate-development-profile" ${answered < missionQuestions.length ? 'disabled' : ''}>Сформировать профиль</button></section>
@@ -1009,7 +1170,7 @@ function buildLocalDevelopmentProfile() {
     strengths: primary.strengths,
     growth: [...primary.growth, `Использовать сильные стороны профиля «${secondary.title}» как дополнительный рабочий инструмент.`],
     learn: [...new Set([...primary.learn, ...secondary.learn.slice(0, 1)])],
-    evidence: `Завершено ${completedCount()} практических заданий из ${tasks.length}; каждое подтверждено заметкой и рабочим материалом.`,
+    evidence: `Завершено ${completedCount()} практических заданий из ${tasks.length}; каждое подтверждено личной заметкой или рабочим материалом.`,
     createdAt: Date.now()
   };
 }
@@ -1062,7 +1223,7 @@ function openScenario(id) {
     <h3>Проверьте себя</h3><ul class="check-list">${item.checklist.map(check => `<li>${check}</li>`).join('')}</ul>
     <div class="placeholder-link"><span><b>Утвержденный источник</b><br>Будет добавлен владельцем раздела</span><span>Ожидает проверки</span></div>
     <div class="warning"><b>Когда нужен человек:</b> ${item.human}</div>
-    <div class="button-row"><button class="primary-button" data-feedback="helped">Карточка помогла</button><button class="secondary-button dark" data-action="expert" data-topic="${item.title}">Спросить специалиста</button></div><div id="filesArea"></div></div>`;
+    <div class="button-row"><button class="primary-button" data-feedback="helped">Карточка помогла</button><button class="secondary-button dark" data-action="expert" data-topic="${item.title}">Спросить специалиста</button>${saveButton({ id: `scenario:${item.id}`, type: 'Ситуация', title: item.title, text: item.description, target: `scenario:${item.id}` })}</div><div id="filesArea"></div></div>`;
   modal.showModal();
   renderFilesArea(`scenario:${item.id}`, state.isAdmin, 'Материалы ситуации');
 }
@@ -1225,7 +1386,7 @@ function openEventDirection(id) {
     <h3 class="event-section-title">Маршрут запуска</h3><ol class="steps event-steps">${item.steps.map(step => `<li>${step}</li>`).join('')}</ol>
     <div class="event-result"><span>Финишная точка</span><b>${item.result}</b></div>
     <div class="warning"><b>Подключите специалиста:</b> ${scenario.human}</div>
-    <div class="button-row"><button class="secondary-button dark" data-action="expert" data-topic="${item.type}">Обсудить со специалистом</button></div><div id="filesArea"></div></div>`;
+    <div class="button-row"><button class="secondary-button dark" data-action="expert" data-topic="${item.type}">Обсудить со специалистом</button>${saveButton({ id: `event:${item.id}`, type: 'Шаблон', title: item.title, text: item.pitch, target: `event:${item.id}` })}</div><div id="filesArea"></div></div>`;
   modal.classList.add('event-modal');
   if (!modal.open) modal.showModal();
   renderFilesArea(`scenario:event:${item.id}`, state.isAdmin, `Материалы: ${item.title}`);
@@ -1234,9 +1395,10 @@ function openEventDirection(id) {
 function openKnowledge(index) {
   const item = knowledge[index];
   if (!item) return;
+  if (item.action === 'regulations') return renderNormativeBase();
   if (item.title === 'Глоссарий') return renderGlossary();
   if (item.action === 'industry') return renderIndustryStructure();
-  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">База знаний</span><h2>${item.title}</h2><p class="modal-lead">${item.text}. Здесь собраны файлы и документы, добавленные администратором проекта.</p><div class="meta-strip"><div><span>Раздел</span><b>${item.title}</b></div><div><span>Доступ</span><b>Для специалистов</b></div><div><span>Редактирование</span><b>Только администратор</b></div></div><div class="warning">Перед использованием материала проверьте его дату, версию и утвержденный источник.</div><div id="filesArea"></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">База знаний</span><h2>${item.title}</h2>${saveButton({ id: `knowledge:${index}`, type: 'Раздел', title: item.title, text: item.text, target: `knowledge:${index}` })}<p class="modal-lead">${item.text}. Здесь собраны файлы и документы, добавленные администратором проекта.</p><div class="meta-strip"><div><span>Раздел</span><b>${item.title}</b></div><div><span>Доступ</span><b>Для специалистов</b></div><div><span>Редактирование</span><b>Только администратор</b></div></div><div class="warning">Перед использованием материала проверьте его дату, версию и утвержденный источник.</div><div id="filesArea"></div></div>`;
   modal.showModal();
   renderFilesArea(`knowledge:${index}`, state.isAdmin, `Документы: ${item.title}`);
 }
@@ -1251,11 +1413,12 @@ function openTask(id) {
   const task = tasks.find(item => item.id === id);
   if (!task || task.week > unlockedWeekIndex()) return;
   const done = isTaskComplete(task.id);
+  const reviewStatus = state.taskReviews?.[task.id]?.status || 'draft';
   const note = escapeHtml(state.taskNotes?.[task.id] || '');
   const week = taskWeeks[task.week];
-  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Неделя ${task.week + 1} · ${week.value} · ${task.tag}</span><h2>${task.title}</h2><p class="modal-lead">${task.text}.</p><div class="task-meaning"><div><span>Для кого</span><b>${week.forWhom}</b></div><div><span>Почему это важно</span><b>${week.youthResult}</b></div></div><div class="task-brief"><span>Результат задания</span><b>${task.deliverable}</b></div><h3>Шаги</h3><ol class="steps">${task.steps.map(step => `<li>${step}</li>`).join('')}</ol><div class="reflection-prompt"><span>Вопрос к себе</span><b>${week.reflection}</b></div><section class="task-evidence-rule"><div><span class="${state.taskNotes?.[task.id]?.trim() ? 'ready' : ''}" data-evidence-note>${state.taskNotes?.[task.id]?.trim() ? '✓' : '1'}</span><b>Опишите результат</b></div><div><span class="${state.taskEvidence?.[task.id] ? 'ready' : ''}" data-evidence-file>${state.taskEvidence?.[task.id] ? '✓' : '2'}</span><b>Приложите документ</b></div><p>Только после выполнения обоих условий задание засчитывается в маршрут.</p></section><label class="task-note modal-task-note"><span>Личная заметка о результате</span><textarea data-task-note="${task.id}" rows="4" placeholder="Что вы сделали и какой результат получили?">${note}</textarea><small>Сохраняется автоматически только на этом устройстве</small></label><div id="filesArea"></div><div class="button-row"><button class="primary-button" data-task="${task.id}">${done ? 'Вернуть в работу' : 'Отметить выполненным'}</button></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Неделя ${task.week + 1} · ${week.value} · ${task.tag}</span><h2>${task.title}</h2><div class="task-modal-status ${reviewStatus}"><b>${taskReviewLabel(task.id)}</b><span>${reviewStatus === 'submitted' ? 'Задание отправлено администратору и ожидает решения.' : reviewStatus === 'accepted' ? 'Задание проверено и засчитано в прогресс.' : reviewStatus === 'rejected' ? 'Задание нужно доработать и отправить повторно.' : 'Добавьте подтверждение и отправьте результат администратору.'}</span></div>${saveButton({ id: `task:${task.id}`, type: 'Задание', title: task.title, text: task.text, target: `task:${task.id}` })}<p class="modal-lead">${task.text}.</p><div class="task-meaning"><div><span>Для кого</span><b>${week.forWhom}</b></div><div><span>Почему это важно</span><b>${week.youthResult}</b></div></div><div class="task-brief"><span>Результат задания</span><b>${task.deliverable}</b></div><h3>Шаги</h3><ol class="steps">${task.steps.map(step => `<li>${step}</li>`).join('')}</ol><div class="reflection-prompt"><span>Вопрос к себе</span><b>${week.reflection}</b></div><section class="task-evidence-rule"><div><span class="${state.taskNotes?.[task.id]?.trim() ? 'ready' : ''}" data-evidence-note>${state.taskNotes?.[task.id]?.trim() ? '✓' : '1'}</span><b>Оставьте личную заметку</b></div><div><span class="${state.taskEvidence?.[task.id] ? 'ready' : ''}" data-evidence-file>${state.taskEvidence?.[task.id] ? '✓' : '2'}</span><b>Или приложите документ</b></div><p>Для отправки задания достаточно выполнить одно из двух условий.</p></section><label class="task-note modal-task-note"><span>Личная заметка о результате</span><textarea data-task-note="${task.id}" rows="4" placeholder="Что вы сделали и какой результат получили?" ${['submitted', 'accepted'].includes(reviewStatus) ? 'disabled' : ''}>${note}</textarea><small>Сохраняется автоматически только на этом устройстве</small></label><div id="filesArea"></div><div class="button-row">${reviewStatus === 'accepted' ? '<span class="accepted-note">✓ Задание принято</span>' : `<button class="primary-button" data-submit-task="${task.id}" ${reviewStatus === 'submitted' ? 'disabled' : ''}>${reviewStatus === 'submitted' ? 'Проверка выполняется' : reviewStatus === 'rejected' ? 'Отправить повторно' : 'Отправить на проверку'}</button>`}</div></div>`;
   modal.showModal();
-  renderFilesArea(`task:${task.id}`, true, 'Материалы и результат задания', 'Добавить файл к заданию');
+  renderFilesArea(`task:${task.id}`, !['submitted', 'accepted'].includes(reviewStatus), 'Материалы и результат задания', 'Добавить файл к заданию', 'Материалы заблокированы до решения администратора.');
 }
 
 async function hashPin(value) {
@@ -1312,11 +1475,34 @@ function renderAdminDashboard() {
   const visits = analytics.events.filter(event => event.type === 'visit');
   const average = users.length ? Math.round(users.reduce((sum, user) => sum + (user.progress || 0), 0) / users.length) : 0;
   const recent = [...analytics.events].sort((a, b) => b.createdAt - a.createdAt).slice(0, 12);
+  const reviews = users.flatMap(user => Object.entries(user.taskReviews || {}).map(([taskId, review]) => ({ user, task: tasks.find(item => item.id === taskId), review, note: user.taskNotes?.[taskId] || '', hasDocument: Boolean(user.taskEvidence?.[taskId]) }))).filter(item => item.task && item.review.status !== 'draft').sort((a, b) => (b.review.submittedAt || b.review.reviewedAt || 0) - (a.review.submittedAt || a.review.reviewedAt || 0));
+  const pendingReviews = reviews.filter(item => item.review.status === 'submitted').length;
   content.innerHTML = `<div class="page-title admin-page-title"><div><span class="eyebrow">Панель администратора</span><h1>Аналитика маршрута</h1><p>Локальная статистика пользователей, посещений и выполнения заданий.</p></div><button class="primary-button" data-action="export-xlsx">Скачать XLSX</button></div>
     <div class="admin-local-warning"><b>Локальный прототип</b><span>Здесь видны только профили и действия, сохранённые в этом браузере. Данные пользователей с других устройств сюда не поступают.</span></div>
-    <div class="admin-metrics"><article><span>Пользователи</span><b>${users.length}</b><small>на этом устройстве</small></article><article><span>Посещения</span><b>${visits.length}</b><small>отдельные сессии</small></article><article><span>Средний прогресс</span><b>${average}%</b><small>по всем профилям</small></article><article><span>Заданий завершено</span><b>${users.reduce((sum, user) => sum + (user.completed?.length || 0), 0)}</b><small>из ${users.length * tasks.length}</small></article></div>
+    <div class="admin-metrics"><article><span>Пользователи</span><b>${users.length}</b><small>на этом устройстве</small></article><article><span>Ожидают проверки</span><b>${pendingReviews}</b><small>отправленных заданий</small></article><article><span>Средний прогресс</span><b>${average}%</b><small>по всем профилям</small></article><article><span>Заданий принято</span><b>${users.reduce((sum, user) => sum + (user.completed?.length || 0), 0)}</b><small>из ${users.length * tasks.length}</small></article></div>
+    <section class="admin-panel review-panel"><div class="admin-panel-head"><div><span class="eyebrow">Проверка заданий</span><h2>Результаты пользователей</h2></div><span>${pendingReviews} ожидают решения</span></div>${reviews.length ? `<div class="admin-review-list">${reviews.map(item => `<article class="admin-review-card status-${item.review.status}"><header><div><span>Неделя ${item.task.week + 1} · ${escapeHtml(item.task.tag)}</span><h3>${escapeHtml(item.task.title)}</h3></div><b>${item.review.status === 'submitted' ? 'Проверка выполняется' : item.review.status === 'accepted' ? 'Принято' : 'Не выполнено'}</b></header><div class="admin-review-user"><strong>${escapeHtml(item.user.name)}</strong><span>${escapeHtml(item.user.organization || item.user.workplace || 'Организация не указана')}</span></div><div class="admin-review-proof"><div><span>Личная заметка</span><p>${item.note ? escapeHtml(item.note) : 'Не добавлена'}</p></div><div><span>Документ</span><p>${item.hasDocument ? 'Прикреплён' : 'Не прикреплён'}</p></div></div>${item.review.status === 'submitted' ? `<div class="admin-review-actions"><button data-admin-review="accepted" data-review-user="${item.user.id}" data-review-task="${item.task.id}">Принять</button><button class="reject" data-admin-review="rejected" data-review-user="${item.user.id}" data-review-task="${item.task.id}">Не выполнено</button></div>` : `<small>Решение: ${formatAdminDate(item.review.reviewedAt)}</small>`}</article>`).join('')}</div>` : '<div class="admin-empty">Отправленные на проверку задания появятся здесь.</div>'}</section>
     <section class="admin-panel"><div class="admin-panel-head"><div><span class="eyebrow">Пользователи</span><h2>Прохождение маршрута</h2></div><span>${users.length} записей</span></div>${users.length ? `<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Пользователь</th><th>Откуда</th><th>Где работает</th><th>Посещения</th><th>Прогресс</th><th>Активная неделя</th><th>Последняя активность</th></tr></thead><tbody>${users.map(user => `<tr><td><b>${escapeHtml(user.name)}</b><small>${escapeHtml(user.workplace || 'Тип не указан')}</small></td><td>${escapeHtml(user.location || 'Не указано')}</td><td>${escapeHtml(user.organization || 'Не указано')}</td><td>${user.visits || 0}</td><td><div class="admin-progress"><span style="width:${user.progress || 0}%"></span></div><small>${user.completed?.length || 0} / ${tasks.length} · ${user.progress || 0}%</small></td><td>${user.activeWeek || 1} из ${taskWeeks.length}</td><td>${formatAdminDate(user.lastSeen)}</td></tr>`).join('')}</tbody></table></div>` : '<div class="admin-empty">Пользователи появятся после заполнения профиля на этом устройстве.</div>'}</section>
     <section class="admin-panel"><div class="admin-panel-head"><div><span class="eyebrow">Журнал</span><h2>Последняя активность</h2></div></div>${recent.length ? `<div class="activity-list">${recent.map(event => { const user = analytics.users[event.userId]; return `<article><span>${event.type === 'visit' ? 'Вход' : event.type === 'task' ? 'Задание' : 'Раздел'}</span><div><b>${escapeHtml(user?.name || 'Неизвестный пользователь')}</b><p>${escapeHtml(event.detail || '')}</p></div><time>${formatAdminDate(event.createdAt)}</time></article>`; }).join('')}</div>` : '<div class="admin-empty">Активность ещё не зафиксирована.</div>'}</section>`;
+}
+
+function reviewTask(userId, taskId, status) {
+  if (!state.isAdmin || !['accepted', 'rejected'].includes(status)) return;
+  const user = analytics.users[userId];
+  const task = tasks.find(item => item.id === taskId);
+  if (!user || !task) return;
+  user.taskReviews = { ...(user.taskReviews || {}), [taskId]: { ...(user.taskReviews?.[taskId] || {}), status, reviewedAt: Date.now(), reviewer: ADMIN_NAME } };
+  user.completed = status === 'accepted' ? [...new Set([...(user.completed || []), taskId])] : (user.completed || []).filter(id => id !== taskId);
+  user.progress = Math.round(user.completed.length / tasks.length * 100);
+  if (userId === state.userId) {
+    state.taskReviews = { ...(state.taskReviews || {}), [taskId]: user.taskReviews[taskId] };
+    state.completed = [...user.completed];
+    localStorage.setItem('digitalMentorState', JSON.stringify(state));
+  }
+  analytics.events.push({ userId, type: 'task-review', detail: `${task.title}: ${status === 'accepted' ? 'принято' : 'не выполнено'}`, createdAt: Date.now() });
+  saveAnalytics();
+  updateProfile();
+  renderAdminDashboard();
+  showToast(status === 'accepted' ? 'Задание принято' : 'Задание возвращено как невыполненное');
 }
 
 function xmlEscape(value) {
@@ -1390,7 +1576,11 @@ function exportAnalyticsXlsx() {
   recordUser();
   const users = Object.values(analytics.users).sort((a, b) => b.lastSeen - a.lastSeen);
   const userRows = [['Имя', 'Город / район', 'Организация / подразделение', 'Тип учреждения', 'Первый вход', 'Последняя активность', 'Посещения', 'Выполнено заданий', 'Всего заданий', 'Прогресс, %', 'Активная неделя'], ...users.map(user => [user.name, user.location, user.organization, user.workplace, formatAdminDate(user.firstSeen), formatAdminDate(user.lastSeen), user.visits || 0, user.completed?.length || 0, tasks.length, user.progress || 0, user.activeWeek || 1])];
-  const taskRows = [['Имя', 'Неделя', 'Задание', 'Статус'], ...users.flatMap(user => tasks.map(task => [user.name, task.week + 1, task.title, user.completed?.includes(task.id) ? 'Выполнено' : 'Не выполнено']))];
+  const taskRows = [['Имя', 'Неделя', 'Задание', 'Статус', 'Личная заметка', 'Документ', 'Отправлено', 'Решение принято'], ...users.flatMap(user => tasks.map(task => {
+    const review = user.taskReviews?.[task.id];
+    const status = review?.status === 'submitted' ? 'Проверка выполняется' : review?.status === 'accepted' ? 'Принято' : review?.status === 'rejected' ? 'Не выполнено' : 'Не отправлено';
+    return [user.name, task.week + 1, task.title, status, user.taskNotes?.[task.id] || '', user.taskEvidence?.[task.id] ? 'Да' : 'Нет', review?.submittedAt ? formatAdminDate(review.submittedAt) : '', review?.reviewedAt ? formatAdminDate(review.reviewedAt) : ''];
+  }))];
   const visitRows = [['Имя', 'Дата и время', 'Событие', 'Раздел / действие'], ...analytics.events.map(event => [analytics.users[event.userId]?.name || 'Неизвестный пользователь', formatAdminDate(event.createdAt), event.type, event.detail])];
   const blob = createXlsx({ 'Пользователи': userRows, 'Задания': taskRows, 'Посещения': visitRows });
   const link = document.createElement('a');
@@ -1463,13 +1653,13 @@ async function downloadFile(id) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-async function renderFilesArea(sectionKey, canUpload, title = 'Материалы', uploadText = 'Добавить документы') {
+async function renderFilesArea(sectionKey, canUpload, title = 'Материалы', uploadText = 'Добавить документы', readOnlyText = `Добавлять и удалять материалы в этом разделе может только администратор ${ADMIN_NAME}.`) {
   const area = document.getElementById('filesArea');
   if (!area) return;
   try {
     const files = await getFiles(sectionKey);
     if (sectionKey.startsWith('task:')) updateTaskEvidenceState(sectionKey, files.length > 0);
-    area.innerHTML = `<section class="files-section"><div class="files-head"><h3>${escapeHtml(title)}</h3><span>${files.length} файл(ов)</span></div>${canUpload ? `<label class="upload-zone"><input type="file" data-file-upload="${sectionKey}" multiple><span><b>＋ ${uploadText}</b><small>Любые форматы · несколько файлов · до 25 МБ каждый</small></span></label>` : `<div class="admin-note">Добавлять и удалять материалы в этом разделе может только администратор ${ADMIN_NAME}.</div>`}<div class="file-list">${files.length ? files.map(file => `<div class="file-item"><span class="file-type">${fileExtension(file.name)}</span><span><b title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</b><small>${formatBytes(file.size)} · ${escapeHtml(file.uploader)} · ${new Date(file.createdAt).toLocaleDateString('ru-RU')}</small></span><span class="file-actions"><button class="file-action" data-file-download="${file.id}" title="Скачать">↓</button>${canUpload ? `<button class="file-action delete" data-file-delete="${file.id}" data-section-key="${sectionKey}" title="Удалить">×</button>` : ''}</span></div>`).join('') : '<div class="no-files">В этом подразделе пока нет добавленных файлов</div>'}</div></section>`;
+    area.innerHTML = `<section class="files-section"><div class="files-head"><h3>${escapeHtml(title)}</h3><span>${files.length} файл(ов)</span></div>${canUpload ? `<label class="upload-zone"><input type="file" data-file-upload="${sectionKey}" multiple><span><b>＋ ${uploadText}</b><small>Любые форматы · несколько файлов · до 25 МБ каждый</small></span></label>` : `<div class="admin-note">${escapeHtml(readOnlyText)}</div>`}<div class="file-list">${files.length ? files.map(file => `<div class="file-item"><span class="file-type">${fileExtension(file.name)}</span><span><b title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</b><small>${formatBytes(file.size)} · ${escapeHtml(file.uploader)} · ${new Date(file.createdAt).toLocaleDateString('ru-RU')}</small></span><span class="file-actions">${saveButton({ id: `file:${file.id}`, type: 'Документ', title: file.name, text: title, target: `file:${file.id}` })}<button class="file-action" data-file-download="${file.id}" title="Скачать">↓</button>${canUpload ? `<button class="file-action delete" data-file-delete="${file.id}" data-section-key="${sectionKey}" title="Удалить">×</button>` : ''}</span></div>`).join('') : '<div class="no-files">В этом подразделе пока нет добавленных файлов</div>'}</div></section>`;
   } catch {
     area.innerHTML = '<div class="warning">Локальное хранилище файлов недоступно в этом браузере.</div>';
   }
@@ -1678,12 +1868,34 @@ function finishOnboarding() {
   state.workplace = selected.dataset.choice;
   state.onboarded = true;
   if (!state.startedAt) state.startedAt = Date.now();
-  if (!state.completed.includes('role')) state.completed.push('role');
   saveState();
   trackVisit();
   modal.close();
   setView('home');
   showToast('Маршрут настроен');
+}
+
+async function submitTask(id) {
+  const task = tasks.find(item => item.id === id);
+  if (!task || task.week > unlockedWeekIndex()) return;
+  const hasNote = Boolean(state.taskNotes?.[id]?.trim());
+  let hasDocument = Boolean(state.taskEvidence?.[id]);
+  if (!hasDocument) {
+    try {
+      const files = await getFiles(`task:${id}`);
+      hasDocument = files.length > 0;
+      updateTaskEvidenceState(`task:${id}`, hasDocument);
+    } catch {
+      if (!hasNote) return showToast('Не удалось проверить приложенный документ');
+    }
+  }
+  if (!hasNote && !hasDocument) return showToast('Добавьте личную заметку или приложите документ');
+  state.taskReviews = { ...(state.taskReviews || {}), [id]: { status: 'submitted', submittedAt: Date.now() } };
+  state.completed = state.completed.filter(item => item !== id);
+  saveState();
+  trackActivity('task', `${task.title}: отправлено на проверку`);
+  openTask(id);
+  showToast('Задание отправлено на проверку');
 }
 
 function showToast(message) {
@@ -1701,6 +1913,18 @@ function escapeHtml(value = '') {
 document.addEventListener('click', async event => {
   const viewButton = event.target.closest('[data-view]');
   if (viewButton) return setView(viewButton.dataset.view);
+  const saveItemButton = event.target.closest('[data-save-id]');
+  if (saveItemButton) return toggleSaved(saveItemButton);
+  const savedFilter = event.target.closest('[data-saved-filter]');
+  if (savedFilter) {
+    document.querySelectorAll('[data-saved-filter]').forEach(button => button.classList.toggle('active', button === savedFilter));
+    document.querySelectorAll('[data-saved-type]').forEach(card => { card.hidden = savedFilter.dataset.savedFilter !== 'all' && card.dataset.savedType !== savedFilter.dataset.savedFilter; });
+    return;
+  }
+  const savedOpen = event.target.closest('[data-saved-open]');
+  if (savedOpen) return openSavedItem(savedOpen.dataset.savedOpen);
+  const adminReview = event.target.closest('[data-admin-review]');
+  if (adminReview) return reviewTask(adminReview.dataset.reviewUser, adminReview.dataset.reviewTask, adminReview.dataset.adminReview);
   const myDayTabButton = event.target.closest('[data-my-day-tab]');
   if (myDayTabButton) return switchMyDayTab(myDayTabButton.dataset.myDayTab);
   const tasksTabButton = event.target.closest('[data-tasks-tab]');
@@ -1715,6 +1939,9 @@ document.addEventListener('click', async event => {
   if (youthTrack) return openYouthTrack(youthTrack.dataset.youthTrack);
   const knowledgeButton = event.target.closest('[data-knowledge]');
   if (knowledgeButton) return openKnowledge(Number(knowledgeButton.dataset.knowledge));
+  const npaScope = event.target.closest('[data-npa-scope]');
+  if (npaScope) return renderNormativeBase(npaScope.dataset.npaScope);
+  if (event.target.closest('[data-npa-clear]')) return renderNormativeBase(document.getElementById('npaSearch')?.dataset.npaSearch || '');
   const industryButton = event.target.closest('[data-industry]');
   if (industryButton) return openIndustrySection(industryButton.dataset.industry);
   const galleryPhoto = event.target.closest('[data-gallery-photo]');
@@ -1727,26 +1954,8 @@ document.addEventListener('click', async event => {
   if (event.target.closest('[data-gallery-close]') || event.target.id === 'photoLightbox') return closePhotoLightbox();
   const filterButton = event.target.closest('[data-filter]');
   if (filterButton) return renderSituations(filterButton.dataset.filter);
-  const taskButton = event.target.closest('[data-task]');
-  if (taskButton) {
-    const id = taskButton.dataset.task;
-    const task = tasks.find(item => item.id === id);
-    if (!task || task.week > unlockedWeekIndex()) return;
-    const wasCompleted = isTaskComplete(id);
-    if (!wasCompleted) {
-      if (!state.taskNotes?.[id]?.trim()) return showToast('Сначала заполните заметку о результате');
-      let files = [];
-      try { files = await getFiles(`task:${id}`); } catch { return showToast('Не удалось проверить приложенный документ'); }
-      updateTaskEvidenceState(`task:${id}`, files.length > 0);
-      if (!files.length) return showToast('Для завершения приложите документ');
-    }
-    state.completed = wasCompleted ? state.completed.filter(item => item !== id) : [...new Set([...state.completed, id])];
-    saveState();
-    trackActivity('task', `${task.title}: ${wasCompleted ? 'возвращено в работу' : 'выполнено'}`);
-    if (currentView === 'home') renderHome(); else renderTasks();
-    if (modal.open) modal.close();
-    return;
-  }
+  const submitTaskButton = event.target.closest('[data-submit-task]');
+  if (submitTaskButton) return submitTask(submitTaskButton.dataset.submitTask);
   if (event.target.closest('[data-task-note]')) return;
   const taskCard = event.target.closest('[data-task-open]');
   if (taskCard) return openTask(taskCard.dataset.taskOpen);
@@ -1772,6 +1981,7 @@ document.addEventListener('click', async event => {
   if (action.dataset.action === 'copy-support') copySupportRequest();
   if (action.dataset.action === 'new-challenge') showRandomChallenge();
   if (action.dataset.action === 'complete-daily-mission') toggleDailyMission(action);
+  if (action.dataset.action === 'complete-calendar-task') toggleCalendarTask(action);
   if (action.dataset.action === 'next-quote') showNextQuote();
   if (action.dataset.action === 'track-ready') { modal.close(); showToast(`Миссия «${action.dataset.trackTitle}» добавлена в фокус`); }
   if (action.dataset.action === 'admin') openAdmin();
@@ -1825,6 +2035,8 @@ document.addEventListener('change', event => {
 });
 
 document.addEventListener('input', event => {
+  const npaSearch = event.target.closest('[data-npa-search]');
+  if (npaSearch) return renderNormativeBase(npaSearch.dataset.npaSearch, npaSearch.value);
   const builderInput = event.target.closest('[data-event-builder]');
   if (builderInput) return updateEventBuilder(builderInput);
   const dailyReflection = event.target.closest('[data-daily-reflection]');
@@ -1891,4 +2103,5 @@ document.addEventListener('keydown', event => {
 updateProfile();
 trackVisit();
 renderHome();
+scheduleCalendarRefresh();
 if (!state.onboarded) setTimeout(state.welcomeSeen ? openOnboarding : openMinisterWelcome, 250);

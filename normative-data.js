@@ -1,0 +1,4 @@
+const normativeDocuments = {
+  federal: [],
+  regional: []
+};
