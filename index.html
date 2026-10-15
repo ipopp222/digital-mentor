@@ -71,7 +71,7 @@
       </header>
 
       <section class="content" id="appContent" aria-live="polite"></section>
-      <section class="support-footer" aria-label="Онлайн-форма технической поддержки">
+      <section class="support-footer" aria-label="Искорик — цифровой проводник">
         <div class="support-mascot" aria-hidden="true">
           <svg viewBox="0 0 180 150">
             <path class="mascot-tail" d="M132 92c31-17 42 4 28 19-11 12-29 8-36-1 19 3 24-9 8-18Z"/>
@@ -83,8 +83,8 @@
             <path class="mascot-spark" d="m90 2 4 9 10 4-10 4-4 10-4-10-10-4 10-4Z"/>
           </svg>
         </div>
-        <div class="support-copy"><span class="support-status"><i></i> Онлайн-форма</span><p class="support-name">Искорик · цифровой проводник</p><h2>Застряли? Давайте разберёмся.</h2><p>Опишите техническую проблему или непонятный шаг. Искорик поможет собрать обращение без лишних данных.</p></div>
-        <button class="support-cta" data-action="tech-support"><span>Задать вопрос</span><i>↗</i></button>
+        <div class="support-copy"><span class="support-status"><i></i> Всегда рядом</span><p class="support-name">Искорик · цифровой проводник</p><h2>Ваш спутник на все 90 дней.</h2><p>Каждый день Искорик встречает новым приветствием, напоминает о задании и принципе дня, помогает найти нужный раздел.</p></div>
+        <button class="support-cta" data-action="mascot-open"><span>Поговорить с Искориком</span><i>↗</i></button>
       </section>
     </main>
 
@@ -97,6 +97,28 @@
       <button data-view="saved"><span>☆</span>Сохранённое</button>
     </nav>
   </div>
+
+  <aside class="mascot-widget" id="mascotWidget" aria-label="Искорик — цифровой помощник">
+    <button class="mascot-launch" data-action="mascot-open" aria-label="Открыть чат с Искориком">
+      <svg viewBox="0 0 180 150" aria-hidden="true">
+        <path class="mascot-tail" d="M132 92c31-17 42 4 28 19-11 12-29 8-36-1 19 3 24-9 8-18Z"/>
+        <path class="mascot-ear" d="m50 48 8-37 29 30M130 48l-8-37-29 30"/>
+        <path class="mascot-face" d="M42 61c3-27 22-39 48-39s45 12 48 39v35c0 25-21 42-48 42S42 121 42 96Z"/>
+        <path class="mascot-mask" d="M50 70c18-17 30-13 40 2 10-15 22-19 40-2-3 31-17 52-40 52S53 101 50 70Z"/>
+        <path class="mascot-eye" d="M64 78h13l-6 8ZM103 78h13l-7 8Z"/>
+        <path class="mascot-nose" d="m90 91 8 8-8 6-8-6Z"/>
+        <path class="mascot-spark" d="m90 2 4 9 10 4-10 4-4 10-4-10-10-4 10-4Z"/>
+      </svg>
+      <span>Искорик</span>
+    </button>
+    <section class="mascot-chat" id="mascotChat" aria-hidden="true">
+      <header><div class="mascot-chat-avatar">И</div><div><b>Искорик</b><span><i></i> Ваш проводник по маршруту</span></div><button data-action="mascot-close" aria-label="Закрыть чат">×</button></header>
+      <div class="mascot-messages" id="mascotMessages" aria-live="polite"></div>
+      <div class="mascot-quick"><button data-mascot-prompt="task">Задание дня</button><button data-mascot-prompt="principle">Принцип дня</button><button data-mascot-prompt="help">Что ты умеешь?</button></div>
+      <form class="mascot-form" id="mascotForm"><input id="mascotInput" autocomplete="off" maxlength="300" placeholder="Напишите Искорику…" aria-label="Сообщение Искорику"><button type="submit" aria-label="Отправить сообщение">↑</button></form>
+      <footer><button data-action="mascot-speak" id="mascotSpeak">🔊 Озвучить последнее сообщение</button><small>Ответы работают локально на этом устройстве</small></footer>
+    </section>
+  </aside>
 
   <dialog id="modal" class="modal">
     <button class="modal-close" data-action="close-modal" aria-label="Закрыть">×</button>

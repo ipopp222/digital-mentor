@@ -1821,39 +1821,8 @@ function openExpert(topic = '') {
   });
 }
 
-function openTechSupport() {
-  modalContent.innerHTML = `<div class="modal-body support-modal"><div class="support-modal-mark">ИС</div><span class="eyebrow">Искорик на связи</span><h2>Задать вопрос техподдержке</h2><p class="modal-lead">Опишите, что произошло и какой результат ожидали. Не добавляйте персональные и служебные данные.</p>
-    <form id="supportForm" class="form-grid"><label>Что не работает<select name="area"><option>Навигация по сайту</option><option>Файлы и материалы</option><option>Вход администратора</option><option>Отображение на телефоне</option><option>Другая проблема</option></select></label><label>На каком устройстве<input name="device" placeholder="Например: телефон Android или ноутбук"></label><label>Опишите проблему<textarea name="question" placeholder="Что нажали, что увидели и что ожидали получить" required></textarea></label><div class="safety-note"><b>Безопасно</b><span>Не указывайте пароли, ПИН-коды, Ф.И.О. и сведения из рабочих документов.</span></div><button class="primary-button" type="submit">Сформировать обращение</button></form></div>`;
-  modal.classList.add('support-dialog');
-  if (!modal.open) modal.showModal();
-  document.getElementById('supportForm').addEventListener('submit', event => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const question = String(data.get('question')).trim();
-    if (!question) return showToast('Опишите проблему');
-    const ticket = `SUP-${Date.now().toString().slice(-6)}`;
-    const summary = `${ticket}\nРаздел: ${data.get('area')}\nУстройство: ${String(data.get('device')).trim() || 'не указано'}\nВопрос: ${question}`;
-    const saved = JSON.parse(localStorage.getItem('digitalMentorSupport') || '[]');
-    saved.push({ ticket, area: data.get('area'), device: data.get('device'), question, createdAt: Date.now() });
-    localStorage.setItem('digitalMentorSupport', JSON.stringify(saved.slice(-20)));
-    modalContent.innerHTML = `<div class="modal-body support-success"><div class="support-success-mark">✓</div><span class="eyebrow">Обращение ${ticket}</span><h2>Вопрос подготовлен</h2><p class="modal-lead">Черновик сохранён на этом устройстве. Скопируйте его для передачи в утверждённый рабочий канал техподдержки.</p><textarea id="supportSummary" readonly>${escapeHtml(summary)}</textarea><div class="warning">Онлайн-отправка заработает после подключения адреса поддержки или серверного сервиса.</div><div class="button-row"><button class="primary-button" data-action="copy-support">Скопировать обращение</button><button class="secondary-button dark" data-action="close-modal">Закрыть</button></div></div>`;
-  });
-}
-
-async function copySupportRequest() {
-  const summary = document.getElementById('supportSummary')?.value;
-  if (!summary) return;
-  try {
-    await navigator.clipboard.writeText(summary);
-    showToast('Обращение скопировано');
-  } catch {
-    document.getElementById('supportSummary')?.select();
-    showToast('Выделите текст и скопируйте его');
-  }
-}
-
 function openRules() {
-  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Возможности и ограничения</span><h2>Безопасная работа с ботом</h2><p class="modal-lead">«Цифровой наставник» помогает пройти типовой маршрут, но не заменяет руководителя, наставника или профильного специалиста.</p><ul class="check-list"><li>Сверяйте ответ с указанным первоисточником и датой</li><li>Не загружайте персональные и служебные сведения</li><li>Не используйте бот для правовых и финансовых решений</li><li>Передавайте нестандартную ситуацию ответственному человеку</li></ul><div class="warning">Этот интерфейс является рабочим прототипом. Региональные ссылки, владельцы содержания и канал эскалации должны быть утверждены до пилота.</div><div class="button-row"><button class="primary-button" data-action="close-modal">Понятно</button><button class="secondary-button dark" data-action="admin">${state.isAdmin ? 'Управление администратором' : 'Вход администратора'}</button></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Возможности и ограничения</span><h2>Безопасная работа с ботом</h2><p class="modal-lead">«Цифровой наставник» помогает пройти типовой маршрут, но не заменяет руководителя, наставника или профильного специалиста. Искорик отвечает локально, хранит переписку в этом браузере и может озвучивать свои сообщения голосом устройства.</p><ul class="check-list"><li>Сверяйте ответ с указанным первоисточником и датой</li><li>Не загружайте персональные и служебные сведения</li><li>Не используйте бот для правовых и финансовых решений</li><li>Передавайте нестандартную ситуацию ответственному человеку</li></ul><div class="warning">Этот интерфейс является рабочим прототипом. Региональные ссылки, владельцы содержания и канал эскалации должны быть утверждены до пилота.</div><div class="button-row"><button class="primary-button" data-action="close-modal">Понятно</button><button class="secondary-button dark" data-action="admin">${state.isAdmin ? 'Управление администратором' : 'Вход администратора'}</button></div></div>`;
   modal.showModal();
 }
 
@@ -1944,6 +1913,7 @@ function finishOnboarding() {
   modal.close();
   setView('home');
   showToast('Маршрут настроен');
+  scheduleDailyMascotGreeting(500);
 }
 
 async function submitTask(id) {
@@ -1981,7 +1951,146 @@ function escapeHtml(value = '') {
   return String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
 }
 
+const MASCOT_CHAT_KEY = 'digitalMentorMascotChat';
+const MASCOT_GREETING_KEY = 'digitalMentorMascotGreeting';
+let mascotLastMessage = '';
+
+function mascotDayNumber() {
+  const started = new Date(state.startedAt || Date.now());
+  const today = new Date();
+  const startDate = Date.UTC(started.getFullYear(), started.getMonth(), started.getDate());
+  const currentDate = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  return Math.floor((currentDate - startDate) / 86400000) + 1;
+}
+
+function mascotGreeting(day = mentorDayIndex() + 1) {
+  const task = dailyTaskForDay(day - 1);
+  const firstName = state.name?.trim().split(/\s+/)[0];
+  const hello = firstName ? `Привет, ${firstName}!` : 'Привет!';
+  const openings = [
+    'Новый день — новый уверенный шаг.',
+    'Я снова рядом и готов помочь.',
+    'Продолжаем собирать ваш профессиональный маршрут.',
+    'Сегодня есть ещё одна возможность проявить себя.',
+    'Начнём день с понятного фокуса.'
+  ];
+  return `${hello} Это день ${day} из 90. ${openings[(day - 1) % openings.length]} Ваше главное действие: «${task.title}». Принцип дня: «${mentorPrinciples[day - 1]}».`;
+}
+
+function loadMascotMessages() {
+  try {
+    const messages = JSON.parse(localStorage.getItem(MASCOT_CHAT_KEY) || '[]');
+    return Array.isArray(messages) ? messages.slice(-40) : [];
+  } catch { return []; }
+}
+
+function saveMascotMessages(messages) {
+  localStorage.setItem(MASCOT_CHAT_KEY, JSON.stringify(messages.slice(-40)));
+}
+
+function renderMascotMessages() {
+  const box = document.getElementById('mascotMessages');
+  if (!box) return;
+  const messages = loadMascotMessages();
+  if (!messages.length) {
+    messages.push({ role: 'bot', text: 'Привет! Я Искорик — ваш спутник на 90 дней. Спросите меня о задании, принципе дня, маршруте или нужном разделе.', createdAt: Date.now() });
+    saveMascotMessages(messages);
+  }
+  box.innerHTML = messages.map(message => `<article class="mascot-message ${message.role === 'user' ? 'user' : 'bot'}"><span>${message.role === 'user' ? 'Вы' : 'Искорик'}</span><p>${escapeHtml(message.text)}</p></article>`).join('');
+  const latestBot = [...messages].reverse().find(message => message.role === 'bot');
+  mascotLastMessage = latestBot?.text || '';
+  requestAnimationFrame(() => { box.scrollTop = box.scrollHeight; });
+}
+
+function addMascotMessage(role, text) {
+  const messages = loadMascotMessages();
+  messages.push({ role, text, createdAt: Date.now() });
+  saveMascotMessages(messages);
+  renderMascotMessages();
+}
+
+function openMascotChat(focus = true) {
+  const widget = document.getElementById('mascotWidget');
+  const chat = document.getElementById('mascotChat');
+  if (!widget || !chat) return;
+  renderMascotMessages();
+  widget.classList.add('open');
+  chat.setAttribute('aria-hidden', 'false');
+  if (focus) setTimeout(() => document.getElementById('mascotInput')?.focus(), 120);
+}
+
+function closeMascotChat() {
+  const widget = document.getElementById('mascotWidget');
+  const chat = document.getElementById('mascotChat');
+  widget?.classList.remove('open', 'daily-arrival');
+  chat?.setAttribute('aria-hidden', 'true');
+  window.speechSynthesis?.cancel();
+}
+
+function speakMascotMessage(text = mascotLastMessage) {
+  if (!text || !('speechSynthesis' in window)) return showToast('Озвучивание не поддерживается этим браузером');
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'ru-RU';
+  utterance.rate = .94;
+  utterance.pitch = 1.06;
+  const voices = window.speechSynthesis.getVoices();
+  const russianVoice = voices.find(voice => voice.lang?.toLowerCase().startsWith('ru'));
+  if (russianVoice) utterance.voice = russianVoice;
+  window.speechSynthesis.speak(utterance);
+  showToast('Искорик озвучивает сообщение');
+}
+
+function mascotAnswer(message) {
+  const normalized = message.toLowerCase().replace(/ё/g, 'е');
+  const day = mentorDayIndex() + 1;
+  const task = dailyTaskForDay(day - 1);
+  if (/привет|здравств|добрый/.test(normalized)) return mascotGreeting(day);
+  if (/задан|делать|фокус|сегодня/.test(normalized)) return `Сегодня, в день ${day}, главное действие — «${task.title}». ${task.text} Откройте «Мой день» и вкладку «Задание».`;
+  if (/принцип|мысль|совет/.test(normalized)) return `Принцип дня № ${day}: «${mentorPrinciples[day - 1]}». Попробуйте применить его хотя бы в одном рабочем разговоре или решении.`;
+  if (/прогресс|сколько выполн|результат/.test(normalized)) return `Сейчас принято ${completedCount()} из ${tasks.length} основных заданий, общий прогресс — ${progress()}%. В прогресс входят только задания со статусом «Принято».`;
+  if (/маршрут|90|дней|день/.test(normalized)) return `Вы на дне ${day} из 90. В разделе «Мои 90 дней» видны этапы маршрута и даты, а в «Моём дне» — задание, принцип, кейс и рефлексия.`;
+  if (/баз|знан|нпа|документ|термин/.test(normalized)) return 'Откройте «Базу знаний»: там находятся термины, нормативные документы, материалы и ссылки. Нужное можно добавить в «Сохранённое».';
+  if (/сохран/.test(normalized)) return 'В разделе «Сохранённое» собраны отмеченные термины, НПА, документы, шаблоны, задания и полезные карточки.';
+  if (/провер|принято|отправ/.test(normalized)) return 'Добавьте заметку или документ к заданию и нажмите «Отправить на проверку». После решения администратора появится статус «Принято» или «Не выполнено».';
+  if (/помощ|умеешь|можешь|кто ты/.test(normalized)) return 'Я могу подсказать задание и принцип дня, объяснить маршрут, прогресс и проверку заданий, помочь найти базу знаний или сохранённые материалы. Напишите, что хотите найти.';
+  if (/специалист|человек|эксперт/.test(normalized)) return 'Если нужен ответ специалиста, используйте пункт «Спросить специалиста» в боковом меню. Я помогаю с навигацией и ежедневным маршрутом локально.';
+  return 'Я пока лучше всего понимаю вопросы о задании и принципе дня, маршруте, прогрессе, проверке, базе знаний и сохранённых материалах. Попробуйте назвать один из этих разделов.';
+}
+
+function sendMascotMessage(message) {
+  const text = String(message || '').trim();
+  if (!text) return;
+  addMascotMessage('user', text);
+  const input = document.getElementById('mascotInput');
+  if (input) input.value = '';
+  setTimeout(() => addMascotMessage('bot', mascotAnswer(text)), 260);
+}
+
+function showDailyMascotGreeting() {
+  if (!state.onboarded || !state.startedAt || modal.open) return;
+  const day = mascotDayNumber();
+  if (day < 1 || day > 90) return;
+  const dateKey = new Date().toLocaleDateString('sv-SE');
+  if (localStorage.getItem(MASCOT_GREETING_KEY) === dateKey) return;
+  const greeting = mascotGreeting(day);
+  addMascotMessage('bot', greeting);
+  localStorage.setItem(MASCOT_GREETING_KEY, dateKey);
+  const widget = document.getElementById('mascotWidget');
+  widget?.classList.add('daily-arrival');
+  openMascotChat(false);
+}
+
+function scheduleDailyMascotGreeting(delay = 900) {
+  setTimeout(() => {
+    if (modal.open) return scheduleDailyMascotGreeting(700);
+    showDailyMascotGreeting();
+  }, delay);
+}
+
 document.addEventListener('click', async event => {
+  const mascotPrompt = event.target.closest('[data-mascot-prompt]');
+  if (mascotPrompt) return sendMascotMessage({ task: 'Какое у меня задание сегодня?', principle: 'Какой принцип дня?', help: 'Что ты умеешь?' }[mascotPrompt.dataset.mascotPrompt]);
   const viewButton = event.target.closest('[data-view]');
   if (viewButton) return setView(viewButton.dataset.view);
   const saveItemButton = event.target.closest('[data-save-id]');
@@ -2048,8 +2157,6 @@ document.addEventListener('click', async event => {
   if (!action) return;
   if (action.dataset.action === 'home') setView('home');
   if (action.dataset.action === 'expert') openExpert(action.dataset.topic || '');
-  if (action.dataset.action === 'tech-support') openTechSupport();
-  if (action.dataset.action === 'copy-support') copySupportRequest();
   if (action.dataset.action === 'new-challenge') showRandomChallenge();
   if (action.dataset.action === 'complete-daily-mission') toggleDailyMission(action);
   if (action.dataset.action === 'complete-calendar-task') toggleCalendarTask(action);
@@ -2067,6 +2174,9 @@ document.addEventListener('click', async event => {
   if (action.dataset.action === 'start-game') startGame();
   if (action.dataset.action === 'rules') openRules();
   if (action.dataset.action === 'toggle-theme') toggleTheme();
+  if (action.dataset.action === 'mascot-open') openMascotChat();
+  if (action.dataset.action === 'mascot-close') closeMascotChat();
+  if (action.dataset.action === 'mascot-speak') speakMascotMessage();
   if (action.dataset.action === 'remove-profile-photo') removeProfilePhoto();
   if (action.dataset.action === 'close-modal') modal.close();
   if (action.dataset.action === 'accept-welcome') acceptMinisterWelcome();
@@ -2083,6 +2193,11 @@ document.addEventListener('click', async event => {
   if (action.dataset.action === 'generate-event-plan') generateEventPlan(action.dataset.eventId);
   if (action.dataset.action === 'generate-development-profile') generateDevelopmentProfile();
   if (action.dataset.action === 'print-development-profile') printDevelopmentProfile();
+});
+
+document.getElementById('mascotForm')?.addEventListener('submit', event => {
+  event.preventDefault();
+  sendMascotMessage(document.getElementById('mascotInput')?.value);
 });
 
 document.addEventListener('change', event => {
@@ -2156,6 +2271,10 @@ modal.addEventListener('close', () => {
 });
 
 document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && document.getElementById('mascotWidget')?.classList.contains('open')) {
+    closeMascotChat();
+    return;
+  }
   const viewer = document.getElementById('photoLightbox');
   if (!viewer?.classList.contains('open')) {
     const photo = document.activeElement?.closest?.('[data-gallery-photo]');
@@ -2180,4 +2299,6 @@ updateProfile();
 trackVisit();
 renderHome();
 scheduleCalendarRefresh();
+renderMascotMessages();
+scheduleDailyMascotGreeting();
 if (!state.onboarded) setTimeout(state.welcomeSeen ? openOnboarding : openMinisterWelcome, 250);
