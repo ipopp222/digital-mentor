@@ -1173,7 +1173,7 @@ body {
 .more-button { color: #e4ded4; }
 
 .content { position: relative; }
-.content::before { content: 'ТЕРРИТОРИЯ ХАРАКТЕРА'; position: fixed; z-index: -1; right: 28px; top: 44%; color: rgba(255,255,255,.032); font-size: clamp(38px, 6vw, 92px); font-weight: 900; letter-spacing: .13em; line-height: .85; text-align: right; writing-mode: vertical-rl; pointer-events: none; }
+.content::before { content: 'МЫ РОЖДЕНЫ ИЗ УГЛЯ И СТАЛИ'; position: fixed; z-index: -1; right: 28px; top: 28%; color: rgba(255,255,255,.032); font-size: clamp(30px, 4.5vw, 68px); font-weight: 900; letter-spacing: .1em; line-height: .85; text-align: right; writing-mode: vertical-rl; pointer-events: none; }
 .content > .page-title h1, .content > .page-title h2, .content > .page-title p { color: #f4eee3; }
 .content > .page-title p { color: #aaa49a; }
 .content > .page-title .eyebrow { color: #e06355; }
