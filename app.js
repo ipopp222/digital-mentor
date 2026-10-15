@@ -529,6 +529,8 @@ const youthHousePhotos = [
   }))
 ];
 
+const rsoDirections = ['Строительные отряды', 'Педагогические отряды', 'Медицинские отряды', 'Сервисные отряды', 'Сельскохозяйственные отряды', 'Производственные отряды', 'Путинные отряды', 'Проводники пассажирских вагонов', 'Трудовые отряды подростков'];
+
 const ADMIN_NAME = 'Инесса Артющенко';
 const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', profilePhoto: '', stage: 'Первый день', completed: [], taskNotes: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
 let state = loadState();
@@ -998,7 +1000,7 @@ function renderIndustryStructure() {
       <div class="ecosystem-divider"><span>Муниципальный и общественный уровни</span></div>
       <div class="industry-branches">
         <div class="municipal-chain"><button class="industry-node municipal-node" data-industry="municipal"><span class="node-icon">28</span><span class="node-copy"><small>Органы местного самоуправления</small><b>Структурные подразделения ОМСУ</b><em>28 городских и муниципальных округов</em></span><span class="node-arrow">↗</span></button><div class="map-connector local-connector" aria-hidden="true"></div><button class="industry-node centers-node" data-industry="institutions"><span class="node-icon">МЦ</span><span class="node-copy"><small>Подведомственны администрациям</small><b>Муниципальные учреждения молодежной политики</b><em>4 учреждения, новые центры и пространства</em></span><span class="node-arrow">↗</span></button></div>
-        <button class="industry-node ngo-node" data-industry="ngo"><span class="node-icon">НКО</span><span class="node-copy"><small>Общественный сектор</small><b>Детские и молодежные НКО</b><em>Отдельный раздел для наполнения</em></span><span class="node-arrow">↗</span></button>
+        <button class="industry-node ngo-node" data-industry="ngo"><span class="node-icon">НКО</span><span class="node-copy"><small>Общественный сектор</small><b>Детские и молодежные НКО</b><em>РСО и другие организации</em></span><span class="node-arrow">↗</span></button>
       </div>
       <div class="map-note"><b>Как читать схему</b><span>Вертикальные линии показывают прямую подведомственность. НКО представлены как самостоятельный общественный сектор отрасли.</span></div>
     </section>
@@ -1122,8 +1124,8 @@ function openIndustrySection(section) {
     ngo: {
       eyebrow: 'Общественный сектор',
       title: 'Детские и молодежные НКО',
-      lead: 'Отдельный раздел отраслевой карты для детских и молодежных некоммерческих организаций.',
-      body: '<div class="future-structure ngo-placeholder"><span>НКО</span><div><b>Структура будет добавлена отдельно</b><p>Раздел готов для размещения перечня организаций, направлений деятельности, руководителей и контактов.</p></div></div>',
+      lead: 'Организации, которые помогают молодёжи развиваться, получать опыт и участвовать в жизни региона.',
+      body: `<article class="ngo-card rso-card"><header class="ngo-card-head"><div class="rso-logo" aria-label="Труд крут"><span>ТРУД</span><b>КРУТ</b><i>РСО</i></div><div><span class="eyebrow">01 · Молодёжная организация</span><h3>Луганское региональное отделение МООО «Российские студенческие отряды»</h3><p>Первый трудовой опыт, профессиональные навыки, лидерство и команда.</p></div></header><section class="ngo-card-main"><div class="ngo-card-copy"><h4>О РСО</h4><p>Организация помогает молодёжи получить первый трудовой опыт, освоить профессиональные навыки, найти работу, развить лидерские качества и научиться работать в команде.</p><p>РСО также реализует образовательные, патриотические, добровольческие и социальные проекты, проводит мероприятия и создаёт условия для личностного и профессионального развития.</p><div class="rso-directions"><h4>Направления отрядов</h4><div>${rsoDirections.map(direction => `<span>${direction}</span>`).join('')}</div></div></div><aside class="ngo-leader"><img src="assets/rso/sofia-petrova.jpg" alt="Петрова София, руководитель Луганского регионального отделения РСО"><span>Руководитель</span><b>Петрова<br>София</b></aside></section><nav class="ngo-links" aria-label="Ресурсы Российских студенческих отрядов"><a href="https://max.ru/channel_lugregrso" target="_blank" rel="noopener"><span>MAX</span><small>Канал отделения</small><i>↗</i></a><a href="https://vk.ru/rso_lnr" target="_blank" rel="noopener"><span>VK</span><small>Луганское отделение</small><i>↗</i></a><a href="https://трудкрут.рф/" target="_blank" rel="noopener"><span>РСО</span><small>Всероссийская организация</small><i>↗</i></a><a href="https://vk.ru/app5619682_-175512651" target="_blank" rel="noopener"><span>→</span><small>Заявка бойца</small><i>↗</i></a></nav></article>`,
       fileKey: 'industry:ngo'
     }
   };

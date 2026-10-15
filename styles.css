@@ -430,6 +430,33 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .future-structure > span { width: 65px; height: 65px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 20px 20px 20px 7px; color: var(--green); background: var(--lime); font-size: 12px; font-weight: 900; }
 .future-structure b { font-size: 13px; }
 .future-structure p { margin: 5px 0 0; color: var(--muted); font-size: 10px; }
+.ngo-card { margin-top: 24px; overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: #fbfaf6; box-shadow: 0 14px 35px rgba(25,51,44,.07); }
+.ngo-card-head { display: grid; grid-template-columns: 135px 1fr; gap: 21px; align-items: center; padding: 23px; color: #fff; background: linear-gradient(120deg, #1a3932, #31584d); }
+.ngo-card-head h3 { max-width: 650px; margin: 5px 0 7px; font: 700 22px/1.08 var(--serif); }
+.ngo-card-head p { margin: 0; color: #d1e0db; font-size: 10px; }
+.rso-logo { position: relative; width: 115px; height: 115px; display: grid; place-content: center; border: 5px solid #f1d22e; border-radius: 50%; color: #1b332c; background: #fff; transform: rotate(-5deg); box-shadow: 5px 6px 0 #e65a35; }
+.rso-logo::before { content: ''; position: absolute; top: 14px; right: 14px; width: 20px; height: 20px; border-radius: 50% 50% 50% 0; background: #e65a35; transform: rotate(45deg); }
+.rso-logo span, .rso-logo b, .rso-logo i { display: block; line-height: .85; text-align: center; }
+.rso-logo span { color: #e65a35; font-size: 15px; font-weight: 900; letter-spacing: .04em; }
+.rso-logo b { margin-top: 4px; color: #1d8b78; font: 900 25px/1 var(--serif); letter-spacing: -.05em; }
+.rso-logo i { margin-top: 7px; color: #1b332c; font-size: 8px; font-style: normal; font-weight: 900; letter-spacing: .18em; }
+.ngo-card-main { display: grid; grid-template-columns: 1fr 185px; gap: 22px; padding: 23px; }
+.ngo-card-copy h4, .rso-directions h4 { margin: 0 0 9px; color: var(--green); font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.ngo-card-copy > p { margin: 0 0 10px; color: #555f59; font-size: 11px; line-height: 1.55; }
+.rso-directions { margin-top: 19px; padding-top: 17px; border-top: 1px solid var(--line); }
+.rso-directions > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.rso-directions span { padding: 7px 9px; border-radius: 8px; color: var(--green); background: var(--lime-soft); font-size: 8px; font-weight: 800; }
+.ngo-leader { align-self: start; overflow: hidden; border-radius: 16px; color: #fff; background: var(--green); }
+.ngo-leader img { width: 100%; height: 195px; display: block; object-fit: cover; object-position: center 20%; }
+.ngo-leader span, .ngo-leader b { display: block; }
+.ngo-leader span { padding: 13px 14px 3px; color: var(--lime); font-size: 7px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.ngo-leader b { padding: 0 14px 16px; font: 700 17px/1.05 var(--serif); }
+.ngo-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; padding: 0 23px 23px; }
+.ngo-links a { position: relative; min-height: 57px; display: flex; flex-direction: column; justify-content: center; padding: 10px 30px 10px 12px; border: 1px solid var(--line); border-radius: 11px; color: var(--green); background: #fff; text-decoration: none; transition: .2s; }
+.ngo-links a:hover { border-color: var(--green); background: var(--lime-soft); transform: translateY(-2px); }
+.ngo-links a span { font-size: 10px; font-weight: 900; }
+.ngo-links a small { margin-top: 3px; color: var(--muted); font-size: 7px; }
+.ngo-links a i { position: absolute; top: 11px; right: 11px; color: var(--red); font-size: 15px; font-style: normal; }
 .youth-house-overview { height: 280px; display: grid; grid-template-columns: minmax(270px, .82fr) 1.18fr; gap: 12px; margin: 25px 0 12px; }
 .youth-house-director { min-width: 0; display: grid; grid-template-columns: 43% minmax(0, 1fr); overflow: hidden; border-radius: 21px; color: #fff; background: var(--green); }
 .youth-house-director img { width: 100%; height: 100%; object-fit: cover; object-position: 52% center; }
@@ -456,7 +483,7 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .youth-house-gallery figure:focus-visible { box-shadow: 0 0 0 3px var(--lime), 0 0 0 5px var(--green); }
 .youth-house-gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s; }
 .youth-house-gallery figure:hover img { transform: scale(1.025); }
-.youth-house-source { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-top: 14px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: #f7f7f2; font-size: 8px; text-decoration: none; }
+  .youth-house-source { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-top: 14px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: #f7f7f2; font-size: 8px; text-decoration: none; }
 .youth-house-source b { color: var(--green); font-size: 9px; }
 .youth-house-source i { color: var(--red); font-size: 15px; font-style: normal; }
 .gallery-zoom { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 10px; color: var(--green); background: rgba(255,255,255,.9); font-size: 17px; font-style: normal; box-shadow: 0 5px 15px rgba(10,30,25,.18); }
@@ -1091,6 +1118,19 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
   .map-note { display: grid; }
   .industry-stats { grid-template-columns: repeat(2, 1fr); }
   .leadership-grid, .department-grid, .municipal-list, .planned-grid { grid-template-columns: 1fr; }
+  .ngo-card-head { grid-template-columns: 88px 1fr; gap: 14px; padding: 17px; }
+  .rso-logo { width: 82px; height: 82px; border-width: 4px; }
+  .rso-logo span { font-size: 10px; }
+  .rso-logo b { font-size: 19px; }
+  .rso-logo i { margin-top: 5px; font-size: 6px; }
+  .ngo-card-head h3 { font-size: 17px; }
+  .ngo-card-head p { font-size: 8px; }
+  .ngo-card-main { grid-template-columns: 1fr; padding: 18px; }
+  .ngo-leader { display: grid; grid-template-columns: 92px 1fr; align-items: center; }
+  .ngo-leader img { height: 112px; }
+  .ngo-leader span { padding: 0 12px 4px; }
+  .ngo-leader b { padding: 0 12px; }
+  .ngo-links { grid-template-columns: 1fr 1fr; padding: 0 18px 18px; }
   .leader-card { grid-template-columns: 112px 1fr; grid-template-rows: 145px; min-height: 145px; }
   .leader-card img { height: 145px; }
   .leader-card.vacancy { grid-template-rows: 145px; }
