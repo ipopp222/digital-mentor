@@ -1822,7 +1822,7 @@ function openExpert(topic = '') {
 }
 
 function openRules() {
-  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Возможности и ограничения</span><h2>Безопасная работа с ботом</h2><p class="modal-lead">«Цифровой наставник» помогает пройти типовой маршрут, но не заменяет руководителя, наставника или профильного специалиста. Искорик отвечает локально, хранит переписку в этом браузере и может озвучивать свои сообщения голосом устройства.</p><ul class="check-list"><li>Сверяйте ответ с указанным первоисточником и датой</li><li>Не загружайте персональные и служебные сведения</li><li>Не используйте бот для правовых и финансовых решений</li><li>Передавайте нестандартную ситуацию ответственному человеку</li></ul><div class="warning">Этот интерфейс является рабочим прототипом. Региональные ссылки, владельцы содержания и канал эскалации должны быть утверждены до пилота.</div><div class="button-row"><button class="primary-button" data-action="close-modal">Понятно</button><button class="secondary-button dark" data-action="admin">${state.isAdmin ? 'Управление администратором' : 'Вход администратора'}</button></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Возможности и ограничения</span><h2>Безопасная работа с ИИ-агентом</h2><p class="modal-lead">«Цифровой наставник» помогает пройти типовой маршрут, но не заменяет руководителя, наставника или профильного специалиста. Искорик анализирует запросы по материалам сайта, учитывает ваш маршрут и хранит переписку только в этом браузере.</p><ul class="check-list"><li>Сверяйте ответ с указанным первоисточником и датой</li><li>Не загружайте персональные и служебные сведения</li><li>Не используйте ИИ-агента для правовых и финансовых решений</li><li>Передавайте нестандартную ситуацию ответственному человеку</li></ul><div class="warning">У Искорика нет доступа к интернету и актуальным внешним данным. Для полноценной генеративной модели потребуется отдельное защищённое серверное подключение.</div><div class="button-row"><button class="primary-button" data-action="close-modal">Понятно</button><button class="secondary-button dark" data-action="admin">${state.isAdmin ? 'Управление администратором' : 'Вход администратора'}</button></div></div>`;
   modal.showModal();
 }
 
@@ -1953,7 +1953,6 @@ function escapeHtml(value = '') {
 
 const MASCOT_CHAT_KEY = 'digitalMentorMascotChat';
 const MASCOT_GREETING_KEY = 'digitalMentorMascotGreeting';
-let mascotLastMessage = '';
 
 function mascotDayNumber() {
   const started = new Date(state.startedAt || Date.now());
@@ -1993,18 +1992,16 @@ function renderMascotMessages() {
   if (!box) return;
   const messages = loadMascotMessages();
   if (!messages.length) {
-    messages.push({ role: 'bot', text: 'Привет! Я Искорик — ваш спутник на 90 дней. Спросите меня о задании, принципе дня, маршруте или нужном разделе.', createdAt: Date.now() });
+    messages.push({ role: 'bot', text: 'Привет! Я Искорик — ваш ИИ-агент по адаптации. Опишите задачу своими словами: я найду подходящий материал, объясню следующий шаг или открою нужный раздел.', actions: [{ type: 'my-day', value: 'task', label: 'Открыть мой день' }], createdAt: Date.now() });
     saveMascotMessages(messages);
   }
-  box.innerHTML = messages.map(message => `<article class="mascot-message ${message.role === 'user' ? 'user' : 'bot'}"><span>${message.role === 'user' ? 'Вы' : 'Искорик'}</span><p>${escapeHtml(message.text)}</p></article>`).join('');
-  const latestBot = [...messages].reverse().find(message => message.role === 'bot');
-  mascotLastMessage = latestBot?.text || '';
+  box.innerHTML = messages.map(message => `<article class="mascot-message ${message.role === 'user' ? 'user' : 'bot'}"><span>${message.role === 'user' ? 'Вы' : 'Искорик · ИИ-агент'}</span><p>${escapeHtml(message.text)}</p>${message.actions?.length ? `<div class="mascot-message-actions">${message.actions.map(action => `<button data-mascot-agent-action="${escapeHtml(action.type)}" data-mascot-agent-value="${escapeHtml(action.value || '')}">${escapeHtml(action.label)}</button>`).join('')}</div>` : ''}</article>`).join('');
   requestAnimationFrame(() => { box.scrollTop = box.scrollHeight; });
 }
 
-function addMascotMessage(role, text) {
+function addMascotMessage(role, text, actions = []) {
   const messages = loadMascotMessages();
-  messages.push({ role, text, createdAt: Date.now() });
+  messages.push({ role, text, actions, createdAt: Date.now() });
   saveMascotMessages(messages);
   renderMascotMessages();
 }
@@ -2024,38 +2021,105 @@ function closeMascotChat() {
   const chat = document.getElementById('mascotChat');
   widget?.classList.remove('open', 'daily-arrival');
   chat?.setAttribute('aria-hidden', 'true');
-  window.speechSynthesis?.cancel();
 }
 
-function speakMascotMessage(text = mascotLastMessage) {
-  if (!text || !('speechSynthesis' in window)) return showToast('Озвучивание не поддерживается этим браузером');
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'ru-RU';
-  utterance.rate = .94;
-  utterance.pitch = 1.06;
-  const voices = window.speechSynthesis.getVoices();
-  const russianVoice = voices.find(voice => voice.lang?.toLowerCase().startsWith('ru'));
-  if (russianVoice) utterance.voice = russianVoice;
-  window.speechSynthesis.speak(utterance);
-  showToast('Искорик озвучивает сообщение');
+function normalizeAgentText(value = '') {
+  return String(value).toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9\s-]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function agentTokens(value = '') {
+  const stopWords = new Set(['как', 'что', 'где', 'когда', 'это', 'мне', 'мой', 'моя', 'мои', 'для', 'или', 'про', 'при', 'надо', 'нужно', 'хочу', 'можно', 'помоги', 'пожалуйста']);
+  return normalizeAgentText(value).split(' ').filter(word => word.length > 2 && !stopWords.has(word));
+}
+
+function mascotAgentSources() {
+  const sources = [];
+  scenarios.forEach(item => sources.push({
+    title: item.title,
+    search: `${item.title} ${item.category} ${item.description} ${item.short} ${item.steps.join(' ')}`,
+    answer: `${item.title}. ${item.short} Первые шаги: ${item.steps.slice(0, 3).join(' ')}`,
+    actions: [{ type: 'scenario', value: item.id, label: 'Открыть алгоритм' }]
+  }));
+  tasks.forEach(item => sources.push({
+    title: item.title,
+    search: `${item.title} ${item.text} ${item.deliverable || ''} ${(item.steps || []).join(' ')}`,
+    answer: `Подходящее задание: «${item.title}». ${item.text}. Ожидаемый результат: ${item.deliverable || 'зафиксированный рабочий результат'}.`,
+    actions: [{ type: 'view', value: 'tasks', label: 'Открыть задания' }]
+  }));
+  (typeof glossaryEntries !== 'undefined' ? glossaryEntries : []).forEach(item => sources.push({
+    title: `${item.abbreviation} ${item.expansion}`,
+    search: `${item.abbreviation} ${item.expansion} ${item.explanation}`,
+    answer: `${item.abbreviation} — ${item.expansion}. ${item.explanation}`,
+    actions: [{ type: 'view', value: 'knowledge', label: 'Открыть глоссарий' }]
+  }));
+  eventDirections.forEach(item => sources.push({
+    title: item.title,
+    search: `${item.title} ${item.pitch} ${item.mission} ${item.formats.join(' ')}`,
+    answer: `${item.title}: ${item.mission} Подходящие форматы: ${item.formats.slice(0, 3).join(', ')}.`,
+    actions: [{ type: 'event', value: item.id, label: 'Собрать мероприятие' }]
+  }));
+  youthTracks.forEach(item => sources.push({
+    title: `${item.official} ${item.title}`,
+    search: `${item.official} ${item.title} ${item.text}`,
+    answer: `${item.official}: ${item.text}`,
+    actions: [{ type: 'external', value: item.url, label: 'Открыть официальный сайт' }]
+  }));
+  knowledge.forEach(item => sources.push({
+    title: item.title,
+    search: `${item.title} ${item.text}`,
+    answer: `${item.title}: ${item.text}. Материалы находятся в разделе «База знаний».`,
+    actions: [{ type: 'view', value: 'knowledge', label: 'Открыть базу знаний' }]
+  }));
+  ministryDepartments.forEach(title => sources.push({ title, search: title, answer: `${title} — структурное подразделение Министерства молодёжной политики ЛНР.`, actions: [{ type: 'view', value: 'knowledge', label: 'Посмотреть структуру' }] }));
+  municipalDepartments.forEach(([place, title]) => sources.push({ title: `${place} ${title}`, search: `${place} ${title}`, answer: `${place}: ${title}.`, actions: [{ type: 'view', value: 'knowledge', label: 'Посмотреть структуру' }] }));
+  sources.push({ title: 'Министр молодёжной политики ЛНР Михаил Голубович', search: 'министр руководство михаил артемович голубович', answer: 'Министр молодёжной политики Луганской Народной Республики — Михаил Артемович Голубович.', actions: [{ type: 'view', value: 'knowledge', label: 'Открыть структуру' }] });
+  return sources;
+}
+
+function searchMascotKnowledge(message) {
+  const normalized = normalizeAgentText(message);
+  const queryTokens = agentTokens(message);
+  if (!queryTokens.length) return null;
+  const ranked = mascotAgentSources().map(source => {
+    const title = normalizeAgentText(source.title);
+    const haystack = normalizeAgentText(source.search);
+    const sourceTokens = agentTokens(source.search);
+    let score = title === normalized ? 20 : title.includes(normalized) || normalized.includes(title) ? 9 : 0;
+    queryTokens.forEach(token => {
+      if (sourceTokens.includes(token)) score += 3;
+      else if (sourceTokens.some(candidate => candidate.length > 4 && (candidate.startsWith(token.slice(0, 5)) || token.startsWith(candidate.slice(0, 5))))) score += 1.5;
+      if (title.includes(token)) score += 2;
+    });
+    return { ...source, score };
+  }).filter(source => source.score >= 3).sort((a, b) => b.score - a.score);
+  if (!ranked.length) return null;
+  const best = ranked[0];
+  const related = ranked.slice(1, 3).filter(item => item.score >= best.score * .7).map(item => item.title);
+  return { text: `${best.answer}${related.length ? ` Также могут пригодиться: ${related.join('; ')}.` : ''}`, actions: best.actions };
 }
 
 function mascotAnswer(message) {
-  const normalized = message.toLowerCase().replace(/ё/g, 'е');
+  const normalized = normalizeAgentText(message);
   const day = mentorDayIndex() + 1;
   const task = dailyTaskForDay(day - 1);
-  if (/привет|здравств|добрый/.test(normalized)) return mascotGreeting(day);
-  if (/задан|делать|фокус|сегодня/.test(normalized)) return `Сегодня, в день ${day}, главное действие — «${task.title}». ${task.text} Откройте «Мой день» и вкладку «Задание».`;
-  if (/принцип|мысль|совет/.test(normalized)) return `Принцип дня № ${day}: «${mentorPrinciples[day - 1]}». Попробуйте применить его хотя бы в одном рабочем разговоре или решении.`;
-  if (/прогресс|сколько выполн|результат/.test(normalized)) return `Сейчас принято ${completedCount()} из ${tasks.length} основных заданий, общий прогресс — ${progress()}%. В прогресс входят только задания со статусом «Принято».`;
-  if (/маршрут|90|дней|день/.test(normalized)) return `Вы на дне ${day} из 90. В разделе «Мои 90 дней» видны этапы маршрута и даты, а в «Моём дне» — задание, принцип, кейс и рефлексия.`;
-  if (/баз|знан|нпа|документ|термин/.test(normalized)) return 'Откройте «Базу знаний»: там находятся термины, нормативные документы, материалы и ссылки. Нужное можно добавить в «Сохранённое».';
-  if (/сохран/.test(normalized)) return 'В разделе «Сохранённое» собраны отмеченные термины, НПА, документы, шаблоны, задания и полезные карточки.';
-  if (/провер|принято|отправ/.test(normalized)) return 'Добавьте заметку или документ к заданию и нажмите «Отправить на проверку». После решения администратора появится статус «Принято» или «Не выполнено».';
-  if (/помощ|умеешь|можешь|кто ты/.test(normalized)) return 'Я могу подсказать задание и принцип дня, объяснить маршрут, прогресс и проверку заданий, помочь найти базу знаний или сохранённые материалы. Напишите, что хотите найти.';
-  if (/специалист|человек|эксперт/.test(normalized)) return 'Если нужен ответ специалиста, используйте пункт «Спросить специалиста» в боковом меню. Я помогаю с навигацией и ежедневным маршрутом локально.';
-  return 'Я пока лучше всего понимаю вопросы о задании и принципе дня, маршруте, прогрессе, проверке, базе знаний и сохранённых материалах. Попробуйте назвать один из этих разделов.';
+  if (/привет|здравств|добрый/.test(normalized)) return { text: mascotGreeting(day), actions: [{ type: 'my-day', value: 'task', label: 'Перейти к заданию' }] };
+  if (/погод|курс валют|новост|сегодня в мире/.test(normalized)) return { text: 'У меня нет подключения к данным в реальном времени, поэтому я не буду придумывать актуальный ответ. Можно открыть внешний поиск, а затем прислать мне найденный текст для разбора.', actions: [{ type: 'external', value: `https://yandex.ru/search/?text=${encodeURIComponent(message)}`, label: 'Искать в интернете' }] };
+  if (/задан|делать|фокус|сегодня/.test(normalized)) return { text: `Сегодня, в день ${day}, главное действие — «${task.title}». ${task.text}`, actions: [{ type: 'my-day', value: 'task', label: 'Открыть задание дня' }] };
+  if (/принцип|мысль дня/.test(normalized)) return { text: `Принцип дня № ${day}: «${mentorPrinciples[day - 1]}». Примените его хотя бы в одном рабочем разговоре или решении.`, actions: [{ type: 'my-day', value: 'principle', label: 'Открыть принцип' }] };
+  if (/прогресс|сколько выполн|результат маршрута/.test(normalized)) return { text: `Сейчас принято ${completedCount()} из ${tasks.length} основных заданий, общий прогресс — ${progress()}%. В прогресс входят только задания со статусом «Принято».`, actions: [{ type: 'view', value: 'tasks', label: 'Посмотреть задания' }] };
+  if (/маршрут|90 дней|какой день/.test(normalized)) return { text: `Вы на дне ${day} из 90. В маршруте видны этапы и даты, а в «Моём дне» — задание, принцип, кейс и рефлексия.`, actions: [{ type: 'view', value: 'route', label: 'Открыть маршрут' }] };
+  if (/сохран/.test(normalized)) return { text: 'В разделе «Сохранённое» собраны отмеченные термины, НПА, документы, шаблоны, задания и полезные карточки.', actions: [{ type: 'view', value: 'saved', label: 'Открыть сохранённое' }] };
+  if (/профил|фото|аватар/.test(normalized)) return { text: 'В профиле можно изменить имя, организацию, место работы и фотографию. Фото хранится только в этом браузере.', actions: [{ type: 'profile', value: '', label: 'Открыть профиль' }] };
+  if (/темн|светл|тем[ау] сайта|цветов/.test(normalized)) return { text: 'На сайте доступны графитовая и светлая темы. Выбор сохраняется в браузере.', actions: [{ type: 'theme', value: '', label: 'Переключить тему' }] };
+  if (/провер|принято|отправ/.test(normalized)) return { text: 'Добавьте заметку или документ к заданию и нажмите «Отправить на проверку». После решения администратора появится статус «Принято» или «Не выполнено».', actions: [{ type: 'view', value: 'tasks', label: 'Перейти к заданиям' }] };
+  if (/помощ|умеешь|можешь|кто ты/.test(normalized)) return { text: 'Я анализирую запрос свободной формы, учитываю ваш день и прогресс, ищу подходящие задания, термины, рабочие алгоритмы, мероприятия и направления, а затем могу открыть нужный раздел. Также помогу разложить рабочую задачу на понятные шаги.', actions: [{ type: 'view', value: 'knowledge', label: 'База знаний' }, { type: 'view', value: 'situations', label: 'Рабочие ситуации' }] };
+  if (/специалист|человек|эксперт/.test(normalized)) return { text: 'Для решения с правовыми, финансовыми, кадровыми или персональными данными нужен ответственный специалист. Я помогу сформулировать вопрос и найти рабочий алгоритм.', actions: [{ type: 'expert', value: message, label: 'Спросить специалиста' }] };
+  if (/найти.*(материал|раздел|сайт)|где.*(материал|информац)/.test(normalized)) return { text: 'Опишите тему или название документа — я выполню поиск по заданиям, рабочим алгоритмам, глоссарию, структуре и направлениям. Можно начать с «Базы знаний».', actions: [{ type: 'view', value: 'knowledge', label: 'Открыть базу знаний' }] };
+  const knowledgeMatch = searchMascotKnowledge(message);
+  if (knowledgeMatch) return knowledgeMatch;
+  if (/напис|состав|подготов.*текст|формулир/.test(normalized)) return { text: 'Помогу подготовить текст. Укажите адресата, цель, желаемый результат, срок и факты, которые обязательно нужно сохранить. Без служебных и персональных данных. После этого я предложу структуру и черновую формулировку.', actions: [{ type: 'scenario', value: 'letter', label: 'Алгоритм официального письма' }] };
+  if (/иде|придум|вариант|мозгов/.test(normalized)) return { text: 'Давайте найдём варианты. Сначала обозначьте аудиторию, проблему, ограничения и желаемое изменение. Затем я помогу собрать три идеи: надёжную, смелую и минимальную для быстрого теста.', actions: [{ type: 'view', value: 'situations', label: 'Открыть рабочие ситуации' }] };
+  return { text: 'Я готов помочь, но мне не хватает контекста. Уточните: какой результат нужен, для кого, к какому сроку и что уже пробовали. Я сопоставлю ответ с материалами сайта или предложу безопасный следующий шаг. Для внешней темы можно воспользоваться поиском.', actions: [{ type: 'external', value: `https://yandex.ru/search/?text=${encodeURIComponent(message)}`, label: 'Искать в интернете' }] };
 }
 
 function sendMascotMessage(message) {
@@ -2064,7 +2128,24 @@ function sendMascotMessage(message) {
   addMascotMessage('user', text);
   const input = document.getElementById('mascotInput');
   if (input) input.value = '';
-  setTimeout(() => addMascotMessage('bot', mascotAnswer(text)), 260);
+  document.getElementById('mascotWidget')?.classList.add('thinking');
+  setTimeout(() => {
+    const answer = mascotAnswer(text);
+    addMascotMessage('bot', answer.text, answer.actions || []);
+    document.getElementById('mascotWidget')?.classList.remove('thinking');
+  }, 360);
+}
+
+function runMascotAgentAction(type, value) {
+  closeMascotChat();
+  if (type === 'view') return setView(value);
+  if (type === 'my-day') { myDayTab = value || 'task'; return setView('home'); }
+  if (type === 'scenario') return openScenario(value);
+  if (type === 'event') return openEventDirection(value);
+  if (type === 'external' && /^https?:\/\//i.test(value)) return window.open(value, '_blank', 'noopener,noreferrer');
+  if (type === 'expert') return openExpert(value || '');
+  if (type === 'profile') return openOnboarding();
+  if (type === 'theme') return toggleTheme();
 }
 
 function showDailyMascotGreeting() {
@@ -2090,7 +2171,9 @@ function scheduleDailyMascotGreeting(delay = 900) {
 
 document.addEventListener('click', async event => {
   const mascotPrompt = event.target.closest('[data-mascot-prompt]');
-  if (mascotPrompt) return sendMascotMessage({ task: 'Какое у меня задание сегодня?', principle: 'Какой принцип дня?', help: 'Что ты умеешь?' }[mascotPrompt.dataset.mascotPrompt]);
+  if (mascotPrompt) return sendMascotMessage({ task: 'Какое у меня задание сегодня?', find: 'Помоги найти нужный материал на сайте', help: 'Что ты умеешь как ИИ-агент?' }[mascotPrompt.dataset.mascotPrompt]);
+  const mascotAgentAction = event.target.closest('[data-mascot-agent-action]');
+  if (mascotAgentAction) return runMascotAgentAction(mascotAgentAction.dataset.mascotAgentAction, mascotAgentAction.dataset.mascotAgentValue);
   const viewButton = event.target.closest('[data-view]');
   if (viewButton) return setView(viewButton.dataset.view);
   const saveItemButton = event.target.closest('[data-save-id]');
@@ -2176,7 +2259,6 @@ document.addEventListener('click', async event => {
   if (action.dataset.action === 'toggle-theme') toggleTheme();
   if (action.dataset.action === 'mascot-open') openMascotChat();
   if (action.dataset.action === 'mascot-close') closeMascotChat();
-  if (action.dataset.action === 'mascot-speak') speakMascotMessage();
   if (action.dataset.action === 'remove-profile-photo') removeProfilePhoto();
   if (action.dataset.action === 'close-modal') modal.close();
   if (action.dataset.action === 'accept-welcome') acceptMinisterWelcome();

@@ -907,6 +907,9 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .mascot-message.user { margin-left: auto; }
 .mascot-message.user > span { text-align: right; }
 .mascot-message.user p { color: #fff; background: #a83b34; border-radius: 15px 5px 15px 15px; }
+.mascot-message-actions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.mascot-message-actions button { padding: 6px 8px; border: 1px solid rgba(209,74,63,.34); border-radius: 8px; cursor: pointer; color: #f0a097; background: rgba(209,74,63,.1); font-size: 7px; font-weight: 900; transition: .2s; }
+.mascot-message-actions button:hover { color: #fff; border-color: #d14a3f; background: #d14a3f; }
 .mascot-quick { display: flex; gap: 6px; padding: 9px 13px; overflow-x: auto; }
 .mascot-quick button { flex: 0 0 auto; padding: 7px 9px; border: 1px solid rgba(255,255,255,.13); border-radius: 18px; cursor: pointer; color: #d6d0c6; background: rgba(255,255,255,.045); font-size: 8px; font-weight: 800; }
 .mascot-quick button:hover { color: #fff; border-color: #d14a3f; background: rgba(209,74,63,.15); }
@@ -914,9 +917,10 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .mascot-form input { min-width: 0; padding: 11px 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 11px; outline: none; color: #f4eee3; background: rgba(255,255,255,.06); font: 10px var(--sans); }
 .mascot-form input:focus { border-color: #d14a3f; box-shadow: 0 0 0 3px rgba(209,74,63,.12); }
 .mascot-form button { border: 0; border-radius: 11px; cursor: pointer; color: #fff; background: #d14a3f; font-size: 18px; font-weight: 900; }
-.mascot-chat > footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 13px 11px; border-top: 1px solid rgba(255,255,255,.07); }
-.mascot-chat > footer button { padding: 0; border: 0; cursor: pointer; color: #e38b81; background: transparent; font-size: 8px; font-weight: 900; text-align: left; }
-.mascot-chat > footer small { color: #79756e; font-size: 6px; text-align: right; }
+.mascot-chat > footer { padding: 9px 13px 11px; border-top: 1px solid rgba(255,255,255,.07); text-align: center; }
+.mascot-chat > footer small { display: block; color: #79756e; font-size: 6px; line-height: 1.4; }
+.mascot-widget.thinking .mascot-chat header span i { animation: agent-thinking .75s ease-in-out infinite alternate; }
+@keyframes agent-thinking { to { background: #f5c85d; box-shadow: 0 0 0 6px rgba(245,200,93,.08); transform: scale(1.2); } }
 .mascot-widget.daily-arrival .mascot-chat { animation: mascot-arrival .7s cubic-bezier(.2,.9,.25,1.25); }
 @keyframes mascot-arrival { 0% { opacity: 0; transform: translate(110px, 55px) rotate(8deg) scale(.65); } 70% { opacity: 1; transform: translate(-8px, -4px) rotate(-1deg) scale(1.02); } 100% { transform: none; } }
 
