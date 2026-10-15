@@ -82,21 +82,21 @@ button { color: inherit; }
 .more-button { border: 0; cursor: pointer; background: transparent; letter-spacing: 2px; }
 .content { width: min(1160px, calc(100% - 64px)); margin: 0 auto; padding: 42px 0 54px; }
 
-.hero { position: relative; display: grid; grid-template-columns: 1.2fr .8fr; gap: 28px; overflow: hidden; padding: 44px; border: 1px solid #0d2821; border-radius: 8px 34px 8px 34px; color: #fff; background-color: var(--green); background-image: linear-gradient(135deg, transparent 70%, rgba(200,47,50,.2) 70%), linear-gradient(45deg, transparent 77%, rgba(255,255,255,.055) 77%); background-size: 52px 52px; box-shadow: var(--shadow); }
+.hero { position: relative; display: grid; grid-template-columns: 1.2fr .8fr; gap: 22px; overflow: hidden; padding: 34px 38px; border: 1px solid #0d2821; border-radius: 8px 34px 8px 34px; color: #fff; background-color: var(--green); background-image: linear-gradient(135deg, transparent 70%, rgba(200,47,50,.2) 70%), linear-gradient(45deg, transparent 77%, rgba(255,255,255,.055) 77%); background-size: 52px 52px; box-shadow: var(--shadow); }
 .hero::after { content: ''; position: absolute; right: -75px; bottom: -130px; width: 320px; height: 320px; border: 55px solid rgba(200,47,50,.4); border-radius: 50%; }
 .hero-copy { position: relative; z-index: 1; min-width: 0; max-width: 620px; }
 .eyebrow { display: inline-block; margin-bottom: 16px; color: var(--red); font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .14em; }
 .hero .eyebrow { color: #ff7773; }
 h1, h2, h3, p { margin-top: 0; }
 h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); letter-spacing: -2px; }
-.hero p { max-width: 570px; margin-bottom: 26px; color: #c7d9d4; font-size: 16px; }
+.hero p { max-width: 570px; margin-bottom: 20px; color: #c7d9d4; font-size: 15px; }
 .hero-actions, .button-row { display: flex; flex-wrap: wrap; gap: 10px; }
 .primary-button, .secondary-button, .chip-button { border: 0; cursor: pointer; font-weight: 700; transition: transform .15s, box-shadow .15s, background .15s; }
 .primary-button { padding: 13px 18px; border-radius: 6px 14px 6px 14px; color: #fff; background: var(--red); box-shadow: 0 7px 18px rgba(200,47,50,.2); }
 .primary-button:hover { transform: translateY(-2px) rotate(-.5deg); box-shadow: 0 10px 24px rgba(200,47,50,.3); }
 .secondary-button { padding: 12px 17px; border: 1px solid rgba(255,255,255,.24); border-radius: 13px; color: inherit; background: transparent; }
 .secondary-button.dark { border-color: #cfd5ce; color: var(--green); background: #fff; }
-.hero-visual { position: relative; z-index: 1; display: grid; place-items: center; }
+.hero-visual { position: relative; z-index: 1; display: grid; place-items: center; transform: scale(.9); }
 .orbit { position: relative; width: 230px; height: 230px; border: 1px solid rgba(255,255,255,.18); border-radius: 50%; }
 .orbit::before { content: ''; position: absolute; inset: 32px; border: 1px dashed rgba(255,107,103,.65); border-radius: 50%; animation: orbit-turn 18s linear infinite; }
 .bot-face { position: absolute; inset: 65px; display: grid; place-items: center; border-radius: 8px 28px 8px 28px; color: #fff; background: var(--red); font: 800 24px/1 var(--serif); transform: rotate(-7deg); box-shadow: 10px 10px 0 #fff; }
