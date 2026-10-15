@@ -679,6 +679,28 @@ function updateProfile() {
   document.getElementById('adminNav').classList.toggle('visible', state.isAdmin);
 }
 
+const THEME_KEY = 'digitalMentorTheme';
+
+function applyTheme(theme = localStorage.getItem(THEME_KEY) || 'graphite') {
+  const light = theme === 'light';
+  document.body.classList.toggle('light-theme', light);
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? '#eee7db' : '#242421');
+  const button = document.getElementById('themeToggle');
+  if (button) {
+    button.setAttribute('aria-pressed', String(light));
+    button.setAttribute('aria-label', light ? 'Включить графитовую тему' : 'Включить светлую тему');
+    button.querySelector('span').textContent = light ? '◐' : '☀';
+    button.querySelector('b').textContent = light ? 'Графитовая' : 'Светлая';
+  }
+}
+
+function toggleTheme() {
+  const theme = document.body.classList.contains('light-theme') ? 'graphite' : 'light';
+  localStorage.setItem(THEME_KEY, theme);
+  applyTheme(theme);
+  showToast(theme === 'light' ? 'Включена светлая тема' : 'Включена графитовая тема');
+}
+
 function setView(view) {
   if (view === 'admin' && !state.isAdmin) return openAdmin();
   currentView = view;
@@ -1994,6 +2016,7 @@ document.addEventListener('click', async event => {
   if (action.dataset.action === 'admin-logout') logoutAdmin();
   if (action.dataset.action === 'start-game') startGame();
   if (action.dataset.action === 'rules') openRules();
+  if (action.dataset.action === 'toggle-theme') toggleTheme();
   if (action.dataset.action === 'close-modal') modal.close();
   if (action.dataset.action === 'accept-welcome') acceptMinisterWelcome();
   if (action.dataset.action === 'finish-onboarding') finishOnboarding();
@@ -2099,6 +2122,7 @@ document.addEventListener('keydown', event => {
 });
 
 
+applyTheme();
 updateProfile();
 trackVisit();
 renderHome();
