@@ -1129,7 +1129,7 @@ function openIndustrySection(section) {
   };
   const item = sections[section];
   if (!item) return;
-  modalContent.innerHTML = `<div class="modal-body structure-detail"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body structure-detail ${section === 'youth-house' ? 'youth-house-detail' : ''}"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
   modal.classList.add('structure-modal');
   if (!modal.open) modal.showModal();
   renderFilesArea(item.fileKey, state.isAdmin, 'Материалы раздела');
