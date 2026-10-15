@@ -438,12 +438,12 @@ taskWeeks.push(...advancedTaskWeeks);
 
 const myrosmolTask = {
   id: 'myrosmol-registration',
-  title: 'Зарегистрироваться на «Моя Россия»',
+  title: 'Зарегистрироваться в ФГАИС «Молодёжь России»',
   text: 'Создать профиль специалиста по молодёжной политике на myrosmol.ru',
   tag: 'День 1',
-  deliverable: 'Активный профиль на сайте «Моя Россия»',
+  deliverable: 'Активный профиль в ФГАИС «Молодёжь России»',
   url: 'https://myrosmol.ru',
-  steps: ['Откройте официальный сайт «Моя Россия».', 'Зарегистрируйтесь или войдите через доступный способ авторизации.', 'Заполните основную информацию о себе и сфере деятельности.', 'Сохраните ссылку на профиль или сделайте скриншот подтверждения.']
+  steps: ['Откройте сайт ФГАИС «Молодёжь России».', 'Зарегистрируйтесь или войдите через доступный способ авторизации.', 'Заполните основную информацию о себе и сфере деятельности.', 'Сохраните ссылку на профиль или сделайте скриншот подтверждения.']
 };
 taskWeeks.forEach(week => week.tasks.forEach(task => { task.tag = task.tag.replace(/День\s+(\d+)/, (_, day) => `День ${Number(day) + 1}`); }));
 taskWeeks[0].tasks.unshift(myrosmolTask);
@@ -1176,7 +1176,7 @@ function renderTasks() {
   const unlocked = unlockedWeekIndex();
   content.innerHTML = `
     <div class="page-title"><div><span class="eyebrow">90-дневный маршрут · 13 недель</span><h1>Мои задания</h1><p>${completedCount()} из ${tasks.length} принято. Новые задания открываются последовательно по календарным дням.</p></div><div class="route-summary"><b>${progress()}%</b><span>общий прогресс</span></div></div>
-    <section class="myrosmol-reminder"><div class="myrosmol-reminder-mark">МР</div><div><span>Обязательный старт для команды</span><h2>Работаешь с молодёжью — будь в центре возможностей!</h2><p>Зарегистрируйся на <b>«Моя Россия»</b>, чтобы не пропускать проекты, обучение и возможности для тех, кто развивает молодёжную политику.</p></div><a href="https://myrosmol.ru" target="_blank" rel="noopener">Зарегистрироваться <i>↗</i></a></section>
+    <section class="myrosmol-reminder"><div class="myrosmol-reminder-mark">МР</div><div><span>Обязательный старт для команды</span><h2>Работаешь с молодёжью — будь в центре возможностей!</h2><p>Зарегистрируйся в <b>ФГАИС «Молодёжь России»</b>, чтобы не пропускать проекты, обучение и возможности для тех, кто развивает молодёжную политику.</p></div><a href="https://myrosmol.ru" target="_blank" rel="noopener">Зарегистрироваться <i>↗</i></a></section>
     <div class="task-view-tabs"><button class="${tasksTab === 'route' ? 'active' : ''}" data-tasks-tab="route"><span>01</span><b>Маршрут 90 дней</b><small>Практические задания и результаты</small></button><button class="${tasksTab === 'mission' ? 'active' : ''}" data-tasks-tab="mission"><span>02</span><b>На своём ли вы месте?</b><small>Откройте свою профессиональную миссию</small></button></div>
     ${tasksTab === 'mission' ? renderMissionTest() : `<article class="game-banner"><div><span class="eyebrow">Интерактивная игра · Блок ${blockNumber + 1}</span><h2>«Маршрут решения»</h2><p>25 рабочих ситуаций, три варианта действий и один безопасный путь. Для специалистов подготовлено 10 разных тематических блоков.</p><span class="game-score">Лучший результат: ${bestResult} / 25</span></div><button class="primary-button" data-action="start-game">Начать игру</button></article>
     <div class="task-weeks">${taskWeeks.map((week, weekIndex) => {
