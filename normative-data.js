@@ -122,12 +122,6 @@ const normativeDocuments = {
       file: 'documents/regional/order-youth-ngo-register.pdf'
     },
     {
-      type: 'Приказ ММП', number: '11', registrationDate: '10.02.2025',
-      title: 'О плановой документарной проверке ГБУ ЛНР «Дом молодежи»',
-      description: 'О проведении проверки и создании комиссии ведомственного контроля в сфере закупок.',
-      file: 'documents/regional/order-youth-house-audit.pdf'
-    },
-    {
       type: 'Приказ ММП', number: '33', registrationDate: '12.03.2026',
       title: 'Порядок формирования реестра студенческих отрядов ЛНР',
       description: 'Определяет процедуру формирования и ведения реестра студенческих отрядов, созданных на территории ЛНР.',
