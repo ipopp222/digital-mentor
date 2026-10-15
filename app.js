@@ -1064,21 +1064,63 @@ function openSavedItem(id) {
   if (kind === 'file') return downloadFile(value);
 }
 
+const YANDEX_STANDARDS_PUBLIC_URL = 'https://disk.yandex.ru/d/JW3nCvxQlnlEQw';
+const YANDEX_STANDARDS_PATH = '/Рекомендации, справочные материалы/Стандарты';
+
+function standardPreviewUrl(fileName) {
+  return `${YANDEX_STANDARDS_PUBLIC_URL}/${encodeURIComponent('Рекомендации, справочные материалы')}/${encodeURIComponent('Стандарты')}/${encodeURIComponent(fileName)}`;
+}
+
+async function downloadYandexStandard(fileName, button) {
+  const original = button.innerHTML;
+  button.disabled = true;
+  button.innerHTML = '…<span>Подготовка</span>';
+  try {
+    const params = new URLSearchParams({ public_key: YANDEX_STANDARDS_PUBLIC_URL, path: `${YANDEX_STANDARDS_PATH}/${fileName}` });
+    const response = await fetch(`https://cloud-api.yandex.net/v1/disk/public/resources/download?${params}`);
+    if (!response.ok) throw new Error(`Yandex Disk: ${response.status}`);
+    const { href } = await response.json();
+    if (!href) throw new Error('Ссылка на загрузку не получена');
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = fileName;
+    link.rel = 'noopener';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    showToast('Скачивание документа началось');
+  } catch (error) {
+    window.open(standardPreviewUrl(fileName), '_blank', 'noopener');
+    showToast('Открыта страница документа — нажмите «Скачать» на Яндекс Диске');
+  } finally {
+    button.disabled = false;
+    button.innerHTML = original;
+  }
+}
+
 function renderNormativeBase(scope = '', query = '') {
   const sections = {
     federal: { title: 'Федеральные НПА/законы', short: 'Документы Российской Федерации', mark: 'РФ' },
-    regional: { title: 'Региональные НПА/законы', short: 'Документы Луганской Народной Республики', mark: 'ЛНР' }
+    regional: { title: 'Региональные НПА/законы', short: 'Документы Луганской Народной Республики', mark: 'ЛНР' },
+    standards: { title: 'Стандарты Росмолодёжи', short: 'Рекомендации и справочные материалы', mark: 'РМ' }
   };
   const activeScope = Object.hasOwn(sections, scope) ? scope : '';
   const normalized = normalizeGlossaryText(query);
   const compactQuery = normalized.replace(/[^a-zа-яё0-9]/gi, '');
   const documents = activeScope ? normativeDocuments[activeScope] : [];
-  const matches = documents.filter(document => !normalized || [document.title, document.number, document.registrationDate].some(value => {
+  const matches = documents.filter(document => !normalized || [document.title, document.number, document.registrationDate, document.sourceName].filter(Boolean).some(value => {
     const field = normalizeGlossaryText(value);
     return field.includes(normalized) || field.replace(/[^a-zа-яё0-9]/gi, '').includes(compactQuery);
   }));
   const categories = Object.entries(sections).map(([key, section]) => `<button class="npa-category ${activeScope === key ? 'active' : ''}" data-npa-scope="${key}"><span>${section.mark}</span><div><small>${section.short}</small><h2>${section.title}</h2><p>${normativeDocuments[key].length} документ(ов)</p></div><i>→</i></button>`).join('');
-  const renderDocument = document => `<article class="npa-document"><div class="npa-document-copy"><div class="npa-document-meta"><span>№ ${escapeHtml(document.number)}</span><span>Дата документа: ${escapeHtml(document.registrationDate)}</span></div><h3>${escapeHtml(document.title)}</h3>${document.description ? `<p>${escapeHtml(document.description)}</p>` : ''}<div class="inline-save">${saveButton({ id: `npa:${activeScope}:${document.number}`, type: 'НПА', title: document.title, text: `№ ${document.number} · ${document.registrationDate}`, target: `npa:${activeScope}:${document.number}` })}</div></div><a href="${escapeHtml(document.file)}" target="_blank" rel="noopener" title="Открыть PDF">↗<span>Открыть PDF</span></a></article>`;
+  const renderDocument = document => {
+    const isStandard = activeScope === 'standards';
+    const fileUrl = isStandard ? standardPreviewUrl(document.sourceName) : document.file;
+    const downloadControl = isStandard
+      ? `<button data-standard-download="${escapeHtml(document.sourceName)}" title="Скачать PDF">↓<span>Скачать</span></button>`
+      : `<a href="${escapeHtml(fileUrl)}" download title="Скачать PDF">↓<span>Скачать</span></a>`;
+    return `<article class="npa-document"><div class="npa-document-copy"><div class="npa-document-meta"><span>№ ${escapeHtml(document.number)}</span><span>${isStandard ? 'Год / дата' : 'Дата документа'}: ${escapeHtml(document.registrationDate)}</span>${document.size ? `<span>PDF · ${escapeHtml(document.size)}</span>` : ''}</div><h3>${escapeHtml(document.title)}</h3>${document.description ? `<p>${escapeHtml(document.description)}</p>` : ''}${document.sourceName ? `<small class="npa-source-file">Исходный файл: ${escapeHtml(document.sourceName)}</small>` : ''}<div class="inline-save">${saveButton({ id: `npa:${activeScope}:${document.number}`, type: isStandard ? 'Стандарт Росмолодёжи' : 'НПА', title: document.title, text: `№ ${document.number} · ${document.registrationDate}`, target: `npa:${activeScope}:${document.number}` })}</div></div><div class="npa-document-actions"><a href="${escapeHtml(fileUrl)}" target="_blank" rel="noopener" title="Предварительно прочитать PDF">⌕<span>Читать</span></a>${downloadControl}</div></article>`;
+  };
   const regionalGroups = [
     { title: 'Законы', type: 'Закон ЛНР' },
     { title: 'Постановления Правительства ЛНР', type: 'Постановление' },
@@ -1093,9 +1135,9 @@ function renderNormativeBase(scope = '', query = '') {
     }).join('')
     : `<div class="npa-document-list">${matches.map(renderDocument).join('')}</div>`;
   content.innerHTML = `
-    <div class="page-title npa-title"><div><button class="back-link" data-view="knowledge">← База знаний</button><span class="eyebrow">Проверенные источники</span><h1>Нормативная база</h1><p>Федеральные и региональные документы с быстрым поиском по названию, номеру и дате документа.</p></div><div class="npa-total"><b>${normativeDocuments.federal.length + normativeDocuments.regional.length}</b><span>документов<br>в реестре</span></div></div>
+    <div class="page-title npa-title"><div><button class="back-link" data-view="knowledge">← База знаний</button><span class="eyebrow">Проверенные источники</span><h1>Нормативная база</h1><p>Федеральные и региональные документы, а также стандарты Росмолодёжи с поиском, предварительным чтением и скачиванием.</p></div><div class="npa-total"><b>${Object.values(normativeDocuments).reduce((sum, items) => sum + items.length, 0)}</b><span>документов<br>в реестре</span></div></div>
     <section class="npa-categories" aria-label="Уровень нормативных документов">${categories}</section>
-    ${activeScope ? `<section class="npa-register"><header><div><span class="eyebrow">${sections[activeScope].mark} · реестр документов</span><h2>${sections[activeScope].title}</h2></div><strong>${matches.length} из ${documents.length}</strong></header><label class="search-box npa-search"><span>⌕</span><input id="npaSearch" data-npa-search="${activeScope}" type="search" value="${escapeHtml(query)}" placeholder="Введите название, номер или дату документа" autocomplete="off"></label>${matches.length ? `<div class="npa-document-groups">${list}</div>` : `<div class="npa-empty"><span>§</span><h3>${normalized ? 'Документы не найдены' : 'Реестр подготовлен к наполнению'}</h3><p>${normalized ? 'Проверьте номер, дату или измените поисковый запрос.' : 'После загрузки документы появятся здесь с названием, номером, датой и ссылкой на PDF.'}</p>${normalized ? '<button data-npa-clear>Сбросить поиск</button>' : ''}</div>`}</section>` : `<section class="npa-start"><span>01</span><div><h2>Выберите уровень документа</h2><p>Откройте федеральный или региональный реестр. Внутри каждого блока будет собственный список и поиск только по документам выбранного уровня.</p></div></section>`}
+    ${activeScope ? `<section class="npa-register"><header><div><span class="eyebrow">${sections[activeScope].mark} · реестр документов</span><h2>${sections[activeScope].title}</h2></div><strong>${matches.length} из ${documents.length}</strong></header><label class="search-box npa-search"><span>⌕</span><input id="npaSearch" data-npa-search="${activeScope}" type="search" value="${escapeHtml(query)}" placeholder="Введите название, номер или дату документа" autocomplete="off"></label>${matches.length ? `<div class="npa-document-groups">${list}</div>` : `<div class="npa-empty"><span>§</span><h3>${normalized ? 'Документы не найдены' : 'Реестр подготовлен к наполнению'}</h3><p>${normalized ? 'Проверьте номер, дату или измените поисковый запрос.' : 'После загрузки документы появятся здесь с названием, номером, датой и ссылкой на PDF.'}</p>${normalized ? '<button data-npa-clear>Сбросить поиск</button>' : ''}</div>`}</section>` : `<section class="npa-start"><span>01</span><div><h2>Выберите раздел документов</h2><p>Откройте федеральный или региональный реестр либо раздел стандартов Росмолодёжи. Внутри каждого блока доступен собственный список и поиск.</p></div></section>`}
     <div class="npa-source-note"><b>Принцип актуальности</b><span>В реестр добавляются документы с подтверждёнными реквизитами и файлом-источником. Перед применением проверяйте редакцию и дату документа.</span></div>`;
   const input = document.getElementById('npaSearch');
   if (query && input) {
@@ -2234,6 +2276,8 @@ document.addEventListener('click', async event => {
   if (knowledgeButton) return openKnowledge(Number(knowledgeButton.dataset.knowledge));
   const npaScope = event.target.closest('[data-npa-scope]');
   if (npaScope) return renderNormativeBase(npaScope.dataset.npaScope);
+  const standardDownload = event.target.closest('[data-standard-download]');
+  if (standardDownload) return downloadYandexStandard(standardDownload.dataset.standardDownload, standardDownload);
   if (event.target.closest('[data-npa-clear]')) return renderNormativeBase(document.getElementById('npaSearch')?.dataset.npaSearch || '');
   const industryButton = event.target.closest('[data-industry]');
   if (industryButton) return openIndustrySection(industryButton.dataset.industry);
