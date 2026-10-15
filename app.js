@@ -522,10 +522,11 @@ const youthSpaces = [
 ];
 
 const youthHousePhotos = [
-  { src: 'Дом молодежи', title: 'Дом молодежи', text: 'Фасад учреждения' },
-  { src: 'Дом молодежи 2', title: 'Образовательная площадка', text: 'Пространство для командной работы' },
-  { src: 'Дом молодежи 3', title: 'Выставочная зона', text: 'Просветительские проекты' },
-  { src: 'Дом молодежи 4', title: 'Интерактивная экспозиция', text: 'Современные мультимедийные форматы' }
+  ...Array.from({ length: 17 }, (_, index) => ({
+    src: `assets/youth-house/photo-${String(index + 1).padStart(2, '0')}.jpg`,
+    title: index === 0 ? 'Дом молодежи' : `Дом молодежи · фото ${index + 1}`,
+    text: ''
+  }))
 ];
 
 const ADMIN_NAME = 'Инесса Артющенко';
@@ -993,7 +994,7 @@ function renderIndustryStructure() {
       <div class="map-caption">Региональный орган исполнительной власти</div>
       <button class="industry-node ministry-node" data-industry="ministry"><span class="node-icon">МП</span><span class="node-copy"><small>Региональный уровень</small><b>Министерство молодежной политики ЛНР</b><em>Руководство и 8 отделов</em></span><span class="node-arrow">↗</span></button>
       <div class="map-connector main-connector" aria-hidden="true"></div>
-      <button class="industry-node house-node" data-industry="youth-house"><span class="node-icon">ДМ</span><span class="node-copy"><small>Подведомственное учреждение</small><b>ГБУ МП ЛНР МЦ «Дом молодежи»</b><em>Структура отделов будет дополнена</em></span><span class="node-arrow">↗</span></button>
+      <button class="industry-node house-node" data-industry="youth-house"><span class="node-icon">ДМ</span><span class="node-copy"><small>Подведомственное учреждение</small><b>ГБУ МП ЛНР МЦ «Дом молодежи»</b><em>Руководство, контакты и фотогалерея</em></span><span class="node-arrow">↗</span></button>
       <div class="ecosystem-divider"><span>Муниципальный и общественный уровни</span></div>
       <div class="industry-branches">
         <div class="municipal-chain"><button class="industry-node municipal-node" data-industry="municipal"><span class="node-icon">28</span><span class="node-copy"><small>Органы местного самоуправления</small><b>Структурные подразделения ОМСУ</b><em>28 городских и муниципальных округов</em></span><span class="node-arrow">↗</span></button><div class="map-connector local-connector" aria-hidden="true"></div><button class="industry-node centers-node" data-industry="institutions"><span class="node-icon">МЦ</span><span class="node-copy"><small>Подведомственны администрациям</small><b>Муниципальные учреждения молодежной политики</b><em>4 учреждения, новые центры и пространства</em></span><span class="node-arrow">↗</span></button></div>
@@ -1100,8 +1101,8 @@ function openIndustrySection(section) {
     'youth-house': {
       eyebrow: 'Подведомственное учреждение Министерства',
       title: 'ГБУ МП ЛНР МЦ «Дом молодежи»',
-      lead: '',
-      body: `<div class="youth-house-gallery">${youthHousePhotos.map((photo, index) => `<figure class="${index === 0 ? 'gallery-feature' : ''}" data-gallery-photo="${index}" tabindex="0" role="button" aria-label="Увеличить: ${photo.title}"><img src="${photo.src}" alt="${photo.title}, Дом молодежи"><figcaption><b>${photo.title}</b><span>${photo.text}</span></figcaption><i class="gallery-zoom" aria-hidden="true">＋</i></figure>`).join('')}</div><div class="future-structure"><span>ДМ</span><div><b>Раздел подготовлен к дальнейшему наполнению</b><p>Здесь можно разместить руководство, отделы, направления деятельности и рабочие контакты учреждения.</p></div></div>`,
+      lead: 'Молодежный центр в Луганске: площадка для проектов, обучения и общения.',
+      body: `<section class="youth-house-overview"><article class="youth-house-director"><img src="assets/youth-house/director.jpg" alt="Сычева Анна Федоровна"><div><span>Директор</span><h3>Сычева<br>Анна Федоровна</h3></div></article><div class="youth-house-contacts"><article><span class="contact-mark">⌖</span><div><small>Адреса</small><p>ул. Т. Г. Шевченко, д. 4</p><p>ул. Алексеева, д. 7</p><p>ул. Железнодорожная, д. 8</p></div></article><article><span class="contact-mark">☎</span><div><small>Телефон</small><a href="tel:+79592833731">+7 (959) 283-37-31</a></div></article></div></section><nav class="youth-house-links" aria-label="Официальные ресурсы Дома молодежи"><a href="https://dmlnr.lpr-reg.ru" target="_blank" rel="noopener">Сайт <i>↗</i></a><a href="https://vk.com/vcentre_lnr" target="_blank" rel="noopener">ВКонтакте <i>↗</i></a><a href="https://max.ru/id9403014771_gos" target="_blank" rel="noopener">MAX <i>↗</i></a><a href="https://forms.yandex.ru/cloud/6791e4b5e010db11820fbb4c/" target="_blank" rel="noopener">Написать <i>↗</i></a></nav><section class="youth-house-photo-section"><header><h3>Фотографии <span>${youthHousePhotos.length}</span></h3><p>Листайте и нажмите для просмотра</p></header><div class="youth-house-gallery">${youthHousePhotos.map((photo, index) => `<figure data-gallery-photo="${index}" tabindex="0" role="button" aria-label="Открыть фотографию ${index + 1}"><img src="${photo.src}" alt="Дом молодежи, фотография ${index + 1}" loading="lazy"><i class="gallery-zoom" aria-hidden="true">＋</i></figure>`).join('')}</div></section><a class="youth-house-source" href="https://minmol.lpr-reg.ru/page/static/b0141fc8-d11a-4329-8ff3-1a1e805ffc09" target="_blank" rel="noopener"><b>Источник: Министерство молодежной политики ЛНР</b><i>↗</i></a>`,
       fileKey: 'industry:youth-house'
     },
     municipal: {
@@ -1145,7 +1146,7 @@ function openYouthHousePhoto(index) {
     modal.appendChild(viewer);
   }
   viewer.dataset.index = activeIndex;
-  viewer.innerHTML = `<button class="lightbox-close" data-gallery-close aria-label="Закрыть фотографию">×</button><button class="lightbox-arrow previous" data-gallery-nav="-1" aria-label="Предыдущая фотография">‹</button><figure><img src="${photo.src}" alt="${photo.title}, Дом молодежи"><figcaption><span>${activeIndex + 1} / ${youthHousePhotos.length}</span><b>${photo.title}</b><small>${photo.text}</small></figcaption></figure><button class="lightbox-arrow next" data-gallery-nav="1" aria-label="Следующая фотография">›</button>`;
+  viewer.innerHTML = `<button class="lightbox-close" data-gallery-close aria-label="Закрыть фотографию">×</button><button class="lightbox-arrow previous" data-gallery-nav="-1" aria-label="Предыдущая фотография">‹</button><figure><img src="${photo.src}" alt="${photo.title}"><figcaption><span>${activeIndex + 1} / ${youthHousePhotos.length}</span></figcaption></figure><button class="lightbox-arrow next" data-gallery-nav="1" aria-label="Следующая фотография">›</button>`;
   viewer.classList.add('open');
   modal.classList.add('photo-viewing');
 }

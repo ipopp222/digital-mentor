@@ -427,16 +427,35 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .future-structure > span { width: 65px; height: 65px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 20px 20px 20px 7px; color: var(--green); background: var(--lime); font-size: 12px; font-weight: 900; }
 .future-structure b { font-size: 13px; }
 .future-structure p { margin: 5px 0 0; color: var(--muted); font-size: 10px; }
-.youth-house-gallery { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 235px 175px; gap: 10px; margin: 25px 0; }
-.youth-house-gallery figure { position: relative; margin: 0; overflow: hidden; border-radius: 17px; outline: none; cursor: zoom-in; background: var(--green); }
+.youth-house-overview { height: 280px; display: grid; grid-template-columns: minmax(270px, .82fr) 1.18fr; gap: 12px; margin: 25px 0 12px; }
+.youth-house-director { min-width: 0; display: grid; grid-template-columns: 43% minmax(0, 1fr); overflow: hidden; border-radius: 21px; color: #fff; background: var(--green); }
+.youth-house-director img { width: 100%; height: 100%; object-fit: cover; object-position: 52% center; }
+.youth-house-director > div { display: flex; flex-direction: column; justify-content: center; padding: 24px 20px; }
+.youth-house-director span { color: var(--lime); font-size: 8px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+.youth-house-director h3 { margin: 10px 0 0; font: 700 20px/1.08 var(--serif); overflow-wrap: anywhere; }
+.youth-house-contacts { display: grid; grid-template-rows: repeat(2, 1fr); gap: 8px; }
+.youth-house-contacts article { display: grid; grid-template-columns: 38px 1fr; gap: 11px; align-items: start; padding: 15px; border: 1px solid var(--line); border-radius: 15px; background: #fbfaf6; }
+.youth-house-contacts .contact-mark { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px; color: var(--green); background: var(--lime-soft); font-size: 15px; font-weight: 800; }
+.youth-house-contacts small { display: block; margin-bottom: 5px; color: var(--muted); font-size: 7px; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
+.youth-house-contacts p { margin: 2px 0; font-size: 9px; font-weight: 700; line-height: 1.35; }
+.youth-house-contacts a { color: var(--green); font-size: 13px; font-weight: 900; text-decoration: none; }
+.youth-house-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; padding: 9px; border-radius: 15px; color: #fff; background: #20211e; }
+.youth-house-links a { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.13); border-radius: 11px; color: #fff; background: rgba(255,255,255,.055); font-size: 8px; font-weight: 800; text-decoration: none; transition: .2s; }
+.youth-house-links a:hover { color: var(--green); border-color: var(--lime); background: var(--lime); }
+.youth-house-links i { font-size: 13px; font-style: normal; }
+.youth-house-photo-section { margin-top: 27px; }
+.youth-house-photo-section > header { display: flex; justify-content: space-between; gap: 20px; align-items: end; margin-bottom: 12px; }
+.youth-house-photo-section h3 { margin: 0; font: 700 18px var(--serif); }
+.youth-house-photo-section h3 span { display: inline-grid; place-items: center; min-width: 24px; height: 20px; margin-left: 5px; border-radius: 7px; color: var(--green); background: var(--lime-soft); font: 900 8px var(--sans); vertical-align: middle; }
+.youth-house-photo-section > header p { max-width: 340px; margin: 0; color: var(--muted); font-size: 9px; text-align: right; }
+.youth-house-gallery { display: flex; gap: 10px; margin: 0; padding: 2px 2px 10px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--green) #e6e7e1; }
+.youth-house-gallery figure { position: relative; width: min(280px, 74vw); height: 185px; flex: 0 0 auto; margin: 0; overflow: hidden; border-radius: 17px; outline: none; cursor: zoom-in; background: var(--green); scroll-snap-align: start; }
 .youth-house-gallery figure:focus-visible { box-shadow: 0 0 0 3px var(--lime), 0 0 0 5px var(--green); }
-.youth-house-gallery .gallery-feature { grid-column: 1 / -1; }
 .youth-house-gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s; }
 .youth-house-gallery figure:hover img { transform: scale(1.025); }
-.youth-house-gallery figcaption { position: absolute; right: 0; bottom: 0; left: 0; padding: 28px 15px 13px; color: #fff; background: linear-gradient(transparent, rgba(10,30,25,.82)); }
-.youth-house-gallery figcaption b, .youth-house-gallery figcaption span { display: block; }
-.youth-house-gallery figcaption b { font-size: 10px; }
-.youth-house-gallery figcaption span { margin-top: 2px; color: #d5e0dc; font-size: 8px; }
+.youth-house-source { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-top: 14px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: #f7f7f2; font-size: 8px; text-decoration: none; }
+.youth-house-source b { color: var(--green); font-size: 9px; }
+.youth-house-source i { color: var(--red); font-size: 15px; font-style: normal; }
 .gallery-zoom { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 10px; color: var(--green); background: rgba(255,255,255,.9); font-size: 17px; font-style: normal; box-shadow: 0 5px 15px rgba(10,30,25,.18); }
 .modal.photo-viewing { width: 100vw; height: 100vh; max-height: 100vh; overflow: hidden; border-radius: 0; background: #0b1714; }
 .photo-lightbox { position: absolute; z-index: 20; inset: 0; display: none; align-items: center; justify-content: center; padding: 55px 85px 35px; color: #fff; background: rgba(6,18,15,.97); }
@@ -1075,8 +1094,12 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
   .leader-card span { min-height: 0; }
   .management-row { grid-template-columns: 1fr; }
   .future-structure { align-items: start; padding: 20px; }
-  .youth-house-gallery { grid-template-columns: 1fr; grid-template-rows: 210px repeat(3, 165px); }
-  .youth-house-gallery .gallery-feature { grid-column: auto; }
+  .youth-house-overview { height: auto; grid-template-columns: 1fr; }
+  .youth-house-director { min-height: 245px; }
+  .youth-house-links { grid-template-columns: 1fr 1fr; }
+  .youth-house-photo-section > header { display: block; }
+  .youth-house-photo-section > header p { margin-top: 7px; text-align: left; }
+  .youth-house-gallery figure { width: min(255px, 80vw); height: 175px; }
   .photo-lightbox { padding: 65px 14px 28px; }
   .photo-lightbox figure { align-content: center; height: auto; }
   .photo-lightbox img { width: 100%; height: auto; max-height: calc(100vh - 165px); }
