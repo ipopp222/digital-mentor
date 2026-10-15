@@ -529,7 +529,7 @@ const youthHousePhotos = [
 ];
 
 const ADMIN_NAME = 'Инесса Артющенко';
-const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', stage: 'Первый день', completed: [], taskNotes: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
+const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', profilePhoto: '', stage: 'Первый день', completed: [], taskNotes: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
 let state = loadState();
 let analytics = loadAnalytics();
 let currentView = 'home';
@@ -667,8 +667,11 @@ function activeWeekRemaining() {
 
 function updateProfile() {
   const name = state.name || 'Новый сотрудник';
+  const avatar = document.getElementById('profileAvatar');
   document.getElementById('profileName').textContent = name;
-  document.getElementById('profileAvatar').textContent = name.trim().charAt(0).toUpperCase() || 'Н';
+  avatar.textContent = state.profilePhoto ? '' : name.trim().charAt(0).toUpperCase() || 'Н';
+  avatar.style.backgroundImage = state.profilePhoto ? `url("${state.profilePhoto}")` : '';
+  avatar.classList.toggle('has-photo', Boolean(state.profilePhoto));
   document.getElementById('profileRole').textContent = state.workplace || 'Начало маршрута';
   document.getElementById('progressValue').textContent = `${progress()}%`;
   document.getElementById('progressBar').style.width = `${progress()}%`;
@@ -1870,8 +1873,55 @@ function acceptMinisterWelcome() {
 }
 
 function openOnboarding() {
-  modalContent.innerHTML = `<div class="onboarding"><div class="onboarding-art"><span>Первые 90 дней.<br>Вместе и по шагам.</span></div><div class="onboarding-content"><span class="eyebrow">Настройка маршрута</span><h2>${state.onboarded ? 'Профиль пользователя' : 'Давайте познакомимся'}</h2><p class="modal-lead">Данные сохраняются только в вашем браузере и используются в локальной аналитике администратора.</p><div class="form-grid"><label>Как к вам обращаться<input id="onboardingName" value="${escapeHtml(state.name)}" placeholder="Имя" required></label><label>Город или район<input id="onboardingLocation" value="${escapeHtml(state.location)}" placeholder="Например: Луганск" required></label><label>Организация или подразделение<input id="onboardingOrganization" value="${escapeHtml(state.organization)}" placeholder="Полное или краткое название" required></label></div><b>Тип учреждения</b><div class="choice-grid" id="workplaceChoices">${['Министерство', 'Орган местного самоуправления', 'Молодежный центр', 'Другое учреждение'].map(choice => `<button class="choice ${state.workplace === choice ? 'selected' : ''}" data-choice="${choice}">${choice}</button>`).join('')}</div><div class="safety-note"><b>Локальный режим</b><span>Профиль и статистика доступны администратору только в этом браузере и не передаются на другие устройства.</span></div><br><button class="primary-button" data-action="finish-onboarding">${state.onboarded ? 'Сохранить профиль' : 'Начать маршрут'}</button></div></div>`;
+  const initial = (state.name || 'Н').trim().charAt(0).toUpperCase();
+  modalContent.innerHTML = `<div class="onboarding"><div class="onboarding-art"><span>Первые 90 дней.<br>Вместе и по шагам.</span></div><div class="onboarding-content"><span class="eyebrow">Настройка маршрута</span><h2>${state.onboarded ? 'Профиль пользователя' : 'Давайте познакомимся'}</h2><p class="modal-lead">Данные сохраняются только в вашем браузере и используются в локальной аналитике администратора.</p><div class="profile-photo-editor"><span class="profile-photo-preview ${state.profilePhoto ? 'has-photo' : ''}" id="profilePhotoPreview">${state.profilePhoto ? '' : initial}</span><div><b>Фотография профиля</b><p>Будет отображаться рядом с вашим именем.</p><div class="profile-photo-actions"><label><input type="file" accept="image/jpeg,image/png,image/webp" data-profile-photo>Выбрать фото</label>${state.profilePhoto ? '<button data-action="remove-profile-photo">Удалить</button>' : ''}</div></div></div><div class="form-grid"><label>Как к вам обращаться<input id="onboardingName" value="${escapeHtml(state.name)}" placeholder="Имя" required></label><label>Город или район<input id="onboardingLocation" value="${escapeHtml(state.location)}" placeholder="Например: Луганск" required></label><label>Организация или подразделение<input id="onboardingOrganization" value="${escapeHtml(state.organization)}" placeholder="Полное или краткое название" required></label></div><b>Тип учреждения</b><div class="choice-grid" id="workplaceChoices">${['Министерство', 'Орган местного самоуправления', 'Молодежный центр', 'Другое учреждение'].map(choice => `<button class="choice ${state.workplace === choice ? 'selected' : ''}" data-choice="${choice}">${choice}</button>`).join('')}</div><div class="safety-note"><b>Локальный режим</b><span>Профиль, фотография и статистика хранятся только в этом браузере и не передаются на другие устройства.</span></div><br><button class="primary-button" data-action="finish-onboarding">${state.onboarded ? 'Сохранить профиль' : 'Начать маршрут'}</button></div></div>`;
+  const preview = document.getElementById('profilePhotoPreview');
+  if (preview && state.profilePhoto) preview.style.backgroundImage = `url("${state.profilePhoto}")`;
   if (!modal.open) modal.showModal();
+}
+
+function resizeProfilePhoto(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('read'));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error('image'));
+      image.onload = () => {
+        const size = Math.min(image.naturalWidth, image.naturalHeight);
+        const sourceX = (image.naturalWidth - size) / 2;
+        const sourceY = (image.naturalHeight - size) / 2;
+        const canvas = document.createElement('canvas');
+        canvas.width = 420;
+        canvas.height = 420;
+        canvas.getContext('2d').drawImage(image, sourceX, sourceY, size, size, 0, 0, 420, 420);
+        resolve(canvas.toDataURL('image/jpeg', .84));
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function setProfilePhoto(file) {
+  if (!file) return;
+  if (!file.type.startsWith('image/')) return showToast('Выберите изображение');
+  if (file.size > 12 * 1024 * 1024) return showToast('Размер фотографии не должен превышать 12 МБ');
+  try {
+    state.profilePhoto = await resizeProfilePhoto(file);
+    saveState();
+    openOnboarding();
+    showToast('Фотография добавлена');
+  } catch {
+    showToast('Не удалось обработать фотографию');
+  }
+}
+
+function removeProfilePhoto() {
+  state.profilePhoto = '';
+  saveState();
+  openOnboarding();
+  showToast('Фотография удалена');
 }
 
 function finishOnboarding() {
@@ -2017,6 +2067,7 @@ document.addEventListener('click', async event => {
   if (action.dataset.action === 'start-game') startGame();
   if (action.dataset.action === 'rules') openRules();
   if (action.dataset.action === 'toggle-theme') toggleTheme();
+  if (action.dataset.action === 'remove-profile-photo') removeProfilePhoto();
   if (action.dataset.action === 'close-modal') modal.close();
   if (action.dataset.action === 'accept-welcome') acceptMinisterWelcome();
   if (action.dataset.action === 'finish-onboarding') finishOnboarding();
@@ -2035,6 +2086,8 @@ document.addEventListener('click', async event => {
 });
 
 document.addEventListener('change', event => {
+  const profilePhoto = event.target.closest('[data-profile-photo]');
+  if (profilePhoto) return setProfilePhoto(profilePhoto.files?.[0]);
   const input = event.target.closest('[data-file-upload]');
   if (input) storeFiles(input.dataset.fileUpload, input.files);
   const builderInput = event.target.closest('[data-event-builder]');
