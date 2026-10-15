@@ -226,15 +226,14 @@ const eventDirections = [
 ];
 
 const youthTracks = [
-  { id: 'grants', mark: '₽', title: 'Гранты', official: 'Росмолодёжь.Гранты', text: 'Превратить идею в проект с измеримым результатом.', mission: 'Возьмите одну молодёжную инициативу и сформулируйте проблему, аудиторию, результат и первый показатель.', prompts: ['Какую проблему решаем?', 'Что изменится для участника?', 'Чем подтвердим результат?'] },
-  { id: 'forums', mark: 'Ф', title: 'Форумы', official: 'Росмолодёжь.Форумы', text: 'Создавать образовательные события и сообщества.', mission: 'Спроектируйте один полезный контакт участника: с кем он познакомится и что сможет сделать после встречи.', prompts: ['Кого объединяем?', 'Какой опыт создаём?', 'Что будет после события?'] },
-  { id: 'good', mark: 'Д', title: 'Добро', official: 'Росмолодёжь.Добро', text: 'Организовать помощь, которая отвечает реальному запросу.', mission: 'Найдите потребность благополучателя и проверьте, что формат помощи согласован с ним, а не придуман за него.', prompts: ['Кому нужна помощь?', 'Что действительно требуется?', 'Как защитим участников?'] },
-  { id: 'patriot', mark: 'П', title: 'Патриот', official: 'Роспатриот', text: 'Работать с историей, памятью и ответственностью.', mission: 'Выберите локальную историю и придумайте действие, через которое молодой человек станет её исследователем, а не зрителем.', prompts: ['Какой факт проверяем?', 'Чей голос услышим?', 'Как сохраним память?'] },
-  { id: 'career', mark: 'К', title: 'Карьера', official: 'Росмолодёжь.Карьера', text: 'Помогать молодёжи находить профессиональный маршрут.', mission: 'Соберите микро-маршрут из трёх шагов: попробовать профессию, получить обратную связь, найти следующую возможность.', prompts: ['Какой навык нужен?', 'Где его попробовать?', 'Кто даст обратную связь?'] },
-  { id: 'business', mark: 'Б', title: 'Бизнес', official: 'Росмолодёжь.Бизнес', text: 'Развивать предпринимательское мышление и инициативу.', mission: 'Опишите ценность идеи одним предложением: для кого, какую задачу и почему именно этим способом она решает.', prompts: ['Кто пользователь?', 'В чём ценность?', 'Как проверить гипотезу?'] },
-  { id: 'creative', mark: 'КР', title: 'Креатив', official: 'Росмолодёжь.Креатив', text: 'Давать идеям форму и пространство для самовыражения.', mission: 'Проведите 15-минутную лабораторию: одна тема, три материала и никакой оценки до завершения первой версии.', prompts: ['Что вдохновляет?', 'Где свобода выбора?', 'Как показать результат?'] },
-  { id: 'tech', mark: 'Т', title: 'Технологии', official: 'Росмолодёжь.Технологии', text: 'Применять цифровые инструменты ради понятной пользы.', mission: 'Выберите один повторяющийся процесс и придумайте, как сократить в нём один ручной шаг без сбора лишних данных.', prompts: ['Что отнимает время?', 'Что можно упростить?', 'Какие данные защищаем?'] },
-  { id: 'world', mark: '+', title: 'Мир', official: 'Росмолодёжь.+World', text: 'Создавать международный диалог и обмен опытом.', mission: 'Сформулируйте тему, которая объединяет молодёжь разных территорий, и результат, понятный без перевода контекста.', prompts: ['Что нас объединяет?', 'Чем обмениваемся?', 'Как продолжим диалог?'] }
+  { id: 'grants', mark: '₽', title: 'Гранты', official: 'Росмолодёжь.Гранты', text: 'Превратить идею в проект с измеримым результатом.', url: 'https://fadm.gov.ru/directions/grant/' },
+  { id: 'forums', mark: 'Ф', title: 'Форумы', official: 'Росмолодёжь.Форумы', text: 'Создавать образовательные события и сообщества.', url: 'https://events.myrosmol.ru/' },
+  { id: 'good', mark: 'Д', title: 'Добро', official: 'Росмолодёжь.Добро', text: 'Организовать помощь, которая отвечает реальному запросу.', url: 'https://dobro.ru/?ysclid=mv97ndthda373232763' },
+  { id: 'patriot', mark: 'П', title: 'Патриот', official: 'Роспатриот', text: 'Работать с историей, памятью и ответственностью.', url: 'https://rospatriotcentr.ru/?ysclid=mv97pdxpnc183246650' },
+  { id: 'career', mark: 'К', title: 'Карьера', official: 'Росмолодёжь.Карьера', text: 'Помогать молодёжи находить профессиональный маршрут.', url: 'https://карьерамолодых.рф/' },
+  { id: 'business', mark: 'Б', title: 'Бизнес', official: 'Росмолодёжь.Бизнес', text: 'Развивать предпринимательское мышление и инициативу.', url: 'https://молодёжь-развивайся.рф/events' },
+  { id: 'profi', mark: 'ПР', title: 'Профи', official: 'Росмолодёжь.Профи', text: 'Развивать профессиональные компетенции и находить новые возможности.', url: 'https://молодёжь-развивайся.рф/events' },
+  { id: 'world', mark: '+', title: 'Мир', official: 'Росмолодёжь.Мир', text: 'Создавать международный диалог и обмен опытом.', url: 'https://fadm.gov.ru/directions/themed-tracks/rosmolodyezh-world/' }
 ];
 
 const workChallenges = [
@@ -716,6 +715,19 @@ function renderHome() {
   const calendarDate = formatRouteDate(dayIndex, true);
   content.innerHTML = `
     <section class="hero">
+      <div class="hero-landscape" aria-hidden="true">
+        <svg viewBox="0 0 1000 330" preserveAspectRatio="none">
+          <path class="hero-steppe" d="M0 279c121-18 210-7 319 2 132 11 214-15 342-5 123 10 208 29 339 4v50H0Z"/>
+          <path class="hero-terrikon hero-terrikon-far" d="M0 304h83l105-136 93 136h121l77-92 70 92h101l115-161 130 161h105v26H0Z"/>
+          <path class="hero-terrikon hero-terrikon-near" d="M0 315h143l73-76 69 76h227l91-94 80 94h317v15H0Z"/>
+          <g class="hero-mine">
+            <path d="m760 309 42-175h42l51 175h-23l-15-51h-72l-12 51Zm32-74h58l-28-76Z"/>
+            <path d="M813 134V91h20v43M779 76h88v15h-88zM790 76l33-35 34 35h-22l-12-13-13 13zM814 91h18v218h-18zM744 309h170v17H744z"/>
+            <circle cx="823" cy="78" r="20"/><circle class="hero-wheel-core" cx="823" cy="78" r="10"/>
+          </g>
+          <path class="hero-grass" d="m57 326 13-35 1 35 17-24-7 24m349 0 10-44 5 44 17-28-6 28m495 0 8-39 5 39 15-25-5 25"/>
+        </svg>
+      </div>
       <div class="hero-copy">
         <span class="eyebrow">Вы — часть большой системы</span>
         <h1>Добрый день${greeting}.</h1>
@@ -744,22 +756,9 @@ function renderHome() {
         <article class="daily-panel daily-reflection ${myDayTab === 'reflection' ? 'active' : ''}" data-my-day-panel="reflection"><span class="daily-panel-mark">Короткий вывод</span><small>${activeWeek.reflection}</small><label><span>Что сегодня стало понятнее?</span><textarea data-daily-reflection="${dayNumber}" rows="4" placeholder="Один результат, наблюдение или вопрос на завтра">${escapeHtml(reflection)}</textarea></label><div class="reflection-save-status" data-reflection-status>${reflection.trim() ? '✓ Сохранено' : 'Сохраняется автоматически'}</div></article>
       </div>
     </section>
-    <div class="section-head"><div><span class="eyebrow">Следующий шаг</span><h2>Сегодня в фокусе</h2><p>Короткие действия помогают быстрее войти в рабочий ритм.</p></div><button class="text-link" data-view="tasks">Все задания →</button></div>
-    <div class="dashboard-grid">
-      <article class="panel"><div class="panel-kicker">День ${dayNumber} из 90 · ${formatRouteDate(dayIndex)}</div><h3>${isTaskComplete('contacts') ? 'Узнайте задачи подразделения' : 'Познакомьтесь с руководителем и наставником'}</h3><p>${isTaskComplete('contacts') ? 'Уточните три приоритетные задачи на текущий период и ожидаемый результат вашей работы.' : 'Сохраните подтвержденные рабочие контакты и договоритесь, как лучше задавать вопросы в период адаптации.'}</p><ul class="check-list"><li>Используйте только рабочие каналы</li><li>Не передавайте через бот персональные данные</li><li>Зафиксируйте понятный следующий шаг</li></ul><button class="primary-button" data-view="tasks">Перейти к заданию</button></article>
-      <article class="panel">
-        <div class="panel-kicker">Быстрый доступ</div>
-        <div class="quick-grid">
-          <button class="quick-action" data-scenario="document"><span class="quick-icon">▤</span><b>Найти документ</b><small>Проверить источник и версию</small></button>
-          <button class="quick-action" data-scenario="letter"><span class="quick-icon">↗</span><b>Подготовить письмо</b><small>Алгоритм и самопроверка</small></button>
-          <button class="quick-action" data-scenario="term"><span class="quick-icon">А</span><b>Понять термин</b><small>Расшифровка в контексте</small></button>
-          <button class="quick-action" data-action="expert"><span class="quick-icon">?</span><b>Спросить человека</b><small>Для нестандартной ситуации</small></button>
-        </div>
-      </article>
-    </div>
     <section class="opportunity-zone">
-      <div class="section-head opportunity-head"><div><span class="eyebrow">Навигатор возможностей</span><h2>Выберите трек. Запустите действие.</h2><p>Направления на основе тематических треков Росмолодёжи — в прикладном формате для специалиста.</p></div><span class="opportunity-stamp">9 треков<br>1 миссия</span></div>
-      <div class="track-deck">${youthTracks.map((track, index) => `<button class="track-card track-${index + 1}" data-youth-track="${track.id}"><span class="track-index">${String(index + 1).padStart(2, '0')}</span><span class="track-mark">${track.mark}</span><small>${track.official}</small><strong>${track.title}</strong><p>${track.text}</p><span class="track-open">Открыть миссию ↗</span></button>`).join('')}</div>
+      <div class="section-head opportunity-head"><div><span class="eyebrow">Навигатор возможностей</span><h2>Выберите трек. Запустите действие.</h2><p>Официальные направления и возможности Росмолодёжи для специалистов и молодёжи.</p></div><span class="opportunity-stamp">8 треков<br>возможностей</span></div>
+      <div class="track-deck">${youthTracks.map((track, index) => `<a class="track-card track-${index + 1}" href="${track.url}" target="_blank" rel="noopener noreferrer"><span class="track-index">${String(index + 1).padStart(2, '0')}</span><span class="track-mark">${track.mark}</span><small>${track.official}</small><strong>${track.title}</strong><p>${track.text}</p><span class="track-open">Перейти на сайт ↗</span></a>`).join('')}</div>
     </section>`;
 }
 

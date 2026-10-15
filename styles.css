@@ -1,16 +1,16 @@
 :root {
-  --ink: #171715;
-  --muted: #6d675f;
-  --green: #12372e;
-  --green-2: #245345;
-  --red: #c82f32;
-  --lime: #c82f32;
-  --lime-soft: #f7dfdb;
-  --cream: #f1eadf;
-  --paper: #fffdf8;
-  --line: #d8cfc2;
-  --orange: #b3232a;
-  --shadow: 0 20px 60px rgba(28, 24, 20, .15);
+  --ink: #211f1c;
+  --muted: #746d63;
+  --green: #242421;
+  --green-2: #4b4a44;
+  --red: #d14a3f;
+  --lime: #d14a3f;
+  --lime-soft: #f2d8d1;
+  --cream: #171715;
+  --paper: #f6f0e5;
+  --line: #cfc3b2;
+  --orange: #b96338;
+  --shadow: 0 24px 70px rgba(0, 0, 0, .28);
   --sans: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
   --serif: "Palatino Linotype", "Book Antiqua", Georgia, serif;
 }
@@ -190,7 +190,7 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .opportunity-head h2 { max-width: 680px; font-size: clamp(28px, 4vw, 44px); }
 .opportunity-stamp { width: 92px; height: 92px; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid var(--red); border-radius: 50%; color: var(--red); font: 800 10px/1.3 var(--sans); letter-spacing: .08em; text-align: center; text-transform: uppercase; transform: rotate(7deg); }
 .track-deck { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.track-card { --track-color: var(--red); position: relative; min-height: 238px; padding: 18px; overflow: hidden; border: 1px solid var(--line); border-radius: 5px 22px 5px 22px; cursor: pointer; color: var(--ink); background: var(--paper); text-align: left; transition: transform .22s, box-shadow .22s, color .22s, background .22s; }
+.track-card { --track-color: var(--red); position: relative; min-height: 238px; padding: 18px; overflow: hidden; border: 1px solid var(--line); border-radius: 5px 22px 5px 22px; cursor: pointer; color: var(--ink); background: var(--paper); text-align: left; text-decoration: none; transition: transform .22s, box-shadow .22s, color .22s, background .22s; }
 .track-card::before { content: ''; position: absolute; right: -55px; top: -55px; width: 130px; height: 130px; border: 20px solid var(--track-color); border-radius: 50%; opacity: .12; transition: transform .3s, opacity .3s; }
 .track-card:hover { z-index: 2; color: #fff; background: var(--green); box-shadow: 0 18px 38px rgba(20,35,30,.2); transform: translateY(-6px) rotate(-.5deg); }
 .track-card:hover::before { opacity: .45; transform: scale(1.2); }
@@ -1052,4 +1052,141 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+}
+
+/* Угольная тема: индустриальный характер ЛНР */
+html { background: #171715; }
+body {
+  min-height: 100vh;
+  background-color: #171715;
+  background-image:
+    radial-gradient(circle at 78% 8%, rgba(209,74,63,.11), transparent 27%),
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+    repeating-linear-gradient(158deg, transparent 0 110px, rgba(255,255,255,.018) 111px 112px);
+  background-size: auto, 32px 32px, 32px 32px, auto;
+}
+
+.regional-landscape { position: fixed; z-index: 0; inset: auto 0 0 270px; height: min(35vw, 430px); min-height: 250px; overflow: hidden; pointer-events: none; }
+.regional-landscape::before { content: ''; position: absolute; right: 4%; bottom: 11%; width: 38vw; height: 2px; background: linear-gradient(90deg, transparent, rgba(209,74,63,.55), transparent); box-shadow: 0 0 28px rgba(209,74,63,.28); }
+.regional-landscape svg { width: 100%; height: 100%; display: block; }
+.landscape-haze { fill: rgba(95,89,78,.09); }
+.terrikon.far { fill: rgba(9,9,8,.28); }
+.terrikon.near { fill: rgba(8,8,7,.48); }
+.mine-silhouette { fill: rgba(7,7,6,.58); }
+.mine-silhouette .wheel-core { fill: #272622; }
+.steppe-line, .steppe-grass { fill: none; stroke: rgba(193,169,132,.18); stroke-width: 3; vector-effect: non-scaling-stroke; }
+.steppe-grass { stroke-width: 2; }
+
+.app-shell { position: relative; z-index: 1; }
+.workspace { position: relative; min-height: 100vh; background: linear-gradient(180deg, rgba(26,25,23,.34), rgba(20,20,18,.58)); }
+.sidebar {
+  border-right: 1px solid rgba(255,255,255,.08);
+  background-color: #141412;
+  background-image:
+    radial-gradient(circle at 20% 5%, rgba(209,74,63,.18), transparent 24%),
+    repeating-linear-gradient(155deg, transparent 0 45px, rgba(255,255,255,.025) 46px 47px),
+    linear-gradient(135deg, transparent 74%, rgba(255,255,255,.025) 74%);
+  box-shadow: 18px 0 55px rgba(0,0,0,.24);
+}
+.sidebar::after { content: ''; position: fixed; left: 0; bottom: 0; width: 270px; height: 95px; opacity: .38; background: #070706; clip-path: polygon(0 100%, 0 75%, 18% 75%, 38% 20%, 58% 75%, 70% 75%, 83% 47%, 100% 76%, 100% 100%); pointer-events: none; }
+.sidebar > * { position: relative; z-index: 1; }
+.brand small, .profile-top div > span, .progress-label, .support-link { color: #aaa69d; }
+.brand-mark { box-shadow: 0 0 0 5px rgba(209,74,63,.12), 0 12px 28px rgba(0,0,0,.28); }
+.profile-card { border-color: rgba(205,185,153,.17); background: rgba(255,255,255,.045); box-shadow: inset 0 1px rgba(255,255,255,.04); }
+.nav-item { color: #c3beb4; }
+.nav-item:hover { background: rgba(255,255,255,.075); }
+.nav-item.active { background: linear-gradient(135deg, #d14a3f, #a9322d); box-shadow: 0 11px 28px rgba(105,20,17,.34); }
+
+.topbar { position: sticky; z-index: 8; top: 0; border-color: rgba(255,255,255,.08); color: #f5efe5; background: rgba(20,20,18,.82); box-shadow: 0 10px 35px rgba(0,0,0,.13); backdrop-filter: blur(18px); }
+.topbar .status { color: #aaa59c; }
+.search-button { border-color: rgba(255,255,255,.11); color: #d1cbc1; background: rgba(255,255,255,.055); }
+.more-button { color: #e4ded4; }
+
+.content { position: relative; }
+.content::before { content: 'ТЕРРИТОРИЯ ХАРАКТЕРА'; position: fixed; z-index: -1; right: 28px; top: 44%; color: rgba(255,255,255,.032); font-size: clamp(38px, 6vw, 92px); font-weight: 900; letter-spacing: .13em; line-height: .85; text-align: right; writing-mode: vertical-rl; pointer-events: none; }
+.content > .page-title h1, .content > .page-title h2, .content > .page-title p { color: #f4eee3; }
+.content > .page-title p { color: #aaa49a; }
+.content > .page-title .eyebrow { color: #e06355; }
+.content > .page-title .route-summary b { color: #f4eee3; }
+.content > .page-title .route-summary span { color: #a9a398; }
+.content > .section-head h2, .content > .section-head p,
+.opportunity-head h2, .opportunity-head p,
+.values-heading h2, .values-heading p { color: #f4eee3; }
+.content > .section-head p, .opportunity-head p, .values-heading p { color: #aaa49a; }
+
+.hero {
+  border-color: rgba(213,193,160,.18);
+  background-color: #20201d;
+  background-image:
+    radial-gradient(circle at 88% 25%, rgba(209,74,63,.23), transparent 26%),
+    linear-gradient(155deg, transparent 68%, rgba(255,255,255,.04) 68%),
+    repeating-linear-gradient(35deg, transparent 0 35px, rgba(255,255,255,.018) 36px 37px);
+  box-shadow: 0 28px 80px rgba(0,0,0,.38), inset 0 1px rgba(255,255,255,.05);
+}
+.hero::before { content: 'ЛНР  ·  90 ДНЕЙ РОСТА'; position: absolute; left: 44px; bottom: 18px; color: rgba(255,255,255,.11); font-size: 8px; font-weight: 900; letter-spacing: .22em; }
+.hero::after { border-color: rgba(209,74,63,.32); }
+.hero-landscape { position: absolute; z-index: 0; inset: auto 0 0; height: 88%; overflow: hidden; pointer-events: none; }
+.hero-landscape svg { width: 100%; height: 100%; display: block; }
+.hero-steppe { fill: rgba(202,180,145,.12); }
+.hero-terrikon-far { fill: rgba(5,5,4,.38); }
+.hero-terrikon-near { fill: rgba(5,5,4,.72); }
+.hero-mine { fill: rgba(6,6,5,.84); }
+.hero-wheel-core { fill: #a13b33; }
+.hero-grass { fill: none; stroke: rgba(226,207,175,.37); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.hero p { color: #c8c3b9; }
+.orbit { border-color: rgba(225,207,179,.23); box-shadow: inset 0 0 60px rgba(0,0,0,.17), 0 0 80px rgba(209,74,63,.07); }
+.orbit::before { border-color: rgba(209,74,63,.72); }
+.bot-face { box-shadow: 10px 10px 0 #d8cdbb; }
+.orbit-dot { color: #242421; background: #e9dfcf; box-shadow: 0 6px 20px rgba(0,0,0,.28); }
+
+.daily-desk, .mission-compass, .panel, .task-card, .situation-card, .knowledge-card, .track-card,
+.task-week, .stage, .value-card, .admin-panel, .admin-metrics article, .saved-card, .npa-category, .npa-register {
+  border-color: #bfb19d;
+  background-color: var(--paper);
+  background-image: linear-gradient(145deg, rgba(255,255,255,.45), transparent 42%), radial-gradient(circle at 100% 0, rgba(184,99,56,.06), transparent 25%);
+  box-shadow: 0 14px 42px rgba(0,0,0,.2);
+}
+.daily-desk { box-shadow: 0 22px 58px rgba(0,0,0,.27); }
+.daily-tabs { background: #bfb19d; }
+.daily-tabs button { background: #e8dfd2; }
+.daily-tabs button.active, .mission-compass .active-mission { background: #292925; }
+.principle-panel { background-color: #1c1c1a; background-image: repeating-linear-gradient(155deg, transparent 0 48px, rgba(255,255,255,.025) 49px 50px); }
+.daily-desk-progress b, .daily-reflection label > span { color: #373632; }
+
+.mission-compass article > span { color: rgba(33,31,28,.13); }
+.mission-compass .active-mission { box-shadow: inset 5px 0 #d14a3f; }
+.mission-compass .active-mission p { color: #c9c3b9; }
+.opportunity-zone { position: relative; padding: 1px 0 8px; }
+.opportunity-zone::before { content: ''; position: absolute; z-index: -1; inset: 34px -24px -24px; border: 1px solid rgba(255,255,255,.055); border-radius: 8px 42px 8px 42px; background: rgba(0,0,0,.08); }
+.opportunity-stamp { border-color: #e06355; color: #e06355; box-shadow: 0 0 0 7px rgba(209,74,63,.08); }
+.track-card { box-shadow: 0 13px 38px rgba(0,0,0,.22); }
+.track-card:hover { color: #fff; border-color: rgba(255,255,255,.14); background: #242421; box-shadow: 0 23px 48px rgba(0,0,0,.38); }
+.track-card.track-2, .track-card.track-6 { --track-color: #242421; }
+.track-card.track-3, .track-card.track-8 { --track-color: #9a6b3d; }
+.track-card.track-4, .track-card.track-7 { --track-color: #8f302b; }
+.track-card.track-5 { --track-color: #5f6258; }
+
+.quote-stage { color: #f3ede2; border-color: rgba(230,217,196,.5); background: rgba(14,14,13,.35); }
+.quote-stage button { color: #e3d7c6; }
+.support-footer { border: 1px solid rgba(255,255,255,.08); background-color: #11110f; background-image: radial-gradient(circle at 20% 120%, rgba(209,74,63,.2), transparent 34%), repeating-linear-gradient(145deg, transparent 0 40px, rgba(255,255,255,.025) 41px 42px); box-shadow: 0 25px 70px rgba(0,0,0,.35); }
+.mascot-face { fill: #292925; }
+
+.modal { border-color: rgba(213,193,160,.35); background: #f6f0e5; box-shadow: 0 35px 100px rgba(0,0,0,.62); }
+.modal::backdrop { background: rgba(8,8,7,.78); backdrop-filter: blur(7px); }
+.toast { background: #292925; border: 1px solid rgba(255,255,255,.11); }
+
+@media (max-width: 900px) {
+  .regional-landscape { left: 0; height: 300px; opacity: .78; }
+  .workspace { background: linear-gradient(180deg, rgba(26,25,23,.42), rgba(20,20,18,.68)); }
+  .topbar { background: rgba(20,20,18,.9); }
+  .mobile-nav { border-color: rgba(213,193,160,.16); background: rgba(20,20,18,.95); box-shadow: 0 16px 42px rgba(0,0,0,.45); }
+}
+
+@media (max-width: 580px) {
+  .regional-landscape { height: 230px; opacity: .62; }
+  .content::before { display: none; }
+  .hero::before { left: 22px; bottom: 12px; font-size: 6px; }
+  .hero-landscape { right: -35%; width: 135%; height: 72%; opacity: .72; }
+  .opportunity-zone::before { right: -8px; left: -8px; }
 }
