@@ -436,6 +436,18 @@ const taskWeeks = [
 
 taskWeeks.push(...advancedTaskWeeks);
 
+const myrosmolTask = {
+  id: 'myrosmol-registration',
+  title: 'Зарегистрироваться на «Моя Россия»',
+  text: 'Создать профиль специалиста по молодёжной политике на myrosmol.ru',
+  tag: 'День 1',
+  deliverable: 'Активный профиль на сайте «Моя Россия»',
+  url: 'https://myrosmol.ru',
+  steps: ['Откройте официальный сайт «Моя Россия».', 'Зарегистрируйтесь или войдите через доступный способ авторизации.', 'Заполните основную информацию о себе и сфере деятельности.', 'Сохраните ссылку на профиль или сделайте скриншот подтверждения.']
+};
+taskWeeks.forEach(week => week.tasks.forEach(task => { task.tag = task.tag.replace(/День\s+(\d+)/, (_, day) => `День ${Number(day) + 1}`); }));
+taskWeeks[0].tasks.unshift(myrosmolTask);
+
 const weekValues = [
   { value: 'Причастность', motto: 'Я понимаю своё место в большой системе', forWhom: 'Для команды и молодых людей, которые обращаются в систему впервые.', mission: 'Увидеть связь своей роли с общей миссией молодёжной политики и научиться быть надёжной точкой входа.', youthResult: 'Молодой человек встречает специалиста, который понимает, куда направить запрос и как помочь сделать первый шаг.', reflection: 'Как моя роль помогает молодому человеку не потеряться в системе?' },
   { value: 'Ответственность', motto: 'Качественная работа создаёт доверие', forWhom: 'Для коллег, партнёров и молодёжи, чьи возможности зависят от точности решений.', mission: 'Работать с документами и договорённостями так, чтобы система действовала вовремя, понятно и предсказуемо.', youthResult: 'Решение не задерживается из-за ошибки, а обещания организации превращаются в реальные действия.', reflection: 'Чью возможность защищает качество подготовленного мной документа?' },
@@ -1164,6 +1176,7 @@ function renderTasks() {
   const unlocked = unlockedWeekIndex();
   content.innerHTML = `
     <div class="page-title"><div><span class="eyebrow">90-дневный маршрут · 13 недель</span><h1>Мои задания</h1><p>${completedCount()} из ${tasks.length} принято. Новые задания открываются последовательно по календарным дням.</p></div><div class="route-summary"><b>${progress()}%</b><span>общий прогресс</span></div></div>
+    <section class="myrosmol-reminder"><div class="myrosmol-reminder-mark">МР</div><div><span>Обязательный старт для команды</span><h2>Работаешь с молодёжью — будь в центре возможностей!</h2><p>Зарегистрируйся на <b>«Моя Россия»</b>, чтобы не пропускать проекты, обучение и возможности для тех, кто развивает молодёжную политику.</p></div><a href="https://myrosmol.ru" target="_blank" rel="noopener">Зарегистрироваться <i>↗</i></a></section>
     <div class="task-view-tabs"><button class="${tasksTab === 'route' ? 'active' : ''}" data-tasks-tab="route"><span>01</span><b>Маршрут 90 дней</b><small>Практические задания и результаты</small></button><button class="${tasksTab === 'mission' ? 'active' : ''}" data-tasks-tab="mission"><span>02</span><b>На своём ли вы месте?</b><small>Откройте свою профессиональную миссию</small></button></div>
     ${tasksTab === 'mission' ? renderMissionTest() : `<article class="game-banner"><div><span class="eyebrow">Интерактивная игра · Блок ${blockNumber + 1}</span><h2>«Маршрут решения»</h2><p>25 рабочих ситуаций, три варианта действий и один безопасный путь. Для специалистов подготовлено 10 разных тематических блоков.</p><span class="game-score">Лучший результат: ${bestResult} / 25</span></div><button class="primary-button" data-action="start-game">Начать игру</button></article>
     <div class="task-weeks">${taskWeeks.map((week, weekIndex) => {
