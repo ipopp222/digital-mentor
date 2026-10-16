@@ -28,8 +28,9 @@ jobs:
             local target_name="$2"
             local expected_md5="$3"
             local query href actual_md5
-            query=$(jq -rn --arg key "$public_url" --arg path "$base_path/$source_name" '$key|@uri + "&path=" + ($path|@uri)')
-            href=$(curl --fail --silent --show-error --retry 5 "https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=$query" | jq -r '.href')
+            public_key=$(jq -rn --arg key "$public_url" '$key|@uri')
+            encoded_path=$(jq -rn --arg path "$base_path/$source_name" '$path|@uri')
+            href=$(curl --fail --silent --show-error --retry 5 "https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=$public_key&path=$encoded_path" | jq -r '.href')
             curl --fail --location --silent --show-error --retry 5 --retry-all-errors "$href" -o "documents/standards/$target_name"
             actual_md5=$(md5sum "documents/standards/$target_name" | cut -d' ' -f1)
             test "$actual_md5" = "$expected_md5"
