@@ -5,37 +5,43 @@ const normativeDocuments = {
       type: 'Стандарт Росмолодёжи', number: 'СТ-01', registrationDate: '2023',
       title: 'Стандарт регионального органа исполнительной власти в сфере молодёжной политики',
       description: 'Методические материалы по стандарту деятельности региональных органов исполнительной власти в сфере молодёжной политики.',
-      sourceName: 'РМ стандарт РОИВ 06 2023.pdf', size: '1,9 МБ'
+      sourceName: 'РМ стандарт РОИВ 06 2023.pdf', size: '1,9 МБ',
+      file: 'documents/standards/regional-authority-standard-2023.pdf'
     },
     {
       type: 'Стандарт Росмолодёжи', number: 'СТ-02', registrationDate: 'Дата не указана',
       title: 'Стандарт учреждения молодёжной политики',
       description: 'Стандарт организации деятельности молодёжного центра.',
-      sourceName: 'Стандарт МЦ РМ ФИНАЛ.pdf', size: '2,8 МБ'
+      sourceName: 'Стандарт МЦ РМ ФИНАЛ.pdf', size: '2,8 МБ',
+      file: 'documents/standards/youth-institution-standard.pdf'
     },
     {
       type: 'Стандарт Росмолодёжи', number: 'СТ-03', registrationDate: 'Дата не указана',
       title: 'Стандарт модели реализации молодёжной политики в муниципальных образованиях',
       description: 'Материалы по организации молодёжной политики на муниципальном уровне.',
-      sourceName: 'Стандарт Муниципалитет.pdf', size: '2 МБ'
+      sourceName: 'Стандарт Муниципалитет.pdf', size: '2 МБ',
+      file: 'documents/standards/municipality-standard.pdf'
     },
     {
       type: 'Стандарт Росмолодёжи', number: 'СТ-04', registrationDate: '2023',
       title: 'Стандарт органа государственной власти субъекта Российской Федерации в сфере молодежной политики',
       description: 'Стандарт деятельности регионального органа исполнительной власти в сфере молодёжной политики.',
-      sourceName: 'Стандарт РОИВ РМ.pdf', size: '400 КБ'
+      sourceName: 'Стандарт РОИВ РМ.pdf', size: '400 КБ',
+      file: 'documents/standards/regional-authority-standard.pdf'
     },
     {
       type: 'Стандарт Росмолодёжи', number: 'СТ-05', registrationDate: '2021',
       title: 'Экосистема молодёжной политики. Инструкция по применению',
       description: 'Стандарт развития экосистемы молодёжной политики.',
-      sourceName: 'Стандарт Экосистема РМ 2021.pdf', size: '627 КБ'
+      sourceName: 'Стандарт Экосистема РМ 2021.pdf', size: '627 КБ',
+      file: 'documents/standards/youth-policy-ecosystem-standard-2021.pdf'
     },
     {
       type: 'Стандарт Росмолодёжи', number: 'СТ-06', registrationDate: 'Дата не указана',
       title: 'Студ.Пространство 24/7',
       description: 'Методические материалы и стандарт организации студенческих пространств.',
-      sourceName: 'Студ.пространства.pdf', size: '21,4 МБ'
+      sourceName: 'Студ.пространства.pdf', size: '21,4 МБ',
+      file: 'documents/standards/student-spaces-standard.pdf'
     }
   ],
   regional: [

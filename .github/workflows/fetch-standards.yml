@@ -1,0 +1,48 @@
+name: Fetch remaining standards
+
+on:
+  push:
+    paths:
+      - .github/workflows/fetch-standards.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download PDFs from the official public folder
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p documents/standards
+          public_url='https://disk.yandex.ru/d/JW3nCvxQlnlEQw'
+          base_path='/Рекомендации, справочные материалы/Стандарты'
+
+          download_file() {
+            local source_name="$1"
+            local target_name="$2"
+            local expected_md5="$3"
+            local query href actual_md5
+            query=$(jq -rn --arg key "$public_url" --arg path "$base_path/$source_name" '$key|@uri + "&path=" + ($path|@uri)')
+            href=$(curl --fail --silent --show-error --retry 5 "https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=$query" | jq -r '.href')
+            curl --fail --location --silent --show-error --retry 5 --retry-all-errors "$href" -o "documents/standards/$target_name"
+            actual_md5=$(md5sum "documents/standards/$target_name" | cut -d' ' -f1)
+            test "$actual_md5" = "$expected_md5"
+          }
+
+          download_file 'Стандарт МЦ РМ.pdf' 'youth-institution-standard.pdf' 'c8fdaeeb03bd2711f01e40f262385392'
+          download_file 'Стандарт Экосистема РМ 2021.pdf' 'youth-policy-ecosystem-standard-2021.pdf' 'c5f668c7b4103e70fd9a34d93fdf13ba'
+      - name: Publish downloaded PDFs
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/fetch-standards.yml
+          git add documents/standards
+          git commit -m 'Complete local standards library'
+          git push

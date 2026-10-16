@@ -1064,38 +1064,10 @@ function openSavedItem(id) {
   if (kind === 'file') return downloadFile(value);
 }
 
-const YANDEX_STANDARDS_PUBLIC_URL = 'https://disk.yandex.ru/d/JW3nCvxQlnlEQw';
-const YANDEX_STANDARDS_PATH = '/Рекомендации, справочные материалы/Стандарты';
-
-function standardPreviewUrl(fileName) {
-  return `${YANDEX_STANDARDS_PUBLIC_URL}/${encodeURIComponent('Рекомендации, справочные материалы')}/${encodeURIComponent('Стандарты')}/${encodeURIComponent(fileName)}`;
-}
-
-async function downloadYandexStandard(fileName, button) {
-  const original = button.innerHTML;
-  button.disabled = true;
-  button.innerHTML = '…<span>Подготовка</span>';
-  try {
-    const params = new URLSearchParams({ public_key: YANDEX_STANDARDS_PUBLIC_URL, path: `${YANDEX_STANDARDS_PATH}/${fileName}` });
-    const response = await fetch(`https://cloud-api.yandex.net/v1/disk/public/resources/download?${params}`);
-    if (!response.ok) throw new Error(`Yandex Disk: ${response.status}`);
-    const { href } = await response.json();
-    if (!href) throw new Error('Ссылка на загрузку не получена');
-    const link = document.createElement('a');
-    link.href = href;
-    link.download = fileName;
-    link.rel = 'noopener';
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    showToast('Скачивание документа началось');
-  } catch (error) {
-    window.open(standardPreviewUrl(fileName), '_blank', 'noopener');
-    showToast('Открыта страница документа — нажмите «Скачать» на Яндекс Диске');
-  } finally {
-    button.disabled = false;
-    button.innerHTML = original;
-  }
+function openStandardPreview(file, title) {
+  modal.className = 'modal pdf-viewer-dialog';
+  modalContent.innerHTML = `<div class="pdf-viewer"><header><div><span class="eyebrow">Стандарты Росмолодёжи</span><h2>${escapeHtml(title)}</h2></div><a href="${escapeHtml(file)}" download>↓ Скачать PDF</a></header><iframe src="${escapeHtml(file)}#view=FitH" title="${escapeHtml(title)}"></iframe><p>Если документ не отображается в браузере, <a href="${escapeHtml(file)}" target="_blank" rel="noopener">откройте PDF в новой вкладке</a>.</p></div>`;
+  if (!modal.open) modal.showModal();
 }
 
 function renderNormativeBase(scope = '', query = '') {
@@ -1115,11 +1087,10 @@ function renderNormativeBase(scope = '', query = '') {
   const categories = Object.entries(sections).map(([key, section]) => `<button class="npa-category ${activeScope === key ? 'active' : ''}" data-npa-scope="${key}"><span>${section.mark}</span><div><small>${section.short}</small><h2>${section.title}</h2><p>${normativeDocuments[key].length} документ(ов)</p></div><i>→</i></button>`).join('');
   const renderDocument = document => {
     const isStandard = activeScope === 'standards';
-    const fileUrl = isStandard ? standardPreviewUrl(document.sourceName) : document.file;
-    const downloadControl = isStandard
-      ? `<button data-standard-download="${escapeHtml(document.sourceName)}" title="Скачать PDF">↓<span>Скачать</span></button>`
-      : `<a href="${escapeHtml(fileUrl)}" download title="Скачать PDF">↓<span>Скачать</span></a>`;
-    return `<article class="npa-document"><div class="npa-document-copy"><div class="npa-document-meta"><span>№ ${escapeHtml(document.number)}</span><span>${isStandard ? 'Год / дата' : 'Дата документа'}: ${escapeHtml(document.registrationDate)}</span>${document.size ? `<span>PDF · ${escapeHtml(document.size)}</span>` : ''}</div><h3>${escapeHtml(document.title)}</h3>${document.description ? `<p>${escapeHtml(document.description)}</p>` : ''}${document.sourceName ? `<small class="npa-source-file">Исходный файл: ${escapeHtml(document.sourceName)}</small>` : ''}<div class="inline-save">${saveButton({ id: `npa:${activeScope}:${document.number}`, type: isStandard ? 'Стандарт Росмолодёжи' : 'НПА', title: document.title, text: `№ ${document.number} · ${document.registrationDate}`, target: `npa:${activeScope}:${document.number}` })}</div></div><div class="npa-document-actions"><a href="${escapeHtml(fileUrl)}" target="_blank" rel="noopener" title="Предварительно прочитать PDF">⌕<span>Читать</span></a>${downloadControl}</div></article>`;
+    const previewControl = isStandard
+      ? `<button data-standard-preview="${escapeHtml(document.file)}" data-standard-title="${escapeHtml(document.title)}" title="Читать PDF внутри сайта">⌕<span>Читать</span></button>`
+      : `<a href="${escapeHtml(document.file)}" target="_blank" rel="noopener" title="Предварительно прочитать PDF">⌕<span>Читать</span></a>`;
+    return `<article class="npa-document"><div class="npa-document-copy"><div class="npa-document-meta"><span>№ ${escapeHtml(document.number)}</span><span>${isStandard ? 'Год / дата' : 'Дата документа'}: ${escapeHtml(document.registrationDate)}</span>${document.size ? `<span>PDF · ${escapeHtml(document.size)}</span>` : ''}</div><h3>${escapeHtml(document.title)}</h3>${document.description ? `<p>${escapeHtml(document.description)}</p>` : ''}${document.sourceName ? `<small class="npa-source-file">Исходный файл: ${escapeHtml(document.sourceName)}</small>` : ''}<div class="inline-save">${saveButton({ id: `npa:${activeScope}:${document.number}`, type: isStandard ? 'Стандарт Росмолодёжи' : 'НПА', title: document.title, text: `№ ${document.number} · ${document.registrationDate}`, target: `npa:${activeScope}:${document.number}` })}</div></div><div class="npa-document-actions">${previewControl}<a href="${escapeHtml(document.file)}" download title="Скачать PDF">↓<span>Скачать</span></a></div></article>`;
   };
   const regionalGroups = [
     { title: 'Законы', type: 'Закон ЛНР' },
@@ -2276,8 +2247,8 @@ document.addEventListener('click', async event => {
   if (knowledgeButton) return openKnowledge(Number(knowledgeButton.dataset.knowledge));
   const npaScope = event.target.closest('[data-npa-scope]');
   if (npaScope) return renderNormativeBase(npaScope.dataset.npaScope);
-  const standardDownload = event.target.closest('[data-standard-download]');
-  if (standardDownload) return downloadYandexStandard(standardDownload.dataset.standardDownload, standardDownload);
+  const standardPreview = event.target.closest('[data-standard-preview]');
+  if (standardPreview) return openStandardPreview(standardPreview.dataset.standardPreview, standardPreview.dataset.standardTitle);
   if (event.target.closest('[data-npa-clear]')) return renderNormativeBase(document.getElementById('npaSearch')?.dataset.npaSearch || '');
   const industryButton = event.target.closest('[data-industry]');
   if (industryButton) return openIndustrySection(industryButton.dataset.industry);
@@ -2418,6 +2389,7 @@ modal.addEventListener('cancel', event => {
 });
 
 modal.addEventListener('close', () => {
+  modal.classList.remove('pdf-viewer-dialog');
   modal.classList.remove('structure-modal');
   modal.classList.remove('event-modal');
   modal.classList.remove('support-dialog');
