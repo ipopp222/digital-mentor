@@ -528,9 +528,9 @@ const municipalInstitutionData = [
   { title: 'МБУ «Алчевский молодежный центр»', city: 'городской округ город Алчевск', lead: 'Молодёжное пространство для общения, развития инициатив и реализации проектов.', special: 'alchevsk' },
   { title: 'МБУ «Стахановский многофункциональный молодежный центр «РЕКОРД»', city: 'городской округ город Стаханов', lead: 'Многофункциональная площадка для молодёжных команд, событий и полезных инициатив.' },
   { title: 'МБУ «Луганский городской молодежный центр «Юность»', city: 'городской округ город Луганск', lead: 'Городская площадка для образования, добровольчества, творчества и встреч молодёжи.' },
-  { title: 'МБУ «Центр молодежных инициатив «Гравитация»', city: 'муниципальное образование Краснодонский муниципальный округ', lead: 'Центр, где молодёжные идеи превращаются в проекты и реальные дела.', special: 'gravity' },
-  { title: 'Многофункциональный молодежный центр в городе Свердловске', city: 'городской округ город Свердловск', lead: 'Многофункциональная площадка для развития, общения и молодёжных инициатив.', special: 'sverdlovsk' }
+  { title: 'МБУ «Центр молодежных инициатив «Гравитация»', city: 'муниципальное образование Краснодонский муниципальный округ', lead: 'Центр, где молодёжные идеи превращаются в проекты и реальные дела.', special: 'gravity' }
 ];
+const sverdlovskInstitution = { title: 'Многофункциональный молодежный центр в городе Свердловске', city: 'городской округ город Свердловск', lead: 'Многофункциональная площадка для развития, общения и молодёжных инициатив.', special: 'sverdlovsk' };
 
 const plannedYouthCenters = ['город Первомайск', 'город Ровеньки', 'город Кировск', 'Белокуракинский муниципальный округ'];
 
@@ -1202,6 +1202,13 @@ function openIndustrySection(section) {
       body: renderMunicipalInstitutionBody(institution),
       fileKey: `industry:institution-${index}`
     }])),
+    'space-sverdlovsk': {
+      eyebrow: 'Молодёжное пространство без права юридического лица',
+      title: sverdlovskInstitution.title,
+      lead: sverdlovskInstitution.lead,
+      body: renderMunicipalInstitutionBody(sverdlovskInstitution),
+      fileKey: 'industry:space-sverdlovsk'
+    },
     municipal: {
       eyebrow: 'Органы местного самоуправления',
       title: 'Структурные подразделения ОМСУ',
@@ -1213,7 +1220,7 @@ function openIndustrySection(section) {
       eyebrow: 'Муниципальная инфраструктура',
       title: 'Учреждения и молодежные пространства',
       lead: 'Муниципальные учреждения подведомственны администрациям соответствующих городских и муниципальных округов.',
-      body: `<h3 class="structure-heading">Действующие муниципальные бюджетные учреждения</h3><div class="institution-list">${municipalInstitutionData.map((item, index) => `<button class="institution-tile" data-industry="institution-${index}"><span>МБУ</span><div><b>${item.title}</b><small>${item.city}</small><em>Открыть карточку <i>↗</i></em></div></button>`).join('')}</div><h3 class="structure-heading">Планируется создание в 2027 году</h3><div class="planned-grid">${plannedYouthCenters.map(place => `<article><span>2027</span><b>Новый молодежный центр</b><p>${place}</p></article>`).join('')}</div><h3 class="structure-heading">Пространства без права юридического лица</h3><div class="space-list">${youthSpaces.map((item, index) => `<article><span>${index + 1}</span><b>${item}</b></article>`).join('')}</div>`,
+      body: `<h3 class="structure-heading">Действующие муниципальные бюджетные учреждения</h3><div class="institution-list">${municipalInstitutionData.map((item, index) => `<button class="institution-tile" data-industry="institution-${index}"><span>МБУ</span><div><b>${item.title}</b><small>${item.city}</small><em>Открыть карточку <i>↗</i></em></div></button>`).join('')}</div><h3 class="structure-heading">Планируется создание в 2027 году</h3><div class="planned-grid">${plannedYouthCenters.map(place => `<article><span>2027</span><b>Новый молодежный центр</b><p>${place}</p></article>`).join('')}</div><h3 class="structure-heading">Пространства без права юридического лица</h3><div class="space-list">${youthSpaces.map((item, index) => index === 0 ? `<button class="institution-tile space-institution-tile" data-industry="space-sverdlovsk"><span>${index + 1}</span><div><b>${item}</b><small>городской округ город Свердловск</small><em>Открыть карточку <i>↗</i></em></div></button>` : `<article><span>${index + 1}</span><b>${item}</b></article>`).join('')}</div>`,
       fileKey: 'industry:institutions'
     },
     ngo: {
@@ -1226,7 +1233,7 @@ function openIndustrySection(section) {
   };
   const item = sections[section];
   if (!item) return;
-  modalContent.innerHTML = `<div class="modal-body structure-detail ${section === 'youth-house' || section === 'institution-0' || section === 'institution-3' || section === 'institution-4' ? 'youth-house-detail' : ''}"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body structure-detail ${section === 'youth-house' || section === 'institution-0' || section === 'institution-3' || section === 'institution-4' || section === 'space-sverdlovsk' ? 'youth-house-detail' : ''}"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
   modal.classList.add('structure-modal');
   if (!modal.open) modal.showModal();
   renderFilesArea(item.fileKey, state.isAdmin, 'Материалы раздела');
