@@ -575,14 +575,14 @@ const alchevskPhotoStart = youthHouseAllPhotos.length;
 const alchevskPhotos = alchevskSpaces.map(space => ({ src: `assets/municipal/alchevsk/${space.file}`, title: `Алчевский молодежный центр · ${space.title}` }));
 alchevskSpaces.forEach((space, index) => { space.photoIndex = alchevskPhotoStart + index; });
 const gravitySpaces = [
-  { title: 'Лекторий', note: 'Пространство для лекций, встреч и образовательных событий.', file: 'lecture.jpg' },
-  { title: 'Холл и зона навигации', note: 'Открытая зона центра с местами для отдыха и общения.', file: 'lobby.jpg' },
-  { title: 'Медиастудия', note: 'Площадка для съёмок, подкастов и творческого самовыражения.', file: 'media-studio.jpg' },
-  { title: 'Пространство Движения Первых', note: 'Место для патриотических инициатив и командных проектов.', file: 'first-movement.jpg' },
-  { title: 'Зона ресепшен', note: 'Точка встречи и первый ориентир для гостей центра.', file: 'reception.jpg' },
-  { title: 'Зона общения', note: 'Уютное пространство для разговоров, отдыха и новых знакомств.', file: 'lounge.jpg' },
-  { title: 'Компьютерная зона', note: 'Рабочие места для обучения, проектов и цифрового творчества.', file: 'computer-zone.jpg' },
-  { title: 'Игровая зона', note: 'Место для досуга, командных игр и неформального общения.', file: 'game-zone.jpg' }
+  { title: 'Пространство 1', note: 'Фотография пространства центра.', file: 'lecture.jpg' },
+  { title: 'Пространство 2', note: 'Фотография пространства центра.', file: 'lobby.jpg' },
+  { title: 'Пространство 3', note: 'Фотография пространства центра.', file: 'media-studio.jpg' },
+  { title: 'Пространство 4', note: 'Фотография пространства центра.', file: 'first-movement.jpg' },
+  { title: 'Пространство 5', note: 'Фотография пространства центра.', file: 'reception.jpg' },
+  { title: 'Пространство 6', note: 'Фотография пространства центра.', file: 'lounge.jpg' },
+  { title: 'Пространство 7', note: 'Фотография пространства центра.', file: 'computer-zone.jpg' },
+  { title: 'Пространство 8', note: 'Фотография пространства центра.', file: 'game-zone.jpg' }
 ];
 const gravityPhotoStart = alchevskPhotoStart + alchevskPhotos.length;
 const gravityPhotos = gravitySpaces.map(space => ({ src: `assets/municipal/gravity/${space.file}`, title: `ЦМИ «Гравитация» · ${space.title}` }));
