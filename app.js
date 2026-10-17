@@ -600,7 +600,7 @@ const vsksDirections = ['Подготовка добровольцев к дей
 const mgerDirections = ['Гуманитарная миссия', 'Волонтёрская помощь', 'Патриотические и памятные мероприятия', 'Политпросвещение молодёжи'];
 
 const ADMIN_NAME = 'Инесса Артющенко';
-const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', profilePhoto: '', stage: 'Первый день', completed: [], taskNotes: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, workshopDrafts: {}, workWeek: {}, workCalendar: {}, calendarSelected: '', missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
+const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', profilePhoto: '', stage: 'Первый день', completed: [], taskNotes: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, workshopDrafts: {}, workWeek: {}, workWeeks: {}, workCalendar: {}, calendarSelected: '', missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
 let state = loadState();
 let analytics = loadAnalytics();
 let currentView = 'home';
@@ -608,6 +608,7 @@ let game = null;
 let tasksTab = 'route';
 let myDayTab = 'task';
 let workCalendarCursor = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let workWeekCursor = new Date();
 
 const content = document.getElementById('appContent');
 const modal = document.getElementById('modal');
@@ -622,6 +623,10 @@ function loadState() {
     });
     loaded.completed = Object.entries(loaded.taskReviews).filter(([, review]) => review?.status === 'accepted' && review.reviewer).map(([id]) => id);
     loaded.savedItems = Array.isArray(loaded.savedItems) ? loaded.savedItems : [];
+    loaded.workWeeks = { ...(loaded.workWeeks || {}) };
+    if (Object.keys(loaded.workWeeks).length === 0 && Object.values(loaded.workWeek || {}).some(Boolean)) {
+      loaded.workWeeks[workWeekKey(new Date())] = loaded.workWeek;
+    }
     if (!loaded.userId) loaded.userId = crypto.randomUUID();
     if (loaded.onboarded && !loaded.startedAt) {
       try {
@@ -968,6 +973,25 @@ function formatRouteDate(dayIndex = mentorDayIndex(), long = false) {
   ).format(routeDayDate(dayIndex));
 }
 
+function startOfWorkWeek(date = new Date()) {
+  const result = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const day = (result.getDay() + 6) % 7;
+  result.setDate(result.getDate() - day);
+  return result;
+}
+
+function workWeekKey(date = new Date()) {
+  return localDateKey(startOfWorkWeek(date));
+}
+
+function workWeekLabel(date = new Date()) {
+  const start = startOfWorkWeek(date);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 6);
+  const format = value => new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(value);
+  return `${format(start)} — ${format(end)}`;
+}
+
 function localDateKey(date = new Date()) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -1002,10 +1026,13 @@ function renderWorkCalendar() {
 }
 
 function renderWorkshop() {
-  const week = state.workWeek || {};
+  workWeekCursor = startOfWorkWeek(workWeekCursor);
+  const weekKey = workWeekKey(workWeekCursor);
+  const week = state.workWeeks?.[weekKey] || {};
+  const isCurrentWeek = weekKey === workWeekKey(new Date());
   const today = localDateKey();
   if (!state.calendarSelected) state.calendarSelected = today;
-  content.innerHTML = `<div class="page-title workshop-title"><div><span class="eyebrow">Практика вместо теории</span><h1>Рабочая мастерская</h1><p>Соберите рабочий результат: мероприятие, проект, сопровождение инициативы или понятный итог.</p></div><div class="route-summary"><b>4</b><span>рабочих инструмента</span></div></div><section class="workshop-tools"><button class="workshop-tool event-tool" data-action="event-hub"><span>01</span><div><small>Оставляем знакомым</small><h2>Мероприятие</h2><p>Текущий конструктор «Организовать мероприятие»: от потребности и аудитории до сценария и результата.</p></div><b>↗</b></button><button class="workshop-tool" data-workshop-tool="project"><span>02</span><div><small>Собрать паспорт</small><h2>Проект</h2><p>Проблема, цель, команда, ресурсы, план и показатели — в одном рабочем черновике.</p></div><b>↗</b></button><button class="workshop-tool" data-workshop-tool="initiative"><span>03</span><div><small>Не потерять идею</small><h2>Инициатива</h2><p>Зафиксируйте запрос молодого человека и договоритесь о следующем шаге сопровождения.</p></div><b>↗</b></button><button class="workshop-tool" data-workshop-tool="result"><span>04</span><div><small>Показать эффект</small><h2>Результат</h2><p>Соберите факты, обратную связь и решение, что сохранить или изменить в следующий раз.</p></div><b>↗</b></button></section><section class="work-week"><header><div><span class="eyebrow">Отдельный конструктор</span><h2>Моя рабочая неделя</h2><p>Три приоритета и договорённости, которые действительно должны случиться.</p></div><span class="week-saved" data-week-status>Сохраняется автоматически</span></header><div class="work-week-grid"><label><span>Главный результат недели</span><input data-work-week="focus" value="${escapeHtml(week.focus || '')}" placeholder="Например: запустить набор волонтёров"></label><label><span>Три главные задачи</span><textarea data-work-week="priorities" rows="5" placeholder="1. ...\n2. ...\n3. ...">${escapeHtml(week.priorities || '')}</textarea></label><label><span>Встречи и договорённости</span><textarea data-work-week="meetings" rows="5" placeholder="С кем, о чём и к какому сроку">${escapeHtml(week.meetings || '')}</textarea></label><label><span>Что передать или попросить</span><textarea data-work-week="handoff" rows="5" placeholder="Коллеги, партнёры, руководитель">${escapeHtml(week.handoff || '')}</textarea></label></div></section>${renderWorkCalendar()}`;
+  content.innerHTML = `<div class="page-title workshop-title"><div><span class="eyebrow">Практика вместо теории</span><h1>Рабочая мастерская</h1><p>Соберите рабочий результат: мероприятие, проект, сопровождение инициативы или понятный итог.</p></div><div class="route-summary"><b>4</b><span>рабочих инструмента</span></div></div><section class="workshop-tools"><button class="workshop-tool event-tool" data-action="event-hub"><span>01</span><div><small>Оставляем знакомым</small><h2>Мероприятие</h2><p>Текущий конструктор «Организовать мероприятие»: от потребности и аудитории до сценария и результата.</p></div><b>↗</b></button><button class="workshop-tool" data-workshop-tool="project"><span>02</span><div><small>Собрать паспорт</small><h2>Проект</h2><p>Проблема, цель, команда, ресурсы, план и показатели — в одном рабочем черновике.</p></div><b>↗</b></button><button class="workshop-tool" data-workshop-tool="initiative"><span>03</span><div><small>Не потерять идею</small><h2>Инициатива</h2><p>Зафиксируйте запрос молодого человека и договоритесь о следующем шаге сопровождения.</p></div><b>↗</b></button><button class="workshop-tool" data-workshop-tool="result"><span>04</span><div><small>Показать эффект</small><h2>Результат</h2><p>Соберите факты, обратную связь и решение, что сохранить или изменить в следующий раз.</p></div><b>↗</b></button></section><section class="work-week"><header><div><span class="eyebrow">Отдельный конструктор</span><h2>Моя рабочая неделя</h2><p>Три приоритета и договорённости, которые действительно должны случиться.</p></div><div class="work-week-controls"><button data-week-prev aria-label="Предыдущая неделя">‹</button><strong>${workWeekLabel(workWeekCursor)}</strong><button data-week-next aria-label="Следующая неделя">›</button></div></header><div class="work-week-status"><span class="week-saved" data-week-status>${isCurrentWeek ? 'Текущая неделя' : 'Архивная неделя'}</span></div><div class="work-week-grid"><label><span>Главный результат недели</span><input data-work-week="focus" value="${escapeHtml(week.focus || '')}" placeholder="Например: запустить набор волонтёров"></label><label><span>Три главные задачи</span><textarea data-work-week="priorities" rows="5" placeholder="1. ...\n2. ...\n3. ...">${escapeHtml(week.priorities || '')}</textarea></label><label><span>Встречи и договорённости</span><textarea data-work-week="meetings" rows="5" placeholder="С кем, о чём и к какому сроку">${escapeHtml(week.meetings || '')}</textarea></label><label><span>Что передать или попросить</span><textarea data-work-week="handoff" rows="5" placeholder="Коллеги, партнёры, руководитель">${escapeHtml(week.handoff || '')}</textarea></label></div></section>${renderWorkCalendar()}`;
 }
 
 const workshopToolData = {
@@ -2374,6 +2401,8 @@ document.addEventListener('click', async event => {
   if (workshopTool) return openWorkshopTool(workshopTool.dataset.workshopTool);
   if (event.target.closest('[data-calendar-prev]')) { workCalendarCursor = new Date(workCalendarCursor.getFullYear(), workCalendarCursor.getMonth() - 1, 1); return renderWorkshop(); }
   if (event.target.closest('[data-calendar-next]')) { workCalendarCursor = new Date(workCalendarCursor.getFullYear(), workCalendarCursor.getMonth() + 1, 1); return renderWorkshop(); }
+  if (event.target.closest('[data-week-prev]')) { workWeekCursor = new Date(workWeekCursor.getFullYear(), workWeekCursor.getMonth(), workWeekCursor.getDate() - 7); return renderWorkshop(); }
+  if (event.target.closest('[data-week-next]')) { workWeekCursor = new Date(workWeekCursor.getFullYear(), workWeekCursor.getMonth(), workWeekCursor.getDate() + 7); return renderWorkshop(); }
   const calendarDate = event.target.closest('[data-calendar-date]');
   if (calendarDate) { state.calendarSelected = calendarDate.dataset.calendarDate; saveState(); return renderWorkshop(); }
   const eventDirection = event.target.closest('[data-event-direction]');
@@ -2504,10 +2533,11 @@ document.addEventListener('input', event => {
   }
   const weekInput = event.target.closest('[data-work-week]');
   if (weekInput) {
-    state.workWeek = { ...(state.workWeek || {}), [weekInput.dataset.workWeek]: weekInput.value };
+    const key = workWeekKey(workWeekCursor);
+    state.workWeeks = { ...(state.workWeeks || {}), [key]: { ...(state.workWeeks?.[key] || {}), [weekInput.dataset.workWeek]: weekInput.value } };
     localStorage.setItem('digitalMentorState', JSON.stringify(state));
     const status = document.querySelector('[data-week-status]');
-    if (status) status.textContent = '✓ Сохранено на этом устройстве';
+    if (status) status.textContent = '✓ Сохранено';
     return;
   }
   const calendarInput = event.target.closest('[data-calendar-field]');
@@ -2597,12 +2627,4 @@ scheduleCalendarRefresh();
 renderMascotMessages();
 scheduleDailyMascotGreeting();
 if (!state.onboarded) setTimeout(state.welcomeSeen ? openOnboarding : openMinisterWelcome, 250);
-
-
-
-
-
-
-
-
 

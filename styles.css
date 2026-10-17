@@ -947,6 +947,10 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .work-week p, .work-calendar-head p { margin: 0; color: #b5c5be; font-size: 9px; }
 .work-week .eyebrow, .work-calendar .eyebrow { color: var(--lime); }
 .week-saved { color: #bdd2c9; font-size: 8px; }
+.work-week-controls { display: flex; align-items: center; gap: 8px; }
+.work-week-controls strong { min-width: 150px; color: var(--lime); font: 700 12px var(--serif); text-align: center; }
+.work-week-controls button { width: 27px; height: 27px; border: 1px solid rgba(255,255,255,.2); border-radius: 50%; cursor: pointer; color: #fff; background: rgba(255,255,255,.08); font-size: 18px; }
+.work-week-status { min-height: 14px; margin-top: 10px; }
 .work-week-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
 .work-week-grid label, .workshop-form label, .calendar-note-panel label { display: block; }
 .work-week-grid label:first-child { grid-column: 1 / -1; }
