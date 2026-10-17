@@ -600,13 +600,14 @@ const vsksDirections = ['Подготовка добровольцев к дей
 const mgerDirections = ['Гуманитарная миссия', 'Волонтёрская помощь', 'Патриотические и памятные мероприятия', 'Политпросвещение молодёжи'];
 
 const ADMIN_NAME = 'Инесса Артющенко';
-const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', profilePhoto: '', stage: 'Первый день', completed: [], taskNotes: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
+const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', profilePhoto: '', stage: 'Первый день', completed: [], taskNotes: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, workshopDrafts: {}, workWeek: {}, workCalendar: {}, calendarSelected: '', missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
 let state = loadState();
 let analytics = loadAnalytics();
 let currentView = 'home';
 let game = null;
 let tasksTab = 'route';
 let myDayTab = 'task';
+let workCalendarCursor = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 
 const content = document.getElementById('appContent');
 const modal = document.getElementById('modal');
@@ -782,6 +783,7 @@ function setView(view) {
   if (view === 'home') renderHome();
   if (view === 'route') renderRoute();
   if (view === 'situations') renderSituations();
+  if (view === 'workshop') renderWorkshop();
   if (view === 'knowledge') renderKnowledge();
   if (view === 'tasks') renderTasks();
   if (view === 'saved') renderSaved();
@@ -847,7 +849,7 @@ function renderHome() {
       </nav>
       <div class="daily-panels">
         <article class="daily-panel task-panel ${myDayTab === 'task' ? 'active' : ''}" data-my-day-panel="task"><span class="daily-panel-mark">Главное действие</span><small>${isCalendarTask ? `День ${dayNumber} · Итоговая практика` : `${dailyTask.tag} · Неделя ${dailyTask.week + 1}`}</small><h2>${dailyTask.title}</h2><p>${dailyTask.text}</p><button class="primary-button ${dailyTaskDone ? 'done' : ''}" ${isCalendarTask ? `data-action="complete-calendar-task" data-day="${dayNumber}"` : `data-task-open="${dailyTask.id}"`}>${isCalendarTask ? (dailyTaskDone ? '✓ Практика выполнена' : 'Отметить выполненным') : (dailyTaskDone ? 'Посмотреть результат' : 'Открыть задание')}</button></article>
-        <article class="daily-panel principle-panel ${myDayTab === 'principle' ? 'active' : ''}" data-my-day-panel="principle"><span class="daily-panel-mark">Принцип наставника № ${String(dayNumber).padStart(2, '0')}</span><blockquote>${mentorPrinciples[dayIndex]}</blockquote><button class="daily-panel-link" data-view="situations">Все принципы и рабочие ситуации →</button></article>
+        <article class="daily-panel principle-panel ${myDayTab === 'principle' ? 'active' : ''}" data-my-day-panel="principle"><span class="daily-panel-mark">Принцип наставника № ${String(dayNumber).padStart(2, '0')}</span><blockquote>${mentorPrinciples[dayIndex]}</blockquote><button class="daily-panel-link" data-view="workshop">Открыть рабочую мастерскую →</button></article>
         <article class="daily-panel daily-mission ${myDayTab === 'mission' ? 'active' : ''}" data-my-day-panel="mission"><div class="daily-panel-top"><span class="daily-panel-mark">Кейс-миссия для новичка</span><button data-action="new-challenge">Другая миссия ↻</button></div><div class="daily-challenge" id="challengeCard" data-index="${challengeIndex}"><span>${challenge.tag}</span><h2>${challenge.title}</h2><p>${challenge.text}</p><i>${String(challengeIndex + 1).padStart(2, '0')} / ${String(workChallenges.length).padStart(2, '0')}</i></div><button class="mission-complete-button ${missionDone ? 'done' : ''}" data-action="complete-daily-mission" data-day="${dayNumber}">${missionDone ? '✓ Миссия выполнена' : 'Отметить миссию выполненной'}</button></article>
         <article class="daily-panel daily-reflection ${myDayTab === 'reflection' ? 'active' : ''}" data-my-day-panel="reflection"><span class="daily-panel-mark">Короткий вывод</span><small>${activeWeek.reflection}</small><label><span>Что сегодня стало понятнее?</span><textarea data-daily-reflection="${dayNumber}" rows="4" placeholder="Один результат, наблюдение или вопрос на завтра">${escapeHtml(reflection)}</textarea></label><div class="reflection-save-status" data-reflection-status>${reflection.trim() ? '✓ Сохранено' : 'Сохраняется автоматически'}</div></article>
       </div>
@@ -964,6 +966,61 @@ function formatRouteDate(dayIndex = mentorDayIndex(), long = false) {
     ? { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' }
     : { day: '2-digit', month: '2-digit', year: 'numeric' }
   ).format(routeDayDate(dayIndex));
+}
+
+function localDateKey(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function workshopDateLabel(key) {
+  return new Intl.DateTimeFormat('ru-RU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${key}T12:00:00`));
+}
+
+function calendarCellMarkup(date) {
+  const key = localDateKey(date);
+  const item = state.workCalendar?.[key] || {};
+  const selected = (state.calendarSelected || localDateKey()) === key;
+  const today = key === localDateKey();
+  return `<button class="work-calendar-day ${selected ? 'selected' : ''} ${today ? 'today' : ''} ${item.important ? 'important' : ''} ${item.note || item.title ? 'has-note' : ''}" data-calendar-date="${key}"><b>${date.getDate()}</b>${item.title ? `<span>${escapeHtml(item.title)}</span>` : ''}</button>`;
+}
+
+function renderWorkCalendar() {
+  const year = workCalendarCursor.getFullYear();
+  const month = workCalendarCursor.getMonth();
+  const first = new Date(year, month, 1);
+  const days = new Date(year, month + 1, 0).getDate();
+  const offset = (first.getDay() + 6) % 7;
+  const cells = [];
+  for (let i = 0; i < offset; i += 1) cells.push('<span class="work-calendar-empty"></span>');
+  for (let day = 1; day <= days; day += 1) cells.push(calendarCellMarkup(new Date(year, month, day)));
+  const selected = state.calendarSelected || localDateKey();
+  const note = state.workCalendar?.[selected] || {};
+  return `<section class="work-calendar"><header class="work-calendar-head"><div><span class="eyebrow">Живой рабочий календарь</span><h2>Планируйте по настоящим датам</h2><p>Откройте 20 октября — здесь будет именно 20 октября, а не абстрактный день маршрута.</p></div><div class="calendar-switch"><button data-calendar-prev aria-label="Предыдущий месяц">‹</button><strong>${new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' }).format(first)}</strong><button data-calendar-next aria-label="Следующий месяц">›</button></div></header><div class="work-calendar-layout"><div><div class="work-calendar-weekdays">${['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(day => `<span>${day}</span>`).join('')}</div><div class="work-calendar-grid">${cells.join('')}</div></div><aside class="calendar-note-panel"><span class="eyebrow">${workshopDateLabel(selected)}</span><h3>Заметка на день</h3><label><span>Подпись даты</span><input data-calendar-field="title" value="${escapeHtml(note.title || '')}" placeholder="Например: встреча с партнёрами"></label><label><span>Рабочая заметка</span><textarea data-calendar-field="note" rows="5" placeholder="Что важно не забыть в этот день?">${escapeHtml(note.note || '')}</textarea></label><label class="calendar-important"><input type="checkbox" data-calendar-field="important" ${note.important ? 'checked' : ''}><span>Выделить дату как важную</span></label><small class="calendar-save-status" data-calendar-status>${note.title || note.note || note.important ? '✓ Сохранено на этом устройстве' : 'Заполните заметку — она сохранится автоматически'}</small></aside></div></section>`;
+}
+
+function renderWorkshop() {
+  const week = state.workWeek || {};
+  const today = localDateKey();
+  if (!state.calendarSelected) state.calendarSelected = today;
+  content.innerHTML = `<div class="page-title workshop-title"><div><span class="eyebrow">Практика вместо теории</span><h1>Рабочая мастерская</h1><p>Соберите рабочий результат: мероприятие, проект, сопровождение инициативы или понятный итог.</p></div><div class="route-summary"><b>4</b><span>рабочих инструмента</span></div></div><section class="workshop-tools"><button class="workshop-tool event-tool" data-action="event-hub"><span>01</span><div><small>Оставляем знакомым</small><h2>Мероприятие</h2><p>Текущий конструктор «Организовать мероприятие»: от потребности и аудитории до сценария и результата.</p></div><b>↗</b></button><button class="workshop-tool" data-workshop-tool="project"><span>02</span><div><small>Собрать паспорт</small><h2>Проект</h2><p>Проблема, цель, команда, ресурсы, план и показатели — в одном рабочем черновике.</p></div><b>↗</b></button><button class="workshop-tool" data-workshop-tool="initiative"><span>03</span><div><small>Не потерять идею</small><h2>Инициатива</h2><p>Зафиксируйте запрос молодого человека и договоритесь о следующем шаге сопровождения.</p></div><b>↗</b></button><button class="workshop-tool" data-workshop-tool="result"><span>04</span><div><small>Показать эффект</small><h2>Результат</h2><p>Соберите факты, обратную связь и решение, что сохранить или изменить в следующий раз.</p></div><b>↗</b></button></section><section class="work-week"><header><div><span class="eyebrow">Отдельный конструктор</span><h2>Моя рабочая неделя</h2><p>Три приоритета и договорённости, которые действительно должны случиться.</p></div><span class="week-saved" data-week-status>Сохраняется автоматически</span></header><div class="work-week-grid"><label><span>Главный результат недели</span><input data-work-week="focus" value="${escapeHtml(week.focus || '')}" placeholder="Например: запустить набор волонтёров"></label><label><span>Три главные задачи</span><textarea data-work-week="priorities" rows="5" placeholder="1. ...\n2. ...\n3. ...">${escapeHtml(week.priorities || '')}</textarea></label><label><span>Встречи и договорённости</span><textarea data-work-week="meetings" rows="5" placeholder="С кем, о чём и к какому сроку">${escapeHtml(week.meetings || '')}</textarea></label><label><span>Что передать или попросить</span><textarea data-work-week="handoff" rows="5" placeholder="Коллеги, партнёры, руководитель">${escapeHtml(week.handoff || '')}</textarea></label></div></section>${renderWorkCalendar()}`;
+}
+
+const workshopToolData = {
+  project: { label: 'Конструктор проекта', title: 'Соберите паспорт проекта', intro: 'Заполните основу, чтобы идею можно было обсуждать с командой и партнёрами.', fields: [['problem', 'Проблема или запрос', 'textarea', 'Что сейчас не работает или чего не хватает?'], ['audience', 'Для кого проект', 'input', 'Конкретная группа молодых людей'], ['goal', 'Цель проекта', 'textarea', 'Какое изменение должно произойти?'], ['team', 'Команда и партнёры', 'textarea', 'Кто нужен для запуска?'], ['resources', 'Ресурсы', 'textarea', 'Площадка, бюджет, люди, оборудование'], ['plan', 'Первые шаги и сроки', 'textarea', 'Что сделаем сначала, затем и к какой дате?'], ['indicators', 'Как поймём результат', 'textarea', '2–3 наблюдаемых показателя']] },
+  initiative: { label: 'Карточка инициативы', title: 'Сопроводите идею до следующего шага', intro: 'Здесь не нужно сразу превращать идею в большой проект. Сначала поймите запрос и договоритесь о действии.', fields: [['author', 'Кто предложил идею', 'input', 'Имя или команда'], ['request', 'Что человек хочет изменить', 'textarea', 'Сформулируйте запрос его словами'], ['support', 'Какая поддержка нужна', 'textarea', 'Контакт, площадка, эксперт, информация или команда'], ['next', 'Следующий шаг и дата', 'textarea', 'О чём договорились?']] },
+  result: { label: 'Фиксация результата', title: 'Покажите, что изменилось', intro: 'Короткая фиксация помогает не потерять эффект и принять решение о следующем цикле работы.', fields: [['activity', 'Что сделали', 'textarea', 'Событие, проект или действие'], ['participants', 'Кто и сколько участвовал', 'input', 'Количество и важные группы'], ['change', 'Что изменилось', 'textarea', 'Факт, навык, контакт, инициатива или решение'], ['feedback', 'Обратная связь', 'textarea', 'Что сказали или показали участники'], ['next', 'Что сохранить или изменить', 'textarea', 'Следующий шаг команды']] }
+};
+
+function openWorkshopTool(kind) {
+  const tool = workshopToolData[kind];
+  if (!tool) return;
+  const draft = state.workshopDrafts?.[kind] || {};
+  modalContent.innerHTML = `<div class="modal-body workshop-tool-modal"><span class="eyebrow">${tool.label}</span><h2>${tool.title}</h2><p class="modal-lead">${tool.intro}</p><div class="workshop-form">${tool.fields.map(([key, label, type, placeholder]) => `<label><span>${label}</span>${type === 'textarea' ? `<textarea rows="3" data-workshop-draft="${kind}" data-workshop-field="${key}" placeholder="${placeholder}">${escapeHtml(draft[key] || '')}</textarea>` : `<input data-workshop-draft="${kind}" data-workshop-field="${key}" value="${escapeHtml(draft[key] || '')}" placeholder="${placeholder}">`}</label>`).join('')}</div><div class="workshop-output"><span>Рабочая подсказка</span><b>${kind === 'project' ? 'Когда поля заполнены, у вас есть основа паспорта проекта для обсуждения.' : kind === 'initiative' ? 'Следующий шаг важнее идеального оформления: зафиксируйте, кто и что делает.' : 'Результат — это не только количество участников, а конкретное изменение для молодого человека.'}</b></div><div class="button-row"><button class="secondary-button dark" data-action="close-modal">Закрыть</button></div></div>`;
+  modal.classList.add('workshop-modal');
+  if (!modal.open) modal.showModal();
 }
 
 function scheduleCalendarRefresh() {
@@ -2231,13 +2288,13 @@ function mascotAnswer(message) {
   if (/профил|фото|аватар/.test(normalized)) return { text: 'В профиле можно изменить имя, организацию, место работы и фотографию. Фото хранится только в этом браузере.', actions: [{ type: 'profile', value: '', label: 'Открыть профиль' }] };
   if (/темн|светл|тем[ау] сайта|цветов/.test(normalized)) return { text: 'На сайте доступны графитовая и светлая темы. Выбор сохраняется в браузере.', actions: [{ type: 'theme', value: '', label: 'Переключить тему' }] };
   if (/провер|принято|отправ/.test(normalized)) return { text: 'Добавьте заметку или документ к заданию и нажмите «Отправить на проверку». После решения администратора появится статус «Принято» или «Не выполнено».', actions: [{ type: 'view', value: 'tasks', label: 'Перейти к заданиям' }] };
-  if (/помощ|умеешь|можешь|кто ты/.test(normalized)) return { text: 'Я анализирую запрос свободной формы, учитываю ваш день и прогресс, ищу подходящие задания, термины, рабочие алгоритмы, мероприятия и направления, а затем могу открыть нужный раздел. Также помогу разложить рабочую задачу на понятные шаги.', actions: [{ type: 'view', value: 'knowledge', label: 'База знаний' }, { type: 'view', value: 'situations', label: 'Рабочие ситуации' }] };
+  if (/помощ|умеешь|можешь|кто ты/.test(normalized)) return { text: 'Я анализирую запрос свободной формы, учитываю ваш день и прогресс, ищу подходящие задания, термины, рабочие алгоритмы, мероприятия и направления, а затем могу открыть нужный раздел. Также помогу разложить рабочую задачу на понятные шаги.', actions: [{ type: 'view', value: 'knowledge', label: 'База знаний' }, { type: 'view', value: 'workshop', label: 'Рабочая мастерская' }] };
   if (/специалист|человек|эксперт/.test(normalized)) return { text: 'Для решения с правовыми, финансовыми, кадровыми или персональными данными нужен ответственный специалист. Я помогу сформулировать вопрос и найти рабочий алгоритм.', actions: [{ type: 'expert', value: message, label: 'Спросить специалиста' }] };
   if (/найти.*(материал|раздел|сайт)|где.*(материал|информац)/.test(normalized)) return { text: 'Опишите тему или название документа — я выполню поиск по заданиям, рабочим алгоритмам, глоссарию, структуре и направлениям. Можно начать с «Базы знаний».', actions: [{ type: 'view', value: 'knowledge', label: 'Открыть базу знаний' }] };
   const knowledgeMatch = searchMascotKnowledge(message);
   if (knowledgeMatch) return knowledgeMatch;
   if (/напис|состав|подготов.*текст|формулир/.test(normalized)) return { text: 'Помогу подготовить текст. Укажите адресата, цель, желаемый результат, срок и факты, которые обязательно нужно сохранить. Без служебных и персональных данных. После этого я предложу структуру и черновую формулировку.', actions: [{ type: 'scenario', value: 'letter', label: 'Алгоритм официального письма' }] };
-  if (/иде|придум|вариант|мозгов/.test(normalized)) return { text: 'Давайте найдём варианты. Сначала обозначьте аудиторию, проблему, ограничения и желаемое изменение. Затем я помогу собрать три идеи: надёжную, смелую и минимальную для быстрого теста.', actions: [{ type: 'view', value: 'situations', label: 'Открыть рабочие ситуации' }] };
+  if (/иде|придум|вариант|мозгов/.test(normalized)) return { text: 'Давайте найдём варианты. Сначала обозначьте аудиторию, проблему, ограничения и желаемое изменение. Затем я помогу собрать три идеи: надёжную, смелую и минимальную для быстрого теста.', actions: [{ type: 'view', value: 'workshop', label: 'Открыть рабочую мастерскую' }] };
   return { text: 'Я готов помочь, но мне не хватает контекста. Уточните: какой результат нужен, для кого, к какому сроку и что уже пробовали. Я сопоставлю ответ с материалами сайта или предложу безопасный следующий шаг. Для внешней темы можно воспользоваться поиском.', actions: [{ type: 'external', value: `https://yandex.ru/search/?text=${encodeURIComponent(message)}`, label: 'Искать в интернете' }] };
 }
 
@@ -2313,6 +2370,12 @@ document.addEventListener('click', async event => {
   if (tasksTabButton) { tasksTab = tasksTabButton.dataset.tasksTab; return renderTasks(); }
   const scenarioButton = event.target.closest('[data-scenario]');
   if (scenarioButton) return openScenario(scenarioButton.dataset.scenario);
+  const workshopTool = event.target.closest('[data-workshop-tool]');
+  if (workshopTool) return openWorkshopTool(workshopTool.dataset.workshopTool);
+  if (event.target.closest('[data-calendar-prev]')) { workCalendarCursor = new Date(workCalendarCursor.getFullYear(), workCalendarCursor.getMonth() - 1, 1); return renderWorkshop(); }
+  if (event.target.closest('[data-calendar-next]')) { workCalendarCursor = new Date(workCalendarCursor.getFullYear(), workCalendarCursor.getMonth() + 1, 1); return renderWorkshop(); }
+  const calendarDate = event.target.closest('[data-calendar-date]');
+  if (calendarDate) { state.calendarSelected = calendarDate.dataset.calendarDate; saveState(); return renderWorkshop(); }
   const eventDirection = event.target.closest('[data-event-direction]');
   if (eventDirection) return openEventDirection(eventDirection.dataset.eventDirection);
   const eventBuilderTab = event.target.closest('[data-event-builder-tab]');
@@ -2432,6 +2495,33 @@ document.addEventListener('input', event => {
   if (npaSearch) return renderNormativeBase(npaSearch.dataset.npaSearch, npaSearch.value);
   const builderInput = event.target.closest('[data-event-builder]');
   if (builderInput) return updateEventBuilder(builderInput);
+  const workshopInput = event.target.closest('[data-workshop-draft]');
+  if (workshopInput) {
+    const kind = workshopInput.dataset.workshopDraft;
+    state.workshopDrafts = { ...(state.workshopDrafts || {}), [kind]: { ...(state.workshopDrafts?.[kind] || {}), [workshopInput.dataset.workshopField]: workshopInput.value } };
+    saveState();
+    return;
+  }
+  const weekInput = event.target.closest('[data-work-week]');
+  if (weekInput) {
+    state.workWeek = { ...(state.workWeek || {}), [weekInput.dataset.workWeek]: weekInput.value };
+    localStorage.setItem('digitalMentorState', JSON.stringify(state));
+    const status = document.querySelector('[data-week-status]');
+    if (status) status.textContent = '✓ Сохранено на этом устройстве';
+    return;
+  }
+  const calendarInput = event.target.closest('[data-calendar-field]');
+  if (calendarInput) {
+    const key = state.calendarSelected || localDateKey();
+    const current = state.workCalendar?.[key] || {};
+    state.workCalendar = { ...(state.workCalendar || {}), [key]: { ...current, [calendarInput.dataset.calendarField]: calendarInput.type === 'checkbox' ? calendarInput.checked : calendarInput.value } };
+    localStorage.setItem('digitalMentorState', JSON.stringify(state));
+    const status = document.querySelector('[data-calendar-status]');
+    if (status) status.textContent = '✓ Сохранено на этом устройстве';
+    const day = document.querySelector(`[data-calendar-date="${key}"]`);
+    if (day) { day.classList.toggle('important', Boolean(state.workCalendar[key].important)); day.classList.toggle('has-note', Boolean(state.workCalendar[key].title || state.workCalendar[key].note)); }
+    return;
+  }
   const dailyReflection = event.target.closest('[data-daily-reflection]');
   if (dailyReflection) {
     const day = dailyReflection.dataset.dailyReflection;
@@ -2470,6 +2560,7 @@ modal.addEventListener('close', () => {
   modal.classList.remove('event-modal');
   modal.classList.remove('support-dialog');
   modal.classList.remove('track-dialog');
+  modal.classList.remove('workshop-modal');
   modal.classList.remove('welcome-dialog');
   closePhotoLightbox();
 });
