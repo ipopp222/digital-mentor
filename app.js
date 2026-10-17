@@ -541,6 +541,23 @@ const youthHousePhotos = [
   }))
 ];
 
+const youthHouseSpaces = [
+  { title: '1 лекторий', note: 'Пространство для встреч, лекций и открытого диалога.', photos: ['photo-01.jpg', 'photo-02.jpg'] },
+  { title: '2 лекторий', note: 'Комната для образовательных программ и командной работы.', photos: ['photo-01.jpg', 'photo-02.jpg'] },
+  { title: '3 лекторий', note: 'Уютная площадка для занятий, дискуссий и мастер-классов.', photos: ['photo-01.jpg', 'photo-02.jpg'] },
+  { title: '4 лекторий', note: 'Пространство для больших образовательных событий.', photos: ['photo-01.jpg', 'photo-02.jpg', 'photo-03.jpg', 'photo-04.jpg'] },
+  { title: 'Кабинет 310', note: 'Рабочее пространство для консультаций и проектных команд.', photos: ['photo-01.jpg', 'photo-02.jpg'] },
+  { title: 'Кафетерий', note: 'Место для отдыха, общения и неформальных встреч.', photos: ['photo-01.jpg', 'photo-02.jpg'] },
+  { title: 'МЦ «Квартира»', note: 'Многофункциональное пространство для молодёжных инициатив.', photos: Array.from({ length: 12 }, (_, index) => `photo-${String(index + 1).padStart(2, '0')}.jpg`) }
+];
+const youthHouseSpacePhotos = youthHouseSpaces.flatMap(space => space.photos.map((file, index) => ({
+  src: `assets/youth-house/spaces/${space.title === '1 лекторий' ? 'lecture-1' : space.title === '2 лекторий' ? 'lecture-2' : space.title === '3 лекторий' ? 'lecture-3' : space.title === '4 лекторий' ? 'lecture-4' : space.title === 'Кабинет 310' ? 'office-310' : space.title === 'Кафетерий' ? 'cafeteria' : 'mc-apartment'}/${file}`,
+  title: `${space.title} · фото ${index + 1}`
+})));
+const youthHouseAllPhotos = [...youthHousePhotos, ...youthHouseSpacePhotos];
+let youthHouseSpacePhotoStart = youthHousePhotos.length;
+youthHouseSpaces.forEach(space => { space.photoStart = youthHouseSpacePhotoStart; youthHouseSpacePhotoStart += space.photos.length; });
+
 const rsoDirections = ['Строительные отряды', 'Педагогические отряды', 'Медицинские отряды', 'Сервисные отряды', 'Сельскохозяйственные отряды', 'Производственные отряды', 'Путинные отряды', 'Проводники пассажирских вагонов', 'Трудовые отряды подростков'];
 const vsksDirections = ['Подготовка добровольцев к действиям при ЧС', 'Первая помощь', 'Пожарная безопасность', 'Аварийно-спасательные работы', 'Гуманитарные миссии', 'Занятия по безопасности для детей и молодёжи', 'Школьные спасательные отряды'];
 const mgerDirections = ['Гуманитарная миссия', 'Волонтёрская помощь', 'Патриотические и памятные мероприятия', 'Политпросвещение молодёжи'];
@@ -1131,7 +1148,7 @@ function openIndustrySection(section) {
       eyebrow: 'Подведомственное учреждение Министерства',
       title: 'ГБУ МП ЛНР МЦ «Дом молодежи»',
       lead: 'Молодежный центр в Луганске: площадка для проектов, обучения и общения.',
-      body: `<section class="youth-house-overview"><article class="youth-house-director"><img src="assets/youth-house/director.jpg" alt="Сычева Анна Федоровна"><div><span>Директор</span><h3>Сычева<br>Анна Федоровна</h3></div></article><div class="youth-house-contacts"><article><span class="contact-mark">⌖</span><div><small>Адреса</small><p>ул. Т. Г. Шевченко, д. 4</p><p>ул. Алексеева, д. 7</p><p>ул. Железнодорожная, д. 8</p></div></article><article><span class="contact-mark">☎</span><div><small>Телефон</small><a href="tel:+79592833731">+7 (959) 283-37-31</a></div></article></div></section><nav class="youth-house-links" aria-label="Официальные ресурсы Дома молодежи"><a href="https://dmlnr.lpr-reg.ru" target="_blank" rel="noopener">Сайт <i>↗</i></a><a href="https://vk.com/vcentre_lnr" target="_blank" rel="noopener">ВКонтакте <i>↗</i></a><a href="https://max.ru/id9403014771_gos" target="_blank" rel="noopener">MAX <i>↗</i></a><a href="https://forms.yandex.ru/cloud/6791e4b5e010db11820fbb4c/" target="_blank" rel="noopener">Написать <i>↗</i></a></nav><section class="youth-house-photo-section"><header><h3>Фотографии <span>${youthHousePhotos.length}</span></h3><p>Листайте и нажмите для просмотра</p></header><div class="youth-house-gallery">${youthHousePhotos.map((photo, index) => `<figure data-gallery-photo="${index}" tabindex="0" role="button" aria-label="Открыть фотографию ${index + 1}"><img src="${photo.src}" alt="Дом молодежи, фотография ${index + 1}" loading="lazy"><i class="gallery-zoom" aria-hidden="true">＋</i></figure>`).join('')}</div></section><a class="youth-house-source" href="https://minmol.lpr-reg.ru/page/static/b0141fc8-d11a-4329-8ff3-1a1e805ffc09" target="_blank" rel="noopener"><b>Источник: Министерство молодежной политики ЛНР</b><i>↗</i></a>`,
+      body: `<section class="youth-house-overview"><article class="youth-house-director"><img src="assets/youth-house/director.jpg" alt="Сычева Анна Федоровна"><div><span>Директор</span><h3>Сычева<br>Анна Федоровна</h3></div></article><div class="youth-house-contacts"><article><span class="contact-mark">⌖</span><div><small>Адреса</small><p>ул. Т. Г. Шевченко, д. 4</p><p>ул. Алексеева, д. 7</p><p>ул. Железнодорожная, д. 8</p></div></article><article><span class="contact-mark">☎</span><div><small>Телефон</small><a href="tel:+79592833731">+7 (959) 283-37-31</a></div></article></div></section><nav class="youth-house-links" aria-label="Официальные ресурсы Дома молодежи"><a href="https://dmlnr.lpr-reg.ru" target="_blank" rel="noopener">Сайт <i>↗</i></a><a href="https://vk.com/vcentre_lnr" target="_blank" rel="noopener">ВКонтакте <i>↗</i></a><a href="https://max.ru/id9403014771_gos" target="_blank" rel="noopener">MAX <i>↗</i></a><a href="https://forms.yandex.ru/cloud/6791e4b5e010db11820fbb4c/" target="_blank" rel="noopener">Написать <i>↗</i></a></nav><section class="youth-house-spaces"><header class="youth-house-spaces-head"><div><span class="eyebrow">Карта пространств</span><h3>Здесь собираются идеи</h3><p>Откройте любую карточку, чтобы посмотреть, какие пространства есть в Доме молодёжи.</p></div><strong><b>${youthHouseSpaces.length}</b><span>пространств</span></strong></header><div class="youth-house-space-grid">${youthHouseSpaces.map((space, spaceIndex) => `<article class="youth-house-space-card"><div class="space-card-cover"><img src="assets/youth-house/spaces/${space.title === '1 лекторий' ? 'lecture-1' : space.title === '2 лекторий' ? 'lecture-2' : space.title === '3 лекторий' ? 'lecture-3' : space.title === '4 лекторий' ? 'lecture-4' : space.title === 'Кабинет 310' ? 'office-310' : space.title === 'Кафетерий' ? 'cafeteria' : 'mc-apartment'}/${space.photos[0]}" alt="${space.title}" loading="lazy"><span>${String(spaceIndex + 1).padStart(2, '0')}</span><i>＋</i></div><div class="space-card-copy"><h4>${space.title}</h4><p>${space.note}</p><small>${space.photos.length} фото · нажмите, чтобы рассмотреть</small></div><div class="space-card-strip">${space.photos.slice(0, 3).map((file, photoIndex) => `<button type="button" data-gallery-photo="${space.photoStart + photoIndex}" aria-label="Открыть фото: ${space.title}"><img src="assets/youth-house/spaces/${space.title === '1 лекторий' ? 'lecture-1' : space.title === '2 лекторий' ? 'lecture-2' : space.title === '3 лекторий' ? 'lecture-3' : space.title === '4 лекторий' ? 'lecture-4' : space.title === 'Кабинет 310' ? 'office-310' : space.title === 'Кафетерий' ? 'cafeteria' : 'mc-apartment'}/${file}" alt="" loading="lazy"></button>`).join('')}</div></article>`).join('')}</div></section><section class="youth-house-photo-section"><header><h3>Фотографии <span>${youthHousePhotos.length}</span></h3><p>Листайте и нажмите для просмотра</p></header><div class="youth-house-gallery">${youthHousePhotos.map((photo, index) => `<figure data-gallery-photo="${index}" tabindex="0" role="button" aria-label="Открыть фотографию ${index + 1}"><img src="${photo.src}" alt="Дом молодежи, фотография ${index + 1}" loading="lazy"><i class="gallery-zoom" aria-hidden="true">＋</i></figure>`).join('')}</div></section><a class="youth-house-source" href="https://minmol.lpr-reg.ru/page/static/b0141fc8-d11a-4329-8ff3-1a1e805ffc09" target="_blank" rel="noopener"><b>Источник: Министерство молодежной политики ЛНР</b><i>↗</i></a>`,
       fileKey: 'industry:youth-house'
     },
     municipal: {
@@ -1165,8 +1182,8 @@ function openIndustrySection(section) {
 }
 
 function openYouthHousePhoto(index) {
-  const activeIndex = (Number(index) + youthHousePhotos.length) % youthHousePhotos.length;
-  const photo = youthHousePhotos[activeIndex];
+  const activeIndex = (Number(index) + youthHouseAllPhotos.length) % youthHouseAllPhotos.length;
+  const photo = youthHouseAllPhotos[activeIndex];
   let viewer = document.getElementById('photoLightbox');
   if (!viewer) {
     viewer = document.createElement('div');
@@ -1175,7 +1192,7 @@ function openYouthHousePhoto(index) {
     modal.appendChild(viewer);
   }
   viewer.dataset.index = activeIndex;
-  viewer.innerHTML = `<button class="lightbox-close" data-gallery-close aria-label="Закрыть фотографию">×</button><button class="lightbox-arrow previous" data-gallery-nav="-1" aria-label="Предыдущая фотография">‹</button><figure><img src="${photo.src}" alt="${photo.title}"><figcaption><span>${activeIndex + 1} / ${youthHousePhotos.length}</span></figcaption></figure><button class="lightbox-arrow next" data-gallery-nav="1" aria-label="Следующая фотография">›</button>`;
+  viewer.innerHTML = `<button class="lightbox-close" data-gallery-close aria-label="Закрыть фотографию">×</button><button class="lightbox-arrow previous" data-gallery-nav="-1" aria-label="Предыдущая фотография">‹</button><figure><img src="${photo.src}" alt="${photo.title}"><figcaption><span>${activeIndex + 1} / ${youthHouseAllPhotos.length}</span><b>${photo.title}</b></figcaption></figure><button class="lightbox-arrow next" data-gallery-nav="1" aria-label="Следующая фотография">›</button>`;
   viewer.classList.add('open');
   modal.classList.add('photo-viewing');
 }
@@ -2431,6 +2448,7 @@ scheduleCalendarRefresh();
 renderMascotMessages();
 scheduleDailyMascotGreeting();
 if (!state.onboarded) setTimeout(state.welcomeSeen ? openOnboarding : openMinisterWelcome, 250);
+
 
 
 
