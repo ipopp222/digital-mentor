@@ -453,13 +453,19 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .vsks-card .ngo-card-head { background: linear-gradient(120deg, #07105f, #12538c); }
 .vsks-logo { width: 115px; height: 115px; display: grid; place-items: center; padding: 9px; overflow: hidden; border-radius: 17px; background: #fff; box-shadow: 5px 6px 0 #ff5c00; }
 .vsks-logo img { width: 100%; height: 100%; display: block; object-fit: contain; }
+.mger-card .ngo-card-head { background: linear-gradient(120deg, #143e91, #2764c7); }
+.mger-logo { width: 115px; height: 115px; display: grid; place-items: center; padding: 9px; overflow: hidden; border-radius: 17px; background: #fff; box-shadow: 5px 6px 0 #e63946; }
+.mger-logo img { width: 100%; height: 100%; display: block; object-fit: contain; }
 .ngo-card-main { display: grid; grid-template-columns: 1fr 185px; gap: 22px; padding: 23px; }
-.ngo-card-copy h4, .rso-directions h4, .vsks-directions h4 { margin: 0 0 9px; color: var(--green); font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.ngo-card-copy h4, .rso-directions h4, .vsks-directions h4, .mger-directions h4 { margin: 0 0 9px; color: var(--green); font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
 .ngo-card-copy > p { margin: 0 0 10px; color: #555f59; font-size: 11px; line-height: 1.55; }
-.rso-directions, .vsks-directions { margin-top: 19px; padding-top: 17px; border-top: 1px solid var(--line); }
-.rso-directions > div, .vsks-directions > div { display: flex; flex-wrap: wrap; gap: 6px; }
-.rso-directions span, .vsks-directions span { padding: 7px 9px; border-radius: 8px; color: var(--green); background: var(--lime-soft); font-size: 8px; font-weight: 800; }
+.rso-directions, .vsks-directions, .mger-directions { margin-top: 19px; padding-top: 17px; border-top: 1px solid var(--line); }
+.rso-directions > div, .vsks-directions > div, .mger-directions > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.rso-directions span, .vsks-directions span, .mger-directions span { padding: 7px 9px; border-radius: 8px; color: var(--green); background: var(--lime-soft); font-size: 8px; font-weight: 800; }
 .vsks-directions span { color: #07105f; background: #e9eff8; }
+.mger-directions span { color: #143e91; background: #e8eefb; }
+.mger-card .ngo-leader { background: #143e91; }
+.mger-card .ngo-leader span { color: #ffcf3f; }
 .vsks-card .ngo-leader { background: #07105f; }
 .vsks-card .ngo-leader span { color: #ff9a61; }
 .ngo-leader { align-self: start; overflow: hidden; border-radius: 16px; color: #fff; background: var(--green); }
