@@ -524,6 +524,12 @@ const municipalInstitutions = [
   'МБУ «Луганский городской молодежный центр «Юность»',
   'МБУ «Центр молодежных инициатив «Гравитация»'
 ];
+const municipalInstitutionData = [
+  { title: 'МБУ «Алчевский молодежный центр»', city: 'городской округ город Алчевск', lead: 'Молодёжное пространство для общения, развития инициатив и реализации проектов.', special: true },
+  { title: 'МБУ «Стахановский многофункциональный молодежный центр «РЕКОРД»', city: 'городской округ город Стаханов', lead: 'Многофункциональная площадка для молодёжных команд, событий и полезных инициатив.' },
+  { title: 'МБУ «Луганский городской молодежный центр «Юность»', city: 'городской округ город Луганск', lead: 'Городская площадка для образования, добровольчества, творчества и встреч молодёжи.' },
+  { title: 'МБУ «Центр молодежных инициатив «Гравитация»', city: 'муниципальное учреждение', lead: 'Центр, где молодёжные идеи превращаются в проекты и реальные дела.' }
+];
 
 const plannedYouthCenters = ['город Первомайск', 'город Ровеньки', 'город Кировск', 'Белокуракинский муниципальный округ'];
 
@@ -557,6 +563,18 @@ const youthHouseSpacePhotos = youthHouseSpaces.flatMap(space => space.photos.map
 const youthHouseAllPhotos = [...youthHousePhotos, ...youthHouseSpacePhotos];
 let youthHouseSpacePhotoStart = youthHousePhotos.length;
 youthHouseSpaces.forEach(space => { space.photoStart = youthHouseSpacePhotoStart; youthHouseSpacePhotoStart += space.photos.length; });
+const alchevskSpaces = [
+  { title: 'Зона ресепшен', note: 'Первое знакомство с центром и навигация по его возможностям.', file: 'reception.jpg' },
+  { title: 'Общий зал', note: 'Открытая площадка для встреч, событий и командной работы.', file: 'common-hall.jpg' },
+  { title: 'Пространство Движения Первых', note: 'Место для инициатив, общения и совместных проектов.', file: 'first-movement.jpg' },
+  { title: 'Пространство досуга 1', note: 'Зона для отдыха, общения и свободного времени.', file: 'leisure-1.jpg' },
+  { title: 'Пространство досуга 2', note: 'Ещё одна точка для неформальных встреч и занятий.', file: 'leisure-2.jpg' },
+  { title: 'Фудкорт', note: 'Уютная зона для перерыва и общения.', file: 'food-court.jpg' }
+];
+const alchevskPhotoStart = youthHouseAllPhotos.length;
+const alchevskPhotos = alchevskSpaces.map(space => ({ src: `assets/municipal/alchevsk/${space.file}`, title: `Алчевский молодежный центр · ${space.title}` }));
+const industryGalleryPhotos = [...youthHouseAllPhotos, ...alchevskPhotos];
+alchevskSpaces.forEach((space, index) => { space.photoIndex = alchevskPhotoStart + index; });
 
 const rsoDirections = ['Строительные отряды', 'Педагогические отряды', 'Медицинские отряды', 'Сервисные отряды', 'Сельскохозяйственные отряды', 'Производственные отряды', 'Путинные отряды', 'Проводники пассажирских вагонов', 'Трудовые отряды подростков'];
 const vsksDirections = ['Подготовка добровольцев к действиям при ЧС', 'Первая помощь', 'Пожарная безопасность', 'Аварийно-спасательные работы', 'Гуманитарные миссии', 'Занятия по безопасности для детей и молодёжи', 'Школьные спасательные отряды'];
@@ -1135,6 +1153,11 @@ function renderNormativeBase(scope = '', query = '') {
   }
 }
 
+function renderMunicipalInstitutionBody(institution) {
+  if (!institution.special) return `<section class="municipal-institution-card generic-institution-card"><div class="municipal-institution-mark">МБУ</div><div><span>${institution.city}</span><h3>${institution.title}</h3><p>${institution.lead}</p></div></section><div class="institution-coming-soon"><span>⌁</span><div><b>Карточка центра наполняется</b><p>Здесь появятся руководство, пространства, фотографии и официальные контакты учреждения.</p></div></div>`;
+  return `<section class="youth-house-overview municipal-center-overview"><article class="youth-house-director"><img src="assets/municipal/alchevsk/director.jpg" alt="Богданцева Анна"><div><span>Директор</span><h3>Богданцева<br>Анна</h3></div></article><div class="youth-house-contacts"><article><span class="contact-mark">⌖</span><div><small>Учреждение</small><p>Алчевский молодежный центр</p><p>${institution.city}</p></div></article><article><span class="contact-mark">✦</span><div><small>Формат</small><p>Место для молодёжных инициатив, общения и развития</p></div></article></div></section><nav class="youth-house-links" aria-label="Официальные ресурсы Алчевского молодежного центра"><a href="https://max.ru/channel_molod" target="_blank" rel="noopener">MAX <i>↗</i></a><a href="https://vk.ru/club234265014" target="_blank" rel="noopener">ВКонтакте <i>↗</i></a></nav><section class="youth-house-spaces municipal-center-spaces"><header class="youth-house-spaces-head"><div><span class="eyebrow">Карта пространств</span><h3>Место для своих идей</h3><p>Загляните внутрь Алчевского молодёжного центра и познакомьтесь с его пространствами.</p></div><strong><b>${alchevskSpaces.length}</b><span>пространств</span></strong></header><div class="youth-house-space-grid">${alchevskSpaces.map((space, index) => `<article class="youth-house-space-card"><div class="space-card-cover"><img src="assets/municipal/alchevsk/${space.file}" alt="${space.title}" loading="lazy"><span>${String(index + 1).padStart(2, '0')}</span><i>＋</i></div><div class="space-card-copy"><h4>${space.title}</h4><p>${space.note}</p><small>фото пространства · нажмите, чтобы рассмотреть</small></div><div class="space-card-strip"><button type="button" data-gallery-photo="${space.photoIndex}" aria-label="Открыть фото: ${space.title}"><img src="assets/municipal/alchevsk/${space.file}" alt="" loading="lazy"></button></div></article>`).join('')}</div></section>`;
+}
+
 function openIndustrySection(section) {
   const sections = {
     ministry: {
@@ -1151,6 +1174,13 @@ function openIndustrySection(section) {
       body: `<section class="youth-house-overview"><article class="youth-house-director"><img src="assets/youth-house/director.jpg" alt="Сычева Анна Федоровна"><div><span>Директор</span><h3>Сычева<br>Анна Федоровна</h3></div></article><div class="youth-house-contacts"><article><span class="contact-mark">⌖</span><div><small>Адреса</small><p>ул. Т. Г. Шевченко, д. 4</p><p>ул. Алексеева, д. 7</p><p>ул. Железнодорожная, д. 8</p></div></article><article><span class="contact-mark">☎</span><div><small>Телефон</small><a href="tel:+79592833731">+7 (959) 283-37-31</a></div></article></div></section><nav class="youth-house-links" aria-label="Официальные ресурсы Дома молодежи"><a href="https://dmlnr.lpr-reg.ru" target="_blank" rel="noopener">Сайт <i>↗</i></a><a href="https://vk.com/vcentre_lnr" target="_blank" rel="noopener">ВКонтакте <i>↗</i></a><a href="https://max.ru/id9403014771_gos" target="_blank" rel="noopener">MAX <i>↗</i></a><a href="https://forms.yandex.ru/cloud/6791e4b5e010db11820fbb4c/" target="_blank" rel="noopener">Написать <i>↗</i></a></nav><section class="youth-house-spaces"><header class="youth-house-spaces-head"><div><span class="eyebrow">Карта пространств</span><h3>Здесь собираются идеи</h3><p>Откройте любую карточку, чтобы посмотреть, какие пространства есть в Доме молодёжи.</p></div><strong><b>${youthHouseSpaces.length}</b><span>пространств</span></strong></header><div class="youth-house-space-grid">${youthHouseSpaces.map((space, spaceIndex) => `<article class="youth-house-space-card"><div class="space-card-cover"><img src="assets/youth-house/spaces/${space.title === '1 лекторий' ? 'lecture-1' : space.title === '2 лекторий' ? 'lecture-2' : space.title === '3 лекторий' ? 'lecture-3' : space.title === '4 лекторий' ? 'lecture-4' : space.title === 'Кабинет 310' ? 'office-310' : space.title === 'Кафетерий' ? 'cafeteria' : 'mc-apartment'}/${space.photos[0]}" alt="${space.title}" loading="lazy"><span>${String(spaceIndex + 1).padStart(2, '0')}</span><i>＋</i></div><div class="space-card-copy"><h4>${space.title}</h4><p>${space.note}</p><small>${space.photos.length} фото · нажмите, чтобы рассмотреть</small></div><div class="space-card-strip">${space.photos.slice(0, 3).map((file, photoIndex) => `<button type="button" data-gallery-photo="${space.photoStart + photoIndex}" aria-label="Открыть фото: ${space.title}"><img src="assets/youth-house/spaces/${space.title === '1 лекторий' ? 'lecture-1' : space.title === '2 лекторий' ? 'lecture-2' : space.title === '3 лекторий' ? 'lecture-3' : space.title === '4 лекторий' ? 'lecture-4' : space.title === 'Кабинет 310' ? 'office-310' : space.title === 'Кафетерий' ? 'cafeteria' : 'mc-apartment'}/${file}" alt="" loading="lazy"></button>`).join('')}</div></article>`).join('')}</div></section><section class="youth-house-photo-section"><header><h3>Фотографии <span>${youthHousePhotos.length}</span></h3><p>Листайте и нажмите для просмотра</p></header><div class="youth-house-gallery">${youthHousePhotos.map((photo, index) => `<figure data-gallery-photo="${index}" tabindex="0" role="button" aria-label="Открыть фотографию ${index + 1}"><img src="${photo.src}" alt="Дом молодежи, фотография ${index + 1}" loading="lazy"><i class="gallery-zoom" aria-hidden="true">＋</i></figure>`).join('')}</div></section><a class="youth-house-source" href="https://minmol.lpr-reg.ru/page/static/b0141fc8-d11a-4329-8ff3-1a1e805ffc09" target="_blank" rel="noopener"><b>Источник: Министерство молодежной политики ЛНР</b><i>↗</i></a>`,
       fileKey: 'industry:youth-house'
     },
+    ...Object.fromEntries(municipalInstitutionData.map((institution, index) => [`institution-${index}`, {
+      eyebrow: 'Муниципальное бюджетное учреждение',
+      title: institution.title,
+      lead: institution.lead,
+      body: renderMunicipalInstitutionBody(institution),
+      fileKey: `industry:institution-${index}`
+    }])),
     municipal: {
       eyebrow: 'Органы местного самоуправления',
       title: 'Структурные подразделения ОМСУ',
@@ -1162,7 +1192,7 @@ function openIndustrySection(section) {
       eyebrow: 'Муниципальная инфраструктура',
       title: 'Учреждения и молодежные пространства',
       lead: 'Муниципальные учреждения подведомственны администрациям соответствующих городских и муниципальных округов.',
-      body: `<h3 class="structure-heading">Действующие муниципальные бюджетные учреждения</h3><div class="institution-list">${municipalInstitutions.map(item => `<article><span>МБУ</span><b>${item}</b></article>`).join('')}</div><h3 class="structure-heading">Планируется создание в 2027 году</h3><div class="planned-grid">${plannedYouthCenters.map(place => `<article><span>2027</span><b>Новый молодежный центр</b><p>${place}</p></article>`).join('')}</div><h3 class="structure-heading">Пространства без права юридического лица</h3><div class="space-list">${youthSpaces.map((item, index) => `<article><span>${index + 1}</span><b>${item}</b></article>`).join('')}</div>`,
+      body: `<h3 class="structure-heading">Действующие муниципальные бюджетные учреждения</h3><div class="institution-list">${municipalInstitutionData.map((item, index) => `<button class="institution-tile" data-industry="institution-${index}"><span>МБУ</span><div><b>${item.title}</b><small>${item.city}</small><em>Открыть карточку <i>↗</i></em></div></button>`).join('')}</div><h3 class="structure-heading">Планируется создание в 2027 году</h3><div class="planned-grid">${plannedYouthCenters.map(place => `<article><span>2027</span><b>Новый молодежный центр</b><p>${place}</p></article>`).join('')}</div><h3 class="structure-heading">Пространства без права юридического лица</h3><div class="space-list">${youthSpaces.map((item, index) => `<article><span>${index + 1}</span><b>${item}</b></article>`).join('')}</div>`,
       fileKey: 'industry:institutions'
     },
     ngo: {
@@ -1175,15 +1205,15 @@ function openIndustrySection(section) {
   };
   const item = sections[section];
   if (!item) return;
-  modalContent.innerHTML = `<div class="modal-body structure-detail ${section === 'youth-house' ? 'youth-house-detail' : ''}"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body structure-detail ${section === 'youth-house' || section === 'institution-0' ? 'youth-house-detail' : ''}"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
   modal.classList.add('structure-modal');
   if (!modal.open) modal.showModal();
   renderFilesArea(item.fileKey, state.isAdmin, 'Материалы раздела');
 }
 
 function openYouthHousePhoto(index) {
-  const activeIndex = (Number(index) + youthHouseAllPhotos.length) % youthHouseAllPhotos.length;
-  const photo = youthHouseAllPhotos[activeIndex];
+  const activeIndex = (Number(index) + industryGalleryPhotos.length) % industryGalleryPhotos.length;
+  const photo = industryGalleryPhotos[activeIndex];
   let viewer = document.getElementById('photoLightbox');
   if (!viewer) {
     viewer = document.createElement('div');
@@ -1192,7 +1222,7 @@ function openYouthHousePhoto(index) {
     modal.appendChild(viewer);
   }
   viewer.dataset.index = activeIndex;
-  viewer.innerHTML = `<button class="lightbox-close" data-gallery-close aria-label="Закрыть фотографию">×</button><button class="lightbox-arrow previous" data-gallery-nav="-1" aria-label="Предыдущая фотография">‹</button><figure><img src="${photo.src}" alt="${photo.title}"><figcaption><span>${activeIndex + 1} / ${youthHouseAllPhotos.length}</span><b>${photo.title}</b></figcaption></figure><button class="lightbox-arrow next" data-gallery-nav="1" aria-label="Следующая фотография">›</button>`;
+  viewer.innerHTML = `<button class="lightbox-close" data-gallery-close aria-label="Закрыть фотографию">×</button><button class="lightbox-arrow previous" data-gallery-nav="-1" aria-label="Предыдущая фотография">‹</button><figure><img src="${photo.src}" alt="${photo.title}"><figcaption><span>${activeIndex + 1} / ${industryGalleryPhotos.length}</span><b>${photo.title}</b></figcaption></figure><button class="lightbox-arrow next" data-gallery-nav="1" aria-label="Следующая фотография">›</button>`;
   viewer.classList.add('open');
   modal.classList.add('photo-viewing');
 }
