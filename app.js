@@ -525,10 +525,10 @@ const municipalInstitutions = [
   'МБУ «Центр молодежных инициатив «Гравитация»'
 ];
 const municipalInstitutionData = [
-  { title: 'МБУ «Алчевский молодежный центр»', city: 'городской округ город Алчевск', lead: 'Молодёжное пространство для общения, развития инициатив и реализации проектов.', special: true },
+  { title: 'МБУ «Алчевский молодежный центр»', city: 'городской округ город Алчевск', lead: 'Молодёжное пространство для общения, развития инициатив и реализации проектов.', special: 'alchevsk' },
   { title: 'МБУ «Стахановский многофункциональный молодежный центр «РЕКОРД»', city: 'городской округ город Стаханов', lead: 'Многофункциональная площадка для молодёжных команд, событий и полезных инициатив.' },
   { title: 'МБУ «Луганский городской молодежный центр «Юность»', city: 'городской округ город Луганск', lead: 'Городская площадка для образования, добровольчества, творчества и встреч молодёжи.' },
-  { title: 'МБУ «Центр молодежных инициатив «Гравитация»', city: 'муниципальное учреждение', lead: 'Центр, где молодёжные идеи превращаются в проекты и реальные дела.' }
+  { title: 'МБУ «Центр молодежных инициатив «Гравитация»', city: 'муниципальное образование Краснодонский муниципальный округ', lead: 'Центр, где молодёжные идеи превращаются в проекты и реальные дела.', special: 'gravity' }
 ];
 
 const plannedYouthCenters = ['город Первомайск', 'город Ровеньки', 'город Кировск', 'Белокуракинский муниципальный округ'];
@@ -573,8 +573,21 @@ const alchevskSpaces = [
 ];
 const alchevskPhotoStart = youthHouseAllPhotos.length;
 const alchevskPhotos = alchevskSpaces.map(space => ({ src: `assets/municipal/alchevsk/${space.file}`, title: `Алчевский молодежный центр · ${space.title}` }));
-const industryGalleryPhotos = [...youthHouseAllPhotos, ...alchevskPhotos];
 alchevskSpaces.forEach((space, index) => { space.photoIndex = alchevskPhotoStart + index; });
+const gravitySpaces = [
+  { title: 'Лекторий', note: 'Пространство для лекций, встреч и образовательных событий.', file: 'lecture.jpg' },
+  { title: 'Холл и зона навигации', note: 'Открытая зона центра с местами для отдыха и общения.', file: 'lobby.jpg' },
+  { title: 'Медиастудия', note: 'Площадка для съёмок, подкастов и творческого самовыражения.', file: 'media-studio.jpg' },
+  { title: 'Пространство Движения Первых', note: 'Место для патриотических инициатив и командных проектов.', file: 'first-movement.jpg' },
+  { title: 'Зона ресепшен', note: 'Точка встречи и первый ориентир для гостей центра.', file: 'reception.jpg' },
+  { title: 'Зона общения', note: 'Уютное пространство для разговоров, отдыха и новых знакомств.', file: 'lounge.jpg' },
+  { title: 'Компьютерная зона', note: 'Рабочие места для обучения, проектов и цифрового творчества.', file: 'computer-zone.jpg' },
+  { title: 'Игровая зона', note: 'Место для досуга, командных игр и неформального общения.', file: 'game-zone.jpg' }
+];
+const gravityPhotoStart = alchevskPhotoStart + alchevskPhotos.length;
+const gravityPhotos = gravitySpaces.map(space => ({ src: `assets/municipal/gravity/${space.file}`, title: `ЦМИ «Гравитация» · ${space.title}` }));
+const industryGalleryPhotos = [...youthHouseAllPhotos, ...alchevskPhotos, ...gravityPhotos];
+gravitySpaces.forEach((space, index) => { space.photoIndex = gravityPhotoStart + index; });
 
 const rsoDirections = ['Строительные отряды', 'Педагогические отряды', 'Медицинские отряды', 'Сервисные отряды', 'Сельскохозяйственные отряды', 'Производственные отряды', 'Путинные отряды', 'Проводники пассажирских вагонов', 'Трудовые отряды подростков'];
 const vsksDirections = ['Подготовка добровольцев к действиям при ЧС', 'Первая помощь', 'Пожарная безопасность', 'Аварийно-спасательные работы', 'Гуманитарные миссии', 'Занятия по безопасности для детей и молодёжи', 'Школьные спасательные отряды'];
@@ -1155,6 +1168,7 @@ function renderNormativeBase(scope = '', query = '') {
 
 function renderMunicipalInstitutionBody(institution) {
   if (!institution.special) return `<section class="municipal-institution-card generic-institution-card"><div class="municipal-institution-mark">МБУ</div><div><span>${institution.city}</span><h3>${institution.title}</h3><p>${institution.lead}</p></div></section><div class="institution-coming-soon"><span>⌁</span><div><b>Карточка центра наполняется</b><p>Здесь появятся руководство, пространства, фотографии и официальные контакты учреждения.</p></div></div>`;
+  if (institution.special === 'gravity') return `<section class="youth-house-overview municipal-center-overview"><article class="youth-house-director"><img src="assets/municipal/gravity/director.webp" alt="Герман Приходько"><div><span>Директор</span><h3>Герман<br>Приходько</h3></div></article><div class="youth-house-contacts"><article><span class="contact-mark">⌖</span><div><small>Фактический адрес</small><p>ЛНР, м.о. Краснодонский, г. Краснодон</p><p>ул. Микроцентр, д. 18</p></div></article><article><span class="contact-mark">◷</span><div><small>Режим работы</small><p>Пн–пт: 08:00–18:00</p><p>Сб: 09:00–18:00</p></div></article></div></section><nav class="youth-house-links" aria-label="Официальные ресурсы ЦМИ Гравитация"><a href="https://t.me/gravitttaciya" target="_blank" rel="noopener">Telegram <i>↗</i></a></nav><section class="gravity-directions"><header><span class="eyebrow">Фокус центра</span><h3>Направления работы</h3></header><div>${['Патриотическое воспитание', 'Добровольчество и волонтёрство', 'Интеллектуальное развитие и творчество', 'Досуг, молодые семьи и ЗОЖ', 'Профилактика асоциальных явлений'].map((direction, index) => `<article><b>${String(index + 1).padStart(2, '0')}</b><span>${direction}</span></article>`).join('')}</div></section><section class="youth-house-spaces municipal-center-spaces gravity-spaces"><header class="youth-house-spaces-head"><div><span class="eyebrow">Карта пространств</span><h3>Гравитация для идей</h3><p>Посмотрите, какие зоны для общения, обучения, творчества и отдыха есть в центре.</p></div><strong><b>${gravitySpaces.length}</b><span>пространств</span></strong></header><div class="youth-house-space-grid">${gravitySpaces.map((space, index) => `<article class="youth-house-space-card"><div class="space-card-cover"><img src="assets/municipal/gravity/${space.file}" alt="${space.title}" loading="lazy"><span>${String(index + 1).padStart(2, '0')}</span><i>＋</i></div><div class="space-card-copy"><h4>${space.title}</h4><p>${space.note}</p><small>фото пространства · нажмите, чтобы рассмотреть</small></div><div class="space-card-strip"><button type="button" data-gallery-photo="${space.photoIndex}" aria-label="Открыть фото: ${space.title}"><img src="assets/municipal/gravity/${space.file}" alt="" loading="lazy"></button></div></article>`).join('')}</div></section>`;
   return `<section class="youth-house-overview municipal-center-overview"><article class="youth-house-director"><img src="assets/municipal/alchevsk/director.jpg" alt="Богданцева Анна"><div><span>Директор</span><h3>Богданцева<br>Анна</h3></div></article><div class="youth-house-contacts"><article><span class="contact-mark">⌖</span><div><small>Учреждение</small><p>Алчевский молодежный центр</p><p>${institution.city}</p></div></article><article><span class="contact-mark">✦</span><div><small>Формат</small><p>Место для молодёжных инициатив, общения и развития</p></div></article></div></section><nav class="youth-house-links" aria-label="Официальные ресурсы Алчевского молодежного центра"><a href="https://max.ru/channel_molod" target="_blank" rel="noopener">MAX <i>↗</i></a><a href="https://vk.ru/club234265014" target="_blank" rel="noopener">ВКонтакте <i>↗</i></a></nav><section class="youth-house-spaces municipal-center-spaces"><header class="youth-house-spaces-head"><div><span class="eyebrow">Карта пространств</span><h3>Место для своих идей</h3><p>Загляните внутрь Алчевского молодёжного центра и познакомьтесь с его пространствами.</p></div><strong><b>${alchevskSpaces.length}</b><span>пространств</span></strong></header><div class="youth-house-space-grid">${alchevskSpaces.map((space, index) => `<article class="youth-house-space-card"><div class="space-card-cover"><img src="assets/municipal/alchevsk/${space.file}" alt="${space.title}" loading="lazy"><span>${String(index + 1).padStart(2, '0')}</span><i>＋</i></div><div class="space-card-copy"><h4>${space.title}</h4><p>${space.note}</p><small>фото пространства · нажмите, чтобы рассмотреть</small></div><div class="space-card-strip"><button type="button" data-gallery-photo="${space.photoIndex}" aria-label="Открыть фото: ${space.title}"><img src="assets/municipal/alchevsk/${space.file}" alt="" loading="lazy"></button></div></article>`).join('')}</div></section>`;
 }
 
@@ -1205,7 +1219,7 @@ function openIndustrySection(section) {
   };
   const item = sections[section];
   if (!item) return;
-  modalContent.innerHTML = `<div class="modal-body structure-detail ${section === 'youth-house' || section === 'institution-0' ? 'youth-house-detail' : ''}"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body structure-detail ${section === 'youth-house' || section === 'institution-0' || section === 'institution-3' ? 'youth-house-detail' : ''}"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
   modal.classList.add('structure-modal');
   if (!modal.open) modal.showModal();
   renderFilesArea(item.fileKey, state.isAdmin, 'Материалы раздела');
