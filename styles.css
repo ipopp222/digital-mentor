@@ -487,7 +487,7 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .youth-house-director > div { display: flex; flex-direction: column; justify-content: center; padding: 24px 20px; }
 .youth-house-director span { color: var(--lime); font-size: 8px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
 .youth-house-director h3 { margin: 10px 0 0; font: 700 20px/1.08 var(--serif); overflow-wrap: anywhere; }
-.youth-house-contacts { display: grid; grid-template-rows: repeat(2, 1fr); gap: 8px; }
+.youth-house-contacts { display: grid; grid-template-rows: repeat(3, 1fr); gap: 8px; }
 .youth-house-contacts article { display: grid; grid-template-columns: 38px 1fr; gap: 11px; align-items: start; padding: 15px; border: 1px solid var(--line); border-radius: 15px; background: #fbfaf6; }
 .youth-house-contacts .contact-mark { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px; color: var(--green); background: var(--lime-soft); font-size: 15px; font-weight: 800; }
 .youth-house-contacts small { display: block; margin-bottom: 5px; color: var(--muted); font-size: 7px; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
@@ -497,6 +497,32 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .youth-house-links a { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.13); border-radius: 11px; color: #fff; background: rgba(255,255,255,.055); font-size: 8px; font-weight: 800; text-decoration: none; transition: .2s; }
 .youth-house-links a:hover { color: var(--green); border-color: var(--lime); background: var(--lime); }
 .youth-house-links i { font-size: 13px; font-style: normal; }
+.youth-house-mission { display: grid; grid-template-columns: 1.1fr .9fr; gap: 12px; margin-top: 23px; }
+.mission-statement { padding: 21px; border-radius: 19px; color: #fff; background: linear-gradient(135deg, #163d35, #477260); }
+.mission-statement .eyebrow, .youth-house-program .eyebrow, .youth-house-residents .eyebrow { color: var(--lime); }
+.mission-statement h3 { max-width: 390px; margin: 8px 0 8px; font: 700 24px/1.03 var(--serif); }
+.mission-statement p { max-width: 490px; margin: 0; color: #d6e4df; font-size: 10px; line-height: 1.5; }
+.mission-pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mission-pillars article { display: flex; flex-direction: column; justify-content: space-between; min-height: 90px; padding: 13px; border-radius: 13px; background: var(--lime-soft); }
+.mission-pillars article:nth-child(2n) { background: #f9e9de; }
+.mission-pillars b { color: var(--red); font: 700 17px var(--serif); }
+.mission-pillars span { color: var(--green); font-size: 8px; font-weight: 900; line-height: 1.25; }
+.youth-house-program, .youth-house-residents { margin-top: 12px; padding: 18px 20px; border-radius: 17px; background: #20211e; }
+.youth-house-program header, .youth-house-residents header { display: flex; justify-content: space-between; align-items: end; gap: 18px; }
+.youth-house-program h3, .youth-house-residents h3 { margin: 4px 0 0; color: #fff; font: 700 19px var(--serif); }
+.youth-house-program p { max-width: 430px; margin: 0; color: #afc2bc; font-size: 9px; line-height: 1.4; text-align: right; }
+.program-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.program-tags span { padding: 7px 10px; border-radius: 8px; color: var(--green); background: var(--lime); font-size: 8px; font-weight: 900; }
+.youth-house-residents { color: #fff; background: linear-gradient(120deg, #9e3c2d, #d26c43); }
+.youth-house-residents .eyebrow { color: #ffe2a5; }
+.youth-house-residents > div { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+.youth-house-residents > div span { display: flex; gap: 7px; align-items: center; padding: 7px 9px; border: 1px solid rgba(255,255,255,.2); border-radius: 9px; background: rgba(255,255,255,.1); font-size: 8px; font-weight: 800; }
+.youth-house-residents > div b { color: #ffe2a5; font-size: 7px; }
+.youth-house-special-places { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 12px; }
+.youth-house-special-places article { display: grid; grid-template-columns: 35px 1fr; gap: 10px; align-items: start; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fbfaf6; }
+.youth-house-special-places article > span { width: 33px; height: 33px; display: grid; place-items: center; border-radius: 10px; color: var(--green); background: var(--lime-soft); font-size: 16px; font-weight: 900; }
+.youth-house-special-places b { color: var(--green); font-size: 10px; }
+.youth-house-special-places p { margin: 4px 0 0; color: var(--muted); font-size: 8px; line-height: 1.4; }
 .youth-house-spaces { margin-top: 28px; padding: 23px; border: 1px solid rgba(22,61,53,.12); border-radius: 22px; background: linear-gradient(135deg, #f2f7e8, #fffdf7 58%, #f9eee6); }
 .youth-house-spaces-head { display: flex; justify-content: space-between; gap: 20px; align-items: end; margin-bottom: 17px; }
 .youth-house-spaces-head .eyebrow { color: var(--red); }
@@ -1238,6 +1264,10 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
   .youth-house-overview { height: auto; grid-template-columns: 1fr; }
   .youth-house-director { min-height: 245px; }
   .youth-house-links { grid-template-columns: 1fr 1fr; }
+  .youth-house-mission { grid-template-columns: 1fr; }
+  .youth-house-program header, .youth-house-residents header { display: block; }
+  .youth-house-program p { margin-top: 7px; text-align: left; }
+  .youth-house-special-places { grid-template-columns: 1fr; }
   .youth-house-spaces { padding: 17px; border-radius: 18px; }
   .youth-house-spaces-head { display: block; }
   .youth-house-spaces-head > strong { display: inline-grid; margin-top: 12px; }
