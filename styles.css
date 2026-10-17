@@ -605,6 +605,8 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .municipal-institution-card > div:last-child > span { color: var(--lime); font-size: 8px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
 .municipal-institution-card h3 { margin: 6px 0 5px; font: 700 21px/1.08 var(--serif); }
 .municipal-institution-card p { max-width: 600px; margin: 0; color: #d6e4df; font-size: 10px; line-height: 1.45; }
+.sverdlovsk-hero { margin-top: 25px; }
+.municipal-center-contacts { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, 1fr); margin-top: 12px; }
 .gravity-directions { margin-top: 20px; padding: 20px; border: 1px solid rgba(22,61,53,.12); border-radius: 20px; background: #fffaf0; }
 .gravity-directions header { display: flex; justify-content: space-between; align-items: end; margin-bottom: 13px; }
 .gravity-directions header .eyebrow { color: var(--red); }
@@ -1241,6 +1243,7 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
   .municipal-institution-card { grid-template-columns: 58px 1fr; gap: 12px; padding: 16px; }
   .municipal-institution-mark { width: 58px; height: 58px; }
   .municipal-institution-card h3 { font-size: 17px; }
+  .municipal-center-contacts { grid-template-columns: 1fr; grid-template-rows: none; }
   .gravity-directions { padding: 16px; }
   .gravity-directions header { display: block; }
   .gravity-directions > div { grid-template-columns: repeat(2, 1fr); }
