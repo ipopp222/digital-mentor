@@ -97,9 +97,9 @@
       <span>Искорик</span>
     </button>
     <section class="mascot-chat" id="mascotChat" aria-hidden="true">
-      <header><div class="mascot-chat-avatar">ИИ</div><div><b>Искорик</b><span><i></i> ИИ-агент по адаптации</span></div><button data-action="mascot-close" aria-label="Закрыть чат">×</button></header>
+      <header><div class="mascot-chat-avatar">ИИ</div><div><b>Искорик</b><span><i></i> ИИ-агент по адаптации</span></div><button class="mascot-sound-toggle" data-action="mascot-sound" aria-label="Выключить звук напоминаний" aria-pressed="true">♫</button><button data-action="mascot-close" aria-label="Закрыть чат">×</button></header>
       <div class="mascot-messages" id="mascotMessages" aria-live="polite"></div>
-      <div class="mascot-quick"><button data-mascot-prompt="task">Задание дня</button><button data-mascot-prompt="find">Помоги найти</button><button data-mascot-prompt="help">Что ты умеешь?</button></div>
+      <div class="mascot-quick"><button data-mascot-prompt="reminders">Напоминания</button><button data-mascot-prompt="task">Задание дня</button><button data-mascot-prompt="find">Помоги найти</button><button data-mascot-prompt="help">Что ты умеешь?</button></div>
       <form class="mascot-form" id="mascotForm"><input id="mascotInput" autocomplete="off" maxlength="500" placeholder="Задайте вопрос или опишите задачу…" aria-label="Сообщение Искорику"><button type="submit" aria-label="Отправить сообщение">↑</button></form>
       <footer><small>ИИ-агент использует материалы сайта и данные вашего маршрута. Переписка хранится только в этом браузере.</small></footer>
     </section>
