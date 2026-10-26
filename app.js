@@ -617,6 +617,7 @@ const modalContent = document.getElementById('modalContent');
 function loadState() {
   try {
     const loaded = { ...defaultState, ...JSON.parse(localStorage.getItem('digitalMentorState')) };
+    loaded.isAdmin = Boolean(loaded.isAdmin && isAdminDevice());
     loaded.taskReviews = { ...(loaded.taskReviews || {}) };
     Object.entries(loaded.taskReviews).forEach(([id, review]) => {
       if (review?.status === 'accepted' && !review.reviewer) delete loaded.taskReviews[id];
@@ -756,6 +757,7 @@ function updateProfile() {
   document.getElementById('taskCount').textContent = activeWeekRemaining();
   document.getElementById('savedCount').textContent = state.savedItems?.length || 0;
   document.getElementById('adminLinkText').textContent = state.isAdmin ? 'Выйти из режима администратора' : 'Вход администратора';
+  document.querySelector('.admin-link')?.classList.toggle('device-locked', !isAdminDevice());
   document.getElementById('adminBadge').classList.toggle('visible', state.isAdmin);
   document.getElementById('adminNav').classList.toggle('visible', state.isAdmin);
 }
@@ -1683,14 +1685,24 @@ async function hashPin(value) {
   return Array.from(new Uint8Array(digest)).map(byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
+function isAdminDevice() {
+  return Boolean(localStorage.getItem('digitalMentorAdminPin'));
+}
+
 function openAdmin() {
+  if (!isAdminDevice()) {
+    state.isAdmin = false;
+    localStorage.setItem('digitalMentorState', JSON.stringify(state));
+    modalContent.innerHTML = `<div class="modal-body admin-device-locked"><span class="admin-lock-mark">⌁</span><span class="eyebrow">Доступ ограничен</span><h2>Администратор недоступен</h2><p class="modal-lead">Этот браузер не является зарегистрированным устройством администратора. Создание новых администраторов через платформу отключено.</p><div class="safety-note"><b>Безопасность</b><span>Административный доступ закреплён за ранее активированным браузером владельца.</span></div><div class="button-row"><button class="primary-button" data-action="close-modal">Понятно</button></div></div>`;
+    if (!modal.open) modal.showModal();
+    return;
+  }
   if (state.isAdmin) {
     modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Режим администратора</span><h2>${ADMIN_NAME}</h2><p class="modal-lead">Управляйте материалами и просматривайте локальную аналитику прохождения маршрута.</p><div class="warning">Статистика содержит только данные этого браузера. Общий мониторинг всех устройств потребует подключения серверной базы.</div><div class="button-row"><button class="primary-button" data-action="open-admin-dashboard">Открыть аналитику</button><button class="secondary-button dark" data-action="admin-logout">Выйти из режима</button></div></div>`;
     if (!modal.open) modal.showModal();
     return;
   }
-  const hasPin = Boolean(localStorage.getItem('digitalMentorAdminPin'));
-  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Аккаунт администратора</span><h2>${ADMIN_NAME}</h2><p class="modal-lead">${hasPin ? 'Введите локальный ПИН-код администратора.' : 'Это первый вход. Задайте локальный ПИН-код длиной не менее 4 символов.'}</p><form id="adminForm" class="form-grid"><label>ПИН-код<input name="pin" type="password" minlength="4" autocomplete="current-password" required></label>${hasPin ? '' : '<label>Повторите ПИН-код<input name="confirm" type="password" minlength="4" autocomplete="new-password" required></label>'}<div class="safety-note"><b>Прототип</b><span>ПИН действует только на этом устройстве и не заменяет серверную систему авторизации.</span></div><button class="primary-button" type="submit">${hasPin ? 'Войти' : 'Назначить администратора'}</button></form></div>`;
+  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Защищённый вход</span><h2>${ADMIN_NAME}</h2><p class="modal-lead">Введите ПИН-код администратора этого устройства.</p><form id="adminForm" class="form-grid"><label>ПИН-код<input name="pin" type="password" minlength="4" autocomplete="current-password" required></label><div class="safety-note"><b>Устройство владельца</b><span>Создание новых администраторов отключено. ПИН-код действует только в этом браузере.</span></div><button class="primary-button" type="submit">Войти</button></form></div>`;
   if (!modal.open) modal.showModal();
   document.getElementById('adminForm').addEventListener('submit', async event => {
     event.preventDefault();
@@ -1698,10 +1710,7 @@ function openAdmin() {
     const pin = String(data.get('pin'));
     if (pin.length < 4) return showToast('ПИН-код должен содержать не менее 4 символов');
     const pinHash = await hashPin(pin);
-    if (!hasPin) {
-      if (pin !== String(data.get('confirm'))) return showToast('ПИН-коды не совпадают');
-      localStorage.setItem('digitalMentorAdminPin', pinHash);
-    } else if (pinHash !== localStorage.getItem('digitalMentorAdminPin')) {
+    if (pinHash !== localStorage.getItem('digitalMentorAdminPin')) {
       return showToast('Неверный ПИН-код');
     }
     state.isAdmin = true;
@@ -2054,7 +2063,7 @@ function openExpert(topic = '') {
 }
 
 function openRules() {
-  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Возможности и ограничения</span><h2>Безопасная работа с ИИ-агентом</h2><p class="modal-lead">«Цифровой наставник» помогает пройти типовой маршрут, но не заменяет руководителя, наставника или профильного специалиста. Искорик анализирует запросы по материалам сайта, учитывает ваш маршрут и хранит переписку только в этом браузере.</p><ul class="check-list"><li>Сверяйте ответ с указанным первоисточником и датой</li><li>Не загружайте персональные и служебные сведения</li><li>Не используйте ИИ-агента для правовых и финансовых решений</li><li>Передавайте нестандартную ситуацию ответственному человеку</li></ul><div class="warning">У Искорика нет доступа к интернету и актуальным внешним данным. Для полноценной генеративной модели потребуется отдельное защищённое серверное подключение.</div><div class="button-row"><button class="primary-button" data-action="close-modal">Понятно</button><button class="secondary-button dark" data-action="admin">${state.isAdmin ? 'Управление администратором' : 'Вход администратора'}</button></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body"><span class="eyebrow">Возможности и ограничения</span><h2>Безопасная работа с ИИ-агентом</h2><p class="modal-lead">«Цифровой наставник» помогает пройти типовой маршрут, но не заменяет руководителя, наставника или профильного специалиста. Искорик анализирует запросы по материалам сайта, учитывает ваш маршрут и хранит переписку только в этом браузере.</p><ul class="check-list"><li>Сверяйте ответ с указанным первоисточником и датой</li><li>Не загружайте персональные и служебные сведения</li><li>Не используйте ИИ-агента для правовых и финансовых решений</li><li>Передавайте нестандартную ситуацию ответственному человеку</li></ul><div class="warning">У Искорика нет доступа к интернету и актуальным внешним данным. Для полноценной генеративной модели потребуется отдельное защищённое серверное подключение.</div><div class="button-row"><button class="primary-button" data-action="close-modal">Понятно</button>${isAdminDevice() ? `<button class="secondary-button dark" data-action="admin">${state.isAdmin ? 'Управление администратором' : 'Вход администратора'}</button>` : ''}</div></div>`;
   modal.showModal();
 }
 
