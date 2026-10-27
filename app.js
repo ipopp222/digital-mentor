@@ -469,11 +469,62 @@ const tasks = taskWeeks.flatMap((week, weekIndex) => week.tasks.map(task => ({ .
 
 const knowledge = [
   { icon: '§', title: 'Нормативная база', text: 'Актуальные НПА и официальные источники', action: 'regulations' },
-  { icon: '▤', title: 'Шаблоны', text: 'Письма, отчеты, планы и чек-листы' },
+  { icon: '▤', title: 'Рабочие материалы', text: 'Шаблоны писем, формы отчётов и чек-листы', action: 'templates' },
   { icon: 'А', title: 'Глоссарий', text: 'Термины и аббревиатуры отрасли' },
   { icon: '↗', title: 'Проекты и программы', text: 'Паспорта, показатели и материалы' },
   { icon: '◎', title: 'Карта партнёров', text: 'Организации, контакты, история взаимодействия и следующие шаги', action: 'partners' },
   { icon: 'СО', title: 'Структура отрасли', text: 'Министерство, учреждения, муниципалитеты и НКО', action: 'industry' }
+];
+
+const templateSections = [
+  { id: 'letters', icon: '✉', title: 'Шаблоны писем', text: 'Заготовки официальных, информационных и партнёрских писем' },
+  { id: 'reports', icon: '▥', title: 'Формы отчётов', text: 'Рабочие формы для фиксации показателей и результатов' },
+  { id: 'checklists', icon: '✓', title: 'Чек-листы', text: 'Пошаговые памятки, трекеры и листы планирования' }
+];
+
+const checklists = [
+  {
+    id: 'weekly-planning',
+    title: 'Лист планирования недели',
+    text: 'Планирование стратегической, буферной и рекреационной частей каждого дня недели.',
+    file: 'Чек-листы/Чек-лист Планирование недели.pdf',
+    size: '154 КБ'
+  },
+  {
+    id: 'habit-tracker',
+    title: 'Трекер привычки',
+    text: 'Ежедневный трекер для формирования одной полезной привычки с помощью микрошагов.',
+    file: 'Чек-листы/Чек-лист Трекер привычки.pdf',
+    size: '326 КБ'
+  },
+  {
+    id: 'personal-responsibility',
+    title: '10 Шагов к персональной ответственности',
+    text: 'Десять ориентиров для осознанных решений, ответственности за действия и достижения целей.',
+    file: 'Чек-листы/Чек_лист_10_шагов_к_персональной_ответственности.pdf',
+    size: '457 КБ'
+  },
+  {
+    id: 'development-plan',
+    title: 'Как составить пошаговый план персонального развития',
+    text: 'Девять шагов от определения целей и приоритетов до действий и отслеживания прогресса.',
+    file: 'Чек-листы/Чек_лист_Как_составить_пошаговый_план_персонального_развития.pdf',
+    size: '562 КБ'
+  },
+  {
+    id: 'mentor-directions',
+    title: 'Направления работы наставника с молодыми людьми: от целей до результатов',
+    text: 'Цели, оценка потребностей, план действий, обратная связь, мотивация и стили наставничества.',
+    file: 'Чек-листы/Чек_лист_Направления_работы_наставника_с_молодыми_людьми.pdf',
+    size: '410 КБ'
+  },
+  {
+    id: 'stakeholder-engagement',
+    title: 'Стратегия молодёжной политики: вовлечение заинтересованных сторон',
+    text: 'Карта заинтересованных сторон и формы их вовлечения в разработку стратегии молодёжной политики.',
+    file: 'Чек-листы/Чек_лист_Стратегия_МП_вовлечение_заинтересованных_сторон.pdf',
+    size: '279 КБ'
+  }
 ];
 
 const ministryDepartments = [
@@ -1116,6 +1167,29 @@ function renderKnowledge(query = '') {
   if (normalized) { input?.focus(); input?.setSelectionRange(query.length, query.length); }
 }
 
+function renderTemplates(section = '', query = '', focusId = '') {
+  const active = templateSections.find(item => item.id === section);
+  const navigation = `<nav class="template-navigation" aria-label="Разделы шаблонов">${templateSections.map(item => `<button class="${item.id === section ? 'active' : ''}" data-template-section="${item.id}"><span>${item.icon}</span><b>${item.title}</b><small>${item.id === 'checklists' ? `${checklists.length} документов` : item.text}</small></button>`).join('')}</nav>`;
+  if (!active) {
+    content.innerHTML = `<div class="page-title"><div><button class="back-link" data-view="knowledge">← База знаний</button><span class="eyebrow">Практическая библиотека</span><h1>Рабочие материалы</h1><p>Выберите нужный тип материала.</p></div></div>${navigation}<section class="template-intro"><span>▤</span><div><h2>Материалы для ежедневной работы</h2><p>Письма помогают быстрее подготовить корректное обращение, формы отчётов — собрать результаты, а чек-листы — не пропустить важные шаги.</p></div></section>`;
+    return;
+  }
+  if (section === 'checklists') return renderChecklistLibrary(query, focusId);
+  content.innerHTML = `<div class="page-title"><div><button class="back-link" data-template-section="">← Все рабочие материалы</button><span class="eyebrow">Рабочие материалы · ${active.title}</span><h1>${active.title}</h1><p>${active.text}.</p></div></div>${navigation}<div id="filesArea"></div>`;
+  renderFilesArea(`knowledge:templates:${section}`, state.isAdmin, active.title, `Добавить в раздел «${active.title}»`);
+}
+
+function renderChecklistLibrary(query = '', focusId = '') {
+  const normalized = normalizeGlossaryText(query);
+  const matches = checklists.filter(item => !normalized || normalizeGlossaryText(`${item.title} ${item.text}`).includes(normalized));
+  const navigation = `<nav class="template-navigation compact" aria-label="Разделы шаблонов">${templateSections.map(item => `<button class="${item.id === 'checklists' ? 'active' : ''}" data-template-section="${item.id}"><span>${item.icon}</span><b>${item.title}</b><small>${item.id === 'checklists' ? `${checklists.length} документов` : item.text}</small></button>`).join('')}</nav>`;
+  content.innerHTML = `<div class="page-title checklist-title"><div><button class="back-link" data-template-section="">← Все рабочие материалы</button><span class="eyebrow">Готовые рабочие материалы</span><h1>Чек-листы</h1><p>Пошаговые памятки, трекеры и листы планирования из библиотеки проекта.</p></div><div class="route-summary"><b>${checklists.length}</b><span>документов</span></div></div>${navigation}<div class="checklist-toolbar"><label class="search-box"><span>⌕</span><input id="checklistSearch" type="search" value="${escapeHtml(query)}" placeholder="Найти чек-лист" autocomplete="off"></label><strong>${matches.length} ${matches.length === 1 ? 'чек-лист' : matches.length < 5 ? 'чек-листа' : 'чек-листов'}</strong></div><section class="checklist-library">${matches.length ? matches.map(item => `<article class="checklist-card ${item.id === focusId ? 'focused' : ''}" id="checklist-${item.id}"><div class="checklist-number">${String(checklists.indexOf(item) + 1).padStart(2, '0')}</div><div class="checklist-copy"><div class="checklist-meta"><span>PDF</span><span>${item.size}</span></div><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.text)}</p></div><div class="checklist-actions"><a class="checklist-open" href="${escapeHtml(item.file)}" target="_blank" rel="noopener"><span>↗</span>Открыть</a>${saveButton({ id: `checklist:${item.id}`, type: 'Чек-лист', title: item.title, text: item.text, target: `templates:checklists:${item.id}` })}<a class="checklist-download" href="${escapeHtml(item.file)}" download="${escapeHtml(item.title)}.pdf"><span>↓</span>Скачать</a></div></article>`).join('') : '<div class="empty checklist-empty"><b>Чек-лист не найден</b><span>Попробуйте изменить поисковый запрос.</span></div>'}</section>`;
+  const input = document.getElementById('checklistSearch');
+  input?.addEventListener('input', event => renderChecklistLibrary(event.target.value));
+  if (query && input) { input.focus(); input.setSelectionRange(query.length, query.length); }
+  if (focusId) requestAnimationFrame(() => document.getElementById(`checklist-${focusId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }));
+}
+
 function normalizeGlossaryText(value = '') {
   return String(value).toLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ').trim();
 }
@@ -1231,6 +1305,7 @@ function openSavedItem(id) {
   if (kind === 'event') return openEventDirection(value);
   if (kind === 'industry') return openIndustrySection(value);
   if (kind === 'file') return downloadFile(value);
+  if (kind === 'templates') return renderTemplates(value, '', extra || '');
 }
 
 function openStandardPreview(file, title) {
@@ -1653,6 +1728,7 @@ function openKnowledge(index) {
   const item = knowledge[index];
   if (!item) return;
   if (item.action === 'regulations') return renderNormativeBase();
+  if (item.action === 'templates') return renderTemplates();
   if (item.action === 'partners') return renderPartnerMap();
   if (item.title === 'Глоссарий') return renderGlossary();
   if (item.action === 'industry') return renderIndustryStructure();
@@ -2546,6 +2622,8 @@ document.addEventListener('click', async event => {
   if (youthTrack) return openYouthTrack(youthTrack.dataset.youthTrack);
   const knowledgeButton = event.target.closest('[data-knowledge]');
   if (knowledgeButton) return openKnowledge(Number(knowledgeButton.dataset.knowledge));
+  const templateSection = event.target.closest('[data-template-section]');
+  if (templateSection) return renderTemplates(templateSection.dataset.templateSection);
   const partnerFilter = event.target.closest('[data-partner-filter]');
   if (partnerFilter) {
     const category = partnerFilter.dataset.partnerFilter;
