@@ -379,17 +379,29 @@ const missionProfiles = {
 };
 
 const missionQuestions = [
-  { text: 'Когда молодой человек приходит с неясным запросом, мне интереснее всего…', options: [['найти для него понятный путь и нужный контакт', 'navigator'], ['разобраться, что на самом деле стоит за запросом', 'researcher'], ['помочь ему самому сформулировать следующий шаг', 'mentor']] },
-  { text: 'В новом проекте я чаще первым делом…', options: [['собираю цель, этапы и ожидаемый результат', 'architect'], ['ищу людей и организации, которым это тоже важно', 'partner'], ['разговариваю с будущими участниками', 'communicator']] },
-  { text: 'На рабочей встрече мне естественнее…', options: [['объяснять сложное простыми словами', 'navigator'], ['удерживать структуру и принятые решения', 'architect'], ['следить, чтобы каждый голос был услышан', 'communicator']] },
-  { text: 'Какой результат приносит мне больше удовлетворения?', options: [['человек самостоятельно реализовал свою идею', 'mentor'], ['несколько организаций создали общий результат', 'partner'], ['данные помогли изменить неработающее решение', 'researcher']] },
-  { text: 'Если мероприятие прошло неидеально, я сначала…', options: [['разбираю путь участника и точки затруднения', 'navigator'], ['сверяю фактический результат с целью', 'architect'], ['собираю честную обратную связь команды и молодёжи', 'communicator']] },
-  { text: 'В команде ко мне чаще обращаются, когда нужно…', options: [['проверить факты и увидеть закономерность', 'researcher'], ['договориться с новым партнёром', 'partner'], ['поддержать человека в сложной задаче', 'mentor']] },
-  { text: 'Мне хотелось бы оставить после своей работы…', options: [['понятную систему доступных возможностей', 'navigator'], ['устойчивые проекты с доказанным эффектом', 'architect'], ['культуру открытого и уважительного диалога', 'communicator']] },
-  { text: 'Сильная молодёжная инициатива для меня — это когда…', options: [['идея подтверждена реальной потребностью', 'researcher'], ['автор сам принимает решения и растёт', 'mentor'], ['вокруг идеи складывается сеть поддержки', 'partner']] },
-  { text: 'В условиях ограниченных ресурсов я скорее…', options: [['пересоберу решение вокруг главного результата', 'architect'], ['найду взаимовыгодное объединение ресурсов', 'partner'], ['помогу команде выбрать посильный самостоятельный шаг', 'mentor']] },
-  { text: 'Какая профессиональная задача кажется наиболее важной?', options: [['не дать человеку потеряться в системе', 'navigator'], ['сделать невидимые потребности заметными', 'researcher'], ['дать молодёжи реальное влияние на решения', 'communicator']] }
+  { text: 'К тебе обратился молодой человек с интересной идеей. С чего начнёшь?', options: [['А. Подберу подходящие конкурсы и программы поддержки.', 'navigator'], ['Б. Помогу превратить идею в план проекта.', 'architect'], ['В. Уточню, какую проблему решает идея.', 'researcher'], ['Г. Обсужу идею с ним и другими заинтересованными людьми.', 'communicator'], ['Д. Найду организации, которые могут помочь.', 'partner'], ['Е. Помогу автору самому определить первые шаги.', 'mentor']] },
+  { text: 'Тебе поручили улучшить работу молодёжного центра. Что сделаешь первым?', options: [['А. Проверю, все ли возможности центра известны молодёжи.', 'navigator'], ['Б. Составлю план конкретных изменений.', 'architect'], ['В. Изучу отзывы и потребности посетителей.', 'researcher'], ['Г. Организую открытое обсуждение.', 'communicator'], ['Д. Найду организации для совместной работы.', 'partner'], ['Е. Поговорю с активистами об их трудностях.', 'mentor']] },
+  { text: 'Что тебе интереснее делать на молодёжном форуме?', options: [['А. Рассказывать участникам о программах и конкурсах.', 'navigator'], ['Б. Разрабатывать программу и координировать активности.', 'architect'], ['В. Изучать интересы и обратную связь участников.', 'researcher'], ['Г. Модерировать дискуссии.', 'communicator'], ['Д. Знакомить участников с потенциальными партнёрами.', 'partner'], ['Е. Помогать командам развивать свои идеи.', 'mentor']] },
+  { text: 'Молодой человек говорит: «Хочу быть полезным, но не знаю как». Твой ответ?', options: [['А. Покажу подходящие варианты участия.', 'navigator'], ['Б. Предложу начать с небольшого проекта.', 'architect'], ['В. Выясню его интересы и ограничения.', 'researcher'], ['Г. Помогу обсудить идеи с другими молодыми людьми.', 'communicator'], ['Д. Познакомлю с активными сообществами.', 'partner'], ['Е. Помогу ему самому найти подходящее направление.', 'mentor']] },
+  { text: 'Какую задачу ты охотнее возьмёшь на себя?', options: [['А. Составить каталог актуальных возможностей.', 'navigator'], ['Б. Разработать дорожную карту проекта.', 'architect'], ['В. Подготовить аналитическую справку.', 'researcher'], ['Г. Провести общественное обсуждение.', 'communicator'], ['Д. Организовать сотрудничество нескольких учреждений.', 'partner'], ['Е. Сопроводить команду начинающих активистов.', 'mentor']] },
+  { text: 'На мероприятие пришло меньше людей, чем ожидалось. Что сделаешь?', options: [['А. Проверю, где и как распространялась информация.', 'navigator'], ['Б. Пересмотрю организационный план.', 'architect'], ['В. Проанализирую причины низкой посещаемости.', 'researcher'], ['Г. Обсужу ситуацию с целевой аудиторией.', 'communicator'], ['Д. Привлеку дополнительные сообщества и партнёров.', 'partner'], ['Е. Поговорю с организаторами и помогу им извлечь уроки.', 'mentor']] },
+  { text: 'Появился новый грантовый конкурс. Что тебе интереснее?', options: [['А. Разобраться в условиях и рассказать о нём молодёжи.', 'navigator'], ['Б. Разработать конкурентоспособную проектную заявку.', 'architect'], ['В. Изучить, какие проблемы стоит решать через конкурс.', 'researcher'], ['Г. Провести встречу с потенциальными участниками.', 'communicator'], ['Д. Собрать команду и найти соисполнителей.', 'partner'], ['Е. Помочь начинающим заявителям доработать идеи.', 'mentor']] },
+  { text: 'В команде возникли разногласия. Как ты обычно действуешь?', options: [['А. Нахожу правила и полезную информацию для решения.', 'navigator'], ['Б. Возвращаю команду к плану и распределению задач.', 'architect'], ['В. Разбираюсь в причинах конфликта.', 'researcher'], ['Г. Помогаю сторонам услышать друг друга.', 'communicator'], ['Д. Ищу общую цель и точки сотрудничества.', 'partner'], ['Е. Поддерживаю участников в поиске собственного решения.', 'mentor']] },
+  { text: 'Какой результат работы приносит тебе больше удовольствия?', options: [['А. Человек воспользовался найденной возможностью.', 'navigator'], ['Б. Проект успешно реализован.', 'architect'], ['В. Проблема выявлена и подтверждена данными.', 'researcher'], ['Г. Разные стороны пришли к взаимопониманию.', 'communicator'], ['Д. Организации начали совместную работу.', 'partner'], ['Е. Молодой человек смог реализовать идею самостоятельно.', 'mentor']] },
+  { text: 'У тебя есть свободный рабочий день. Что выберешь?', options: [['А. Обновить базу программ и мер поддержки.', 'navigator'], ['Б. Доработать план будущего проекта.', 'architect'], ['В. Проанализировать результаты прошедших мероприятий.', 'researcher'], ['Г. Провести встречу с молодёжным активом.', 'communicator'], ['Д. Обсудить сотрудничество с новой организацией.', 'partner'], ['Е. Проконсультировать начинающую проектную команду.', 'mentor']] },
+  { text: 'Руководитель просит предложить новую инициативу. На что опираешься?', options: [['А. На доступные молодёжи программы и ресурсы.', 'navigator'], ['Б. На чёткую цель, сроки и реалистичный план.', 'architect'], ['В. На исследования и подтверждённые запросы.', 'researcher'], ['Г. На предложения, собранные в ходе обсуждений.', 'communicator'], ['Д. На возможности совместной работы организаций.', 'partner'], ['Е. На потенциал самих молодых инициаторов.', 'mentor']] },
+  { text: 'Какую сложную ситуацию ты хотел бы научиться решать лучше?', options: [['А. Человек не может найти подходящую меру поддержки.', 'navigator'], ['Б. Хорошая идея не превращается в работающий проект.', 'architect'], ['В. Решения принимаются без понимания потребностей молодёжи.', 'researcher'], ['Г. Молодёжь и представители учреждений не слышат друг друга.', 'communicator'], ['Д. Организации действуют разрозненно.', 'partner'], ['Е. Активисты теряют мотивацию и бросают инициативы.', 'mentor']] },
+  { text: 'Что тебе ближе в работе с документами?', options: [['А. Подготовить понятную инструкцию по участию в программе.', 'navigator'], ['Б. Создать паспорт проекта и календарный план.', 'architect'], ['В. Подготовить исследование и аналитические выводы.', 'researcher'], ['Г. Оформить предложения по итогам обсуждения.', 'communicator'], ['Д. Составить соглашение или план взаимодействия.', 'partner'], ['Е. Разработать рекомендации для начинающих активистов.', 'mentor']] },
+  { text: 'Ты знакомишься с новым молодёжным сообществом. Что важно узнать?', options: [['А. Какие возможности и ресурсы ему уже доступны.', 'navigator'], ['Б. Какие проекты оно хочет реализовать.', 'architect'], ['В. Какие у участников потребности и трудности.', 'researcher'], ['Г. Как участники принимают решения и общаются.', 'communicator'], ['Д. С кем сообщество уже сотрудничает.', 'partner'], ['Е. Кому из участников нужна поддержка в развитии идей.', 'mentor']] },
+  { text: 'Нужно сделать молодёжную политику доступнее. Какой подход выберешь?', options: [['А. Создам единый понятный каталог возможностей.', 'navigator'], ['Б. Упрощу организацию участия в проектах.', 'architect'], ['В. Изучу барьеры для разных групп молодёжи.', 'researcher'], ['Г. Организую диалог с теми, кого редко слышат.', 'communicator'], ['Д. Привлеку учреждения, способные расширить доступ.', 'partner'], ['Е. Помогу новым участникам сделать первые шаги.', 'mentor']] },
+  { text: 'В проекте не хватает ресурсов. Твой первый шаг?', options: [['А. Найду доступные программы поддержки.', 'navigator'], ['Б. Пересмотрю план и приоритеты расходов.', 'architect'], ['В. Определю, каких ресурсов действительно не хватает.', 'researcher'], ['Г. Обсужу ограничения с командой.', 'communicator'], ['Д. Найду партнёров для предоставления ресурсов.', 'partner'], ['Е. Помогу участникам самостоятельно найти альтернативы.', 'mentor']] },
+  { text: 'Как ты предпочитаешь оценивать результат мероприятия?', options: [['А. Сколько участников узнали о новых возможностях.', 'navigator'], ['Б. Выполнены ли задачи и достигнуты ли цели.', 'architect'], ['В. Что показывают данные и обратная связь.', 'researcher'], ['Г. Удалось ли услышать разные точки зрения.', 'communicator'], ['Д. Какие устойчивые связи удалось создать.', 'partner'], ['Е. Чему научились участники и организаторы.', 'mentor']] },
+  { text: 'Молодёжная команда просит твоей помощи. Какую роль возьмёшь?', options: [['А. Эксперт по доступным программам.', 'navigator'], ['Б. Координатор разработки проекта.', 'architect'], ['В. Аналитик проблемы и целевой аудитории.', 'researcher'], ['Г. Модератор командного обсуждения.', 'communicator'], ['Д. Организатор внешних связей.', 'partner'], ['Е. Наставник, который помогает команде расти.', 'mentor']] },
+  { text: 'Какой профессиональный навык ты хотел бы развивать в первую очередь?', options: [['А. Знание грантов, форумов и мер поддержки.', 'navigator'], ['Б. Проектное управление и планирование.', 'architect'], ['В. Исследования и анализ данных.', 'researcher'], ['Г. Коммуникацию и фасилитацию.', 'communicator'], ['Д. Переговоры и выстраивание партнёрств.', 'partner'], ['Е. Наставничество и сопровождение инициатив.', 'mentor']] },
+  { text: 'Какой вклад ты хотел бы оставить после года работы?', options: [['А. Больше молодых людей используют доступные возможности.', 'navigator'], ['Б. Запущены несколько устойчивых молодёжных проектов.', 'architect'], ['В. Решения стали точнее благодаря изучению потребностей.', 'researcher'], ['Г. Появилась работающая система диалога с молодёжью.', 'communicator'], ['Д. Создана сеть активных партнёров.', 'partner'], ['Е. Выросло новое поколение самостоятельных инициаторов.', 'mentor']] }
 ];
+
+const MISSION_TEST_VERSION = 'roles-20-v1';
 
 const legacyTaskWeeks = [
   {
@@ -1057,7 +1069,7 @@ const vsksDirections = ['Подготовка добровольцев к дей
 const mgerDirections = ['Гуманитарная миссия', 'Волонтёрская помощь', 'Патриотические и памятные мероприятия', 'Политпросвещение молодёжи'];
 
 const ADMIN_NAME = 'Инесса Артющенко';
-const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', profilePhoto: '', stage: 'Первый день', taskRouteVersion: TASK_ROUTE_VERSION, completed: [], taskNotes: {}, taskAnswers: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, workshopDrafts: {}, workWeek: {}, workWeeks: {}, workCalendar: {}, calendarSelected: '', partners: [], missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
+const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', profilePhoto: '', stage: 'Первый день', taskRouteVersion: TASK_ROUTE_VERSION, missionTestVersion: MISSION_TEST_VERSION, completed: [], taskNotes: {}, taskAnswers: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, workshopDrafts: {}, workWeek: {}, workWeeks: {}, workCalendar: {}, calendarSelected: '', partners: [], missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
 let state = loadState();
 let analytics = loadAnalytics();
 let currentView = 'home';
@@ -1076,7 +1088,8 @@ function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem('digitalMentorState')) || {};
     const routeChanged = saved.taskRouteVersion !== TASK_ROUTE_VERSION;
-    const loaded = { ...defaultState, ...saved, taskRouteVersion: TASK_ROUTE_VERSION };
+    const missionTestChanged = saved.missionTestVersion !== MISSION_TEST_VERSION;
+    const loaded = { ...defaultState, ...saved, taskRouteVersion: TASK_ROUTE_VERSION, missionTestVersion: MISSION_TEST_VERSION };
     if (routeChanged) {
       loaded.completed = [];
       loaded.taskNotes = {};
@@ -1084,6 +1097,10 @@ function loadState() {
       loaded.taskEvidence = {};
       loaded.taskReviews = {};
       loaded.dailyTaskAssignments = {};
+      loaded.missionTestAnswers = {};
+      loaded.developmentProfile = null;
+    }
+    if (missionTestChanged) {
       loaded.missionTestAnswers = {};
       loaded.developmentProfile = null;
     }
@@ -1929,7 +1946,7 @@ function renderTasks() {
   const activeStage = taskStages.find(stage => stage.id === tasksStage) || taskStages[0];
   content.innerHTML = `
     <div class="page-title"><div><span class="eyebrow">Маршрут профессиональной адаптации · 90 дней</span><h1>Мои задания</h1><p>${completedCount()} из ${TOTAL_PLANNED_TASKS} заданий выполнено. Следующее открывается после отправки предыдущего.</p></div><div class="route-summary"><b>${progress()}%</b><span>общий прогресс</span></div></div>
-    <div class="task-view-tabs"><button class="${tasksTab === 'route' ? 'active' : ''}" data-tasks-tab="route"><span>01</span><b>Практические задания</b><small>32 задания в трёх этапах</small></button><button class="${tasksTab === 'mission' ? 'active' : ''}" data-tasks-tab="mission"><span>02</span><b>На своём ли вы месте?</b><small>Откройте свою профессиональную миссию</small></button></div>
+    <div class="task-view-tabs"><button class="${tasksTab === 'route' ? 'active' : ''}" data-tasks-tab="route"><span>01</span><b>Практические задания</b><small>32 задания в трёх этапах</small></button><button class="${tasksTab === 'mission' ? 'active' : ''}" data-tasks-tab="mission"><span>02</span><b>На своём ли ты месте?</b><small>Открой свою профессиональную миссию</small></button></div>
     ${tasksTab === 'mission' ? renderMissionTest() : `<div class="task-stage-tabs">${taskStages.map(stage => { const published = tasks.filter(task => task.stageId === stage.id).length; const completed = tasks.filter(task => task.stageId === stage.id && isTaskComplete(task.id)).length; return `<button class="${stage.id === activeStage.id ? 'active' : ''}" data-task-stage="${stage.id}"><span>${stage.number}</span><b>${stage.title}</b><small>${published ? `${completed} выполнено · ${published} опубликовано` : `${stage.planned} заданий · скоро`}</small></button>`; }).join('')}</div>${renderTaskStage(activeStage)}<article class="game-banner"><div><span class="eyebrow">Интерактивная игра · Блок ${blockNumber + 1}</span><h2>«Маршрут решения»</h2><p>Рабочие ситуации помогают отличать самостоятельное решение от вопроса, который нужно передать ответственному специалисту.</p><span class="game-score">Лучший результат: ${bestResult} / 25</span></div><button class="primary-button" data-action="start-game">Начать игру</button></article>`}`;
 }
 
@@ -1938,7 +1955,7 @@ function renderMissionTest() {
   const answers = state.missionTestAnswers || {};
   const answered = missionQuestions.filter((_, index) => Object.hasOwn(missionProfiles, answers[index])).length;
   if (!routeComplete) return `<section class="mission-test-locked"><span>Финальный этап</span><h2>Сначала завершите практический маршрут</h2><p>Самодиагностика откроется после отправки всех ${TOTAL_PLANNED_TASKS} заданий трёх этапов.</p><div><b>${completedCount()} / ${TOTAL_PLANNED_TASKS}</b><i><span style="width:${progress()}%"></span></i></div><button class="secondary-button dark" data-tasks-tab="route">Вернуться к заданиям</button></section>`;
-  return `<section class="mission-test"><div class="mission-test-hero"><span class="eyebrow">Финальная самодиагностика</span><h2>На своём ли вы месте?</h2><p>Ответьте честно и узнайте, в какой профессиональной миссии вы создаёте наибольшую ценность. Это не оценка пригодности и не психологический диагноз, а ориентир для развития.</p><div class="mission-test-progress"><b data-mission-progress>${answered} / ${missionQuestions.length}</b><i><span data-mission-progress-bar style="width:${Math.round(answered / missionQuestions.length * 100)}%"></span></i></div></div>
+  return `<section class="mission-test"><div class="mission-test-hero"><span class="eyebrow">Финальная самодиагностика</span><h2>На своём ли ты месте?</h2><p>Ответь честно и узнай, в какой профессиональной миссии ты создаёшь наибольшую ценность. Это не оценка пригодности и не психологический диагноз, а ориентир для развития.</p><div class="mission-test-progress"><b data-mission-progress>${answered} / ${missionQuestions.length}</b><i><span data-mission-progress-bar style="width:${Math.round(answered / missionQuestions.length * 100)}%"></span></i></div></div>
     <div class="mission-questions">${missionQuestions.map((question, index) => `<fieldset><legend><span>${String(index + 1).padStart(2, '0')}</span>${question.text}</legend>${question.options.map(([text, profile]) => `<label><input type="radio" name="mission-${index}" value="${profile}" data-mission-answer="${index}" ${answers[index] === profile ? 'checked' : ''}><span>${text}</span></label>`).join('')}</fieldset>`).join('')}</div>
     <section class="mission-generate"><div><span>Все ответы будут связаны с результатами 90-дневного маршрута</span><h3>Сформировать мой профиль развития</h3><p>Вы получите профессиональную миссию, рабочий стиль, сильные стороны, зоны роста и темы для обучения.</p></div><button class="primary-button" data-action="generate-development-profile" ${answered < missionQuestions.length ? 'disabled' : ''}>Сформировать профиль</button></section>
     <div data-development-profile>${state.developmentProfile ? renderDevelopmentProfile(state.developmentProfile) : ''}</div></section>`;
@@ -1951,17 +1968,19 @@ function missionTestResult() {
 }
 
 function buildLocalDevelopmentProfile() {
-  const [primary, secondary] = missionTestResult();
+  const results = missionTestResult();
+  const [primary, secondary] = results;
+  const hasSecondary = secondary.score > 0;
   return {
     mode: 'local',
     title: primary.title,
     mission: primary.mission,
     style: primary.style,
-    secondary: secondary.title,
+    secondary: hasSecondary ? secondary.title : 'Дополнительный вектор не выражен',
     strengths: primary.strengths,
-    growth: [...primary.growth, `Использовать сильные стороны профиля «${secondary.title}» как дополнительный рабочий инструмент.`],
-    learn: [...new Set([...primary.learn, ...secondary.learn.slice(0, 1)])],
-    evidence: `Завершено ${completedCount()} практических заданий из ${TOTAL_PLANNED_TASKS}; каждое подтверждено требуемым результатом.`,
+    growth: hasSecondary ? [...primary.growth, `Использовать сильные стороны профиля «${secondary.title}» как дополнительный рабочий инструмент.`] : primary.growth,
+    learn: [...new Set([...primary.learn, ...(hasSecondary ? secondary.learn.slice(0, 1) : [])])],
+    evidence: `Результаты 20 ответов: ${results.map(item => `${item.title} — ${item.score}`).join('; ')}. Завершено практических заданий: ${completedCount()} из ${TOTAL_PLANNED_TASKS}.`,
     createdAt: Date.now()
   };
 }
