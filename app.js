@@ -721,7 +721,151 @@ const taskStages = [
       }
     ]
   },
-  { id: 'days-61-90', number: '03', title: '61–90 дней', subtitle: 'Ответственность за результат и профессиональная миссия', planned: 15, weeks: [] }
+  {
+    id: 'days-61-90', number: '03', title: '61–90 дней', subtitle: 'Ответственность за результат и профессиональная миссия', planned: 10,
+    weeks: [
+      {
+        title: 'Увидеть территорию целиком', level: 'Неделя 9', text: 'Официальные данные, аудитория и группы с низким охватом.',
+        value: 'Исследовательская честность', motto: 'Сначала факты и голоса людей — затем решения',
+        forWhom: 'Для молодых людей территории, включая группы, которые редко участвуют в программах и не всегда видимы учреждениям.',
+        mission: 'Собрать доказательную картину молодёжной политики территории и определить, кого существующие программы охватывают недостаточно.',
+        youthResult: 'Решения учитывают реальную структуру молодёжной аудитории и создают доступные способы участия для разных групп.',
+        reflection: 'Чьи потребности могут оставаться незаметными в привычной статистике учреждения?',
+        tasks: [
+          {
+            id: 'territory-policy-analysis', number: 1, title: 'Молодёжная политика под микроскопом — Аналитика территории',
+            text: 'Проведите исследование состояния молодёжной политики города, района или региона по открытым официальным данным.',
+            tag: 'Задание 1', deliverable: 'Аналитическая записка на 3–5 страниц', evidence: 'file',
+            steps: ['Выберите конкретную территорию и период анализа.', 'Соберите актуальные открытые данные из официальных источников.', 'Охарактеризуйте молодёжную аудиторию и действующие меры поддержки.', 'Опишите ключевые организации и их функции.', 'Выделите три сильные стороны и три проблемы.', 'Для каждой проблемы предложите реалистичное решение.', 'Оформите аналитическую записку и приложите список источников.'],
+            questionsLabel: 'Обязательная структура аналитической записки',
+            questions: ['Характеристика молодёжной аудитории.', 'Действующие меры поддержки.', 'Организации и учреждения молодёжной политики.', 'Три сильные стороны территории.', 'Три проблемы.', 'Предложения по решению каждой проблемы.', 'Официальные источники и дата их проверки.'],
+            criteria: ['Анализ относится к конкретной территории и периоду.', 'Выводы опираются на открытые официальные данные.', 'Названы ровно три или более сильных сторон и три проблемы.', 'Каждой проблеме соответствует конкретное предложение.', 'Объём записки — 3–5 страниц.']
+          },
+          {
+            id: 'youth-coverage-analysis', number: 2, title: 'Найди тех, кого мы не слышим — Анализ охвата молодёжи',
+            text: 'Выявите группы молодёжи, недостаточно вовлечённые в программы учреждения, используя доступную статистику и согласованные с наставником интервью.',
+            tag: 'Задание 2', deliverable: 'Аналитическая таблица и план вовлечения', evidence: 'file',
+            steps: ['Согласуйте с наставником источники статистики и формат интервью.', 'Сопоставьте состав молодёжи территории с фактическими участниками программ.', 'Выделите три группы с низким охватом.', 'Определите причины низкого участия и основные барьеры.', 'Предложите три способа привлечения для каждой группы или общего плана.', 'Установите показатели, по которым можно проверить улучшение охвата.'],
+            questionsLabel: 'Что включить в итоговый файл',
+            questions: ['Три недостаточно вовлечённые группы.', 'Данные, подтверждающие низкий охват.', 'Причины низкого участия.', 'Организационные, информационные и иные барьеры.', 'Три способа привлечения.', 'Показатели улучшения охвата.', 'План действий, сроки и ответственные.'],
+            criteria: ['Выделены три конкретные группы.', 'Выводы подтверждены статистикой или согласованными интервью.', 'Причины отделены от предположений специалиста.', 'Способы привлечения учитывают выявленные барьеры.', 'Показатели позволяют сравнить охват до и после изменений.']
+          }
+        ]
+      },
+      {
+        title: 'Оценить и предложить решение', level: 'Неделя 10', text: 'Аудит действующей программы и разработка новых инициатив.',
+        value: 'Критическое мышление', motto: 'Оценивать не активность, а соответствие потребностям',
+        forWhom: 'Для участников действующих программ и молодых людей, чьи проблемы пока не получили подходящего решения.',
+        mission: 'Научиться объективно оценивать программу и переводить выявленные проблемы в проработанные инициативы.',
+        youthResult: 'Действующие программы улучшаются, а новые инициативы отвечают подтверждённым потребностям молодёжи.',
+        reflection: 'Какое изменение будет полезным для молодёжи, а не только удобным для учреждения?',
+        tasks: [
+          {
+            id: 'youth-program-audit', number: 3, title: 'Разбор полётов — Аудит молодёжной программы',
+            text: 'Выберите действующую программу или регулярное мероприятие и оцените её результативность и соответствие потребностям молодёжи.',
+            tag: 'Задание 3', deliverable: 'Экспертное заключение на 2–3 страницы', evidence: 'file',
+            steps: ['Выберите действующую программу или регулярное мероприятие.', 'Соберите документы, данные о реализации и обратную связь.', 'Сопоставьте заявленную цель с фактической аудиторией и результатами.', 'Определите сильные и слабые стороны.', 'Предложите минимум три улучшения.', 'Опишите ожидаемый эффект каждого улучшения.'],
+            questionsLabel: 'Структура экспертного заключения',
+            questions: ['Цель и целевая аудитория.', 'Основные мероприятия и фактические результаты.', 'Сильные стороны.', 'Слабые стороны.', 'Минимум три улучшения.', 'Ожидаемый эффект предложений.', 'Источники данных и ограничения оценки.'],
+            criteria: ['Оценивается реально действующая программа.', 'Плановые и фактические результаты разделены.', 'Сильные и слабые стороны обоснованы.', 'Предложено не менее трёх реализуемых улучшений.', 'Объём заключения — 2–3 страницы.']
+          },
+          {
+            id: 'three-youth-initiatives', number: 4, title: 'Если бы решение зависело от меня — Три инициативы для молодёжи',
+            text: 'На основе выявленных проблем предложите три инициативы по улучшению молодёжной политики на территории.',
+            tag: 'Задание 4', deliverable: 'Документ с тремя инициативами на 3–4 страницы', evidence: 'file',
+            steps: ['Выберите три подтверждённые проблемы из предыдущего анализа.', 'Для каждой проблемы определите конкретную аудиторию.', 'Сформулируйте предлагаемое изменение.', 'Определите необходимые ресурсы и партнёров.', 'Опишите ожидаемый результат.', 'Сравните инициативы и укажите рекомендуемый приоритет.'],
+            questionsLabel: 'Карточка каждой инициативы',
+            questions: ['Проблема.', 'Целевая аудитория.', 'Предлагаемое изменение.', 'Необходимые ресурсы.', 'Партнёры.', 'Ожидаемый результат.', 'Краткое обоснование приоритета.'],
+            criteria: ['Представлены три самостоятельные инициативы.', 'Каждая инициатива связана с выявленной проблемой.', 'Аудитория, ресурсы и партнёры указаны конкретно.', 'Ожидаемые результаты наблюдаемы и проверяемы.', 'Объём документа — 3–4 страницы.']
+          }
+        ]
+      },
+      {
+        title: 'Спроектировать изменение', level: 'Неделя 11', text: 'Новая модель рабочего процесса и собственный проект.',
+        value: 'Инициативность', motto: 'Не только замечать проблему, но и собирать работающую модель',
+        forWhom: 'Для молодых людей и сотрудников, которым нужны более понятные процессы и качественные проекты.',
+        mission: 'Спроектировать организационное улучшение и разработать собственную молодёжную инициативу по логике конкурсной заявки.',
+        youthResult: 'Учреждение работает эффективнее, а социально значимая идея превращается в реалистичный проект.',
+        reflection: 'Что должно измениться в процессе, чтобы результат для молодого человека стал лучше?',
+        tasks: [
+          {
+            id: 'institution-process-improvement', number: 5, title: 'Молодёжная политика 2.0 — Улучшение работы учреждения',
+            text: 'Выберите один рабочий процесс учреждения и предложите его новую, более эффективную модель.',
+            tag: 'Задание 5', deliverable: 'Проект организационного улучшения', evidence: 'file',
+            steps: ['Выберите один повторяющийся рабочий процесс.', 'Опишите его текущую последовательность и участников.', 'Определите проблемы, задержки и лишние действия.', 'Спроектируйте новую модель процесса.', 'Подготовьте план внедрения, ресурсы и показатели.', 'Нарисуйте схемы «как сейчас» и «как будет».'],
+            questionsLabel: 'Обязательные разделы проекта улучшения',
+            questions: ['Текущий процесс.', 'Проблемы и причины.', 'Новая модель.', 'План внедрения.', 'Необходимые ресурсы.', 'Показатели эффективности.', 'Схема «как сейчас».', 'Схема «как будет».'],
+            criteria: ['Границы выбранного процесса понятны.', 'Проблемы подтверждены фактами или наблюдениями.', 'Новая модель устраняет выявленные причины.', 'План внедрения содержит этапы и ответственных.', 'Две схемы позволяют сравнить процесс до и после.']
+          },
+          {
+            id: 'own-youth-project', number: 6, title: 'От идеи до проекта — Собственная молодёжная инициатива',
+            text: 'Разработайте социально значимый молодёжный проект по логике проектной заявки и проверьте его соответствие актуальным правилам выбранного конкурса.',
+            tag: 'Задание 6', deliverable: 'Проектная заявка с проверкой по правилам выбранного конкурса', evidence: 'file', workshopAction: 'project',
+            steps: ['Выберите актуальный конкурс и изучите его официальные правила.', 'Сформулируйте проблему и подтвердите её данными.', 'Определите аудиторию, цель и задачи.', 'Разработайте механизм реализации и календарный план.', 'Опишите команду, партнёров, смету, результаты и риски.', 'Проверьте каждое поле по требованиям конкурса.', 'Прикрепите готовую проектную заявку.'],
+            questionsLabel: 'Обязательные разделы проектной заявки',
+            questions: ['Название.', 'Проблема и её подтверждение.', 'Целевая аудитория.', 'Цель и задачи.', 'Механизм реализации.', 'Календарный план.', 'Команда.', 'Партнёры.', 'Смета.', 'Количественные и качественные результаты.', 'Риски и меры реагирования.', 'Название конкурса и пункты правил, которым соответствует проект.'],
+            criteria: ['Все обязательные разделы заполнены.', 'Цель, задачи, мероприятия и результаты логически связаны.', 'Смета и календарный план реалистичны.', 'Риски и партнёрский вклад учтены.', 'Соответствие актуальным правилам конкурса проверено по официальному источнику.']
+          }
+        ]
+      },
+      {
+        title: 'Объединить партнёров и ресурсы', level: 'Неделя 12', text: 'Межведомственное взаимодействие и финансовая устойчивость проекта.',
+        value: 'Партнёрская ответственность', motto: 'Общий результат требует ясных ролей и честных расчётов',
+        forWhom: 'Для молодых людей, чья проблема требует участия нескольких организаций и устойчивого ресурсного решения.',
+        mission: 'Собрать партнёрскую модель и обеспечить проект реалистичными финансовыми и нефинансовыми ресурсами.',
+        youthResult: 'Организации действуют согласованно, а проект сохраняет ключевой результат даже при сокращении бюджета.',
+        reflection: 'Какой вклад каждого партнёра действительно необходим для общего результата?',
+        tasks: [
+          {
+            id: 'interagency-partnership-roadmap', number: 7, title: 'Партнёрство с результатом — Межведомственное взаимодействие',
+            text: 'Разработайте модель сотрудничества нескольких организаций для решения конкретной молодёжной проблемы.',
+            tag: 'Задание 7', deliverable: 'Дорожная карта партнёрства на три месяца', evidence: 'file',
+            steps: ['Выберите конкретную молодёжную проблему.', 'Определите не менее четырёх необходимых партнёров.', 'Сформулируйте общую цель и вклад каждой стороны.', 'Составьте план совместных действий на три месяца.', 'Опишите механизм координации и обмена информацией.', 'Установите ожидаемые результаты и контрольные точки.'],
+            questionsLabel: 'Структура дорожной карты',
+            questions: ['Проблема.', 'Не менее четырёх партнёров.', 'Роль и вклад каждого партнёра.', 'Общая цель.', 'План действий на три месяца.', 'Механизм координации.', 'Ожидаемые результаты и контрольные точки.'],
+            criteria: ['Участвуют не менее четырёх релевантных партнёров.', 'Роли не дублируются и связаны с компетенциями организаций.', 'План охватывает три месяца.', 'Определён ответственный за координацию.', 'Результаты партнёрства можно проверить.']
+          },
+          {
+            id: 'project-financial-model', number: 8, title: 'От бюджета к результату — Ресурсное обеспечение проекта',
+            text: 'Для проекта из задания № 6 составьте финансовую модель с базовым и сокращённым сценариями.',
+            tag: 'Задание 8', deliverable: 'Финансовая модель (.xlsx) и пояснительная записка (.docx)', evidence: 'file', minFiles: 2, requiredExtensions: ['xlsx', 'docx'],
+            steps: ['Используйте проект из задания № 6.', 'Подготовьте детальную смету с формулами и расчётами.', 'Обоснуйте каждую статью расходов.', 'Укажите источники финансирования и нефинансовый вклад.', 'Соберите базовый сценарий бюджета.', 'Сформируйте сокращённый сценарий с сохранением ключевого результата.', 'Прикрепите два файла: таблицу .xlsx и записку .docx.'],
+            questionsLabel: 'Что должно быть в финансовой модели',
+            questions: ['Детальная смета.', 'Расчёты и формулы.', 'Обоснования расходов.', 'Источники финансирования.', 'Нефинансовый вклад.', 'Базовый сценарий.', 'Сокращённый сценарий.', 'Объяснение, как сокращение бюджета влияет на результат.'],
+            criteria: ['Приложены два файла: .xlsx и .docx.', 'Расчёты корректны и связаны с мероприятиями проекта.', 'Каждая статья имеет обоснование.', 'Учтены финансовые и нефинансовые ресурсы.', 'Сокращённый сценарий сохраняет ключевой результат проекта.']
+          }
+        ]
+      },
+      {
+        title: 'Зафиксировать профессиональный результат', level: 'Неделя 13', text: 'Личная дорожная карта и итоговое портфолио первых 90 дней.',
+        value: 'Профессиональная субъектность', motto: 'Осмыслить опыт и взять ответственность за следующий этап',
+        forWhom: 'Для самого специалиста, его команды и молодых людей, которые будут получать поддержку в следующие месяцы.',
+        mission: 'Подвести доказательные итоги адаптации и определить личный маршрут дальнейшего профессионального развития.',
+        youthResult: 'В системе работает специалист, который понимает свой вклад, умеет показывать результаты и планирует развитие.',
+        reflection: 'Какой результат первых 90 дней лучше всего показывает мою профессиональную роль?',
+        tasks: [
+          {
+            id: 'professional-roadmap', number: 9, title: 'Моя роль в молодёжной политике — Профессиональная дорожная карта',
+            text: 'Проанализируйте должностные обязанности, определите личный вклад и подготовьте дорожную карту развития на шесть месяцев.',
+            tag: 'Задание 9', deliverable: 'Профессиональная дорожная карта на 2–3 страницы (.docx или .pdf)', evidence: 'file', allowedExtensions: ['docx', 'pdf'],
+            steps: ['Изучите актуальные должностные обязанности.', 'Выделите основные направления своей работы и личный вклад.', 'Определите пять компетенций для развития.', 'Предложите три собственные инициативы.', 'Составьте план на один, три и шесть месяцев.', 'Установите ожидаемые результаты и показатели.', 'Прикрепите файл .docx или .pdf.'],
+            questionsLabel: 'Обязательные разделы дорожной карты',
+            questions: ['Основные направления работы.', 'Личный вклад в молодёжную политику.', 'Пять компетенций для развития.', 'Три инициативы.', 'План на 1 месяц.', 'План на 3 месяца.', 'План на 6 месяцев.', 'Ожидаемые результаты и показатели.'],
+            criteria: ['Дорожная карта связана с должностными обязанностями.', 'Указаны пять компетенций и три инициативы.', 'Планы на 1, 3 и 6 месяцев различаются по масштабу.', 'Результаты и показатели проверяемы.', 'Объём — 2–3 страницы, формат — .docx или .pdf.']
+          },
+          {
+            id: 'ninety-days-portfolio', number: 10, title: 'Мои первые 90 дней: от адаптации к результату — Итоговое портфолио',
+            text: 'Проанализируйте профессиональный рост и подготовьте итоговый кейс с лучшими работами за три месяца.',
+            tag: 'Задание 10', deliverable: 'Портфолио на 5–7 страниц с приложениями (.pdf или .docx)', evidence: 'file', allowedExtensions: ['pdf', 'docx'],
+            steps: ['Отберите лучшие работы и подтверждения результатов маршрута.', 'Опишите пять освоенных навыков.', 'Покажите три конкретных результата.', 'Включите собственную инициативу.', 'Разберите трудности и найденные решения.', 'Опишите предложенные улучшения работы.', 'Добавьте дорожную карту на шесть месяцев и приложения.', 'Прикрепите итоговый файл .pdf или .docx.'],
+            questionsLabel: 'Структура итогового портфолио',
+            questions: ['Пять освоенных навыков.', 'Три профессиональных результата.', 'Собственная инициатива.', 'Трудности и способы их решения.', 'Улучшения работы учреждения или процесса.', 'Дорожная карта на шесть месяцев.', 'Приложения с лучшими работами или ссылками на них.'],
+            criteria: ['Портфолио содержит все обязательные разделы.', 'Результаты подтверждены конкретными работами или данными.', 'Показана динамика профессионального роста.', 'Дорожная карта логично продолжает итоги маршрута.', 'Объём — 5–7 страниц без учёта приложений, формат — .pdf или .docx.']
+          }
+        ]
+      }
+    ]
+  }
 ];
 
 const taskWeeks = taskStages.flatMap(stage => stage.weeks.map(week => ({ ...week, stageId: stage.id, stageTitle: stage.title })));
@@ -1785,7 +1929,7 @@ function renderTasks() {
   const activeStage = taskStages.find(stage => stage.id === tasksStage) || taskStages[0];
   content.innerHTML = `
     <div class="page-title"><div><span class="eyebrow">Маршрут профессиональной адаптации · 90 дней</span><h1>Мои задания</h1><p>${completedCount()} из ${TOTAL_PLANNED_TASKS} заданий выполнено. Следующее открывается после отправки предыдущего.</p></div><div class="route-summary"><b>${progress()}%</b><span>общий прогресс</span></div></div>
-    <div class="task-view-tabs"><button class="${tasksTab === 'route' ? 'active' : ''}" data-tasks-tab="route"><span>01</span><b>Практические задания</b><small>37 заданий в трёх этапах</small></button><button class="${tasksTab === 'mission' ? 'active' : ''}" data-tasks-tab="mission"><span>02</span><b>На своём ли вы месте?</b><small>Откройте свою профессиональную миссию</small></button></div>
+    <div class="task-view-tabs"><button class="${tasksTab === 'route' ? 'active' : ''}" data-tasks-tab="route"><span>01</span><b>Практические задания</b><small>32 задания в трёх этапах</small></button><button class="${tasksTab === 'mission' ? 'active' : ''}" data-tasks-tab="mission"><span>02</span><b>На своём ли вы месте?</b><small>Откройте свою профессиональную миссию</small></button></div>
     ${tasksTab === 'mission' ? renderMissionTest() : `<div class="task-stage-tabs">${taskStages.map(stage => { const published = tasks.filter(task => task.stageId === stage.id).length; const completed = tasks.filter(task => task.stageId === stage.id && isTaskComplete(task.id)).length; return `<button class="${stage.id === activeStage.id ? 'active' : ''}" data-task-stage="${stage.id}"><span>${stage.number}</span><b>${stage.title}</b><small>${published ? `${completed} выполнено · ${published} опубликовано` : `${stage.planned} заданий · скоро`}</small></button>`; }).join('')}</div>${renderTaskStage(activeStage)}<article class="game-banner"><div><span class="eyebrow">Интерактивная игра · Блок ${blockNumber + 1}</span><h2>«Маршрут решения»</h2><p>Рабочие ситуации помогают отличать самостоятельное решение от вопроса, который нужно передать ответственному специалисту.</p><span class="game-score">Лучший результат: ${bestResult} / 25</span></div><button class="primary-button" data-action="start-game">Начать игру</button></article>`}`;
 }
 
@@ -2074,7 +2218,7 @@ function openTask(id) {
   const requiredText = task.evidence === 'note' ? `Для этого задания обязательна заметка «${task.noteLabel || 'Результат'}». Файл можно добавить по желанию.` : task.evidence === 'file-or-link' ? 'Выберите один способ подтверждения: прикрепите файл с анкетой или вставьте рабочую ссылку на Яндекс Форму.' : 'Для этого задания обязателен файл с готовым результатом. Заметку можно добавить как пояснение.';
   const quizHtml = task.type === 'quiz' ? `<section class="task-quiz"><span>Выберите один вариант</span><h3>${task.question}</h3><div>${task.options.map((option, index) => `<label><input type="radio" name="task-answer-${task.id}" value="${index}" data-task-answer="${task.id}" ${Number(selectedAnswer) === index ? 'checked' : ''} ${editable ? '' : 'disabled'}><span><i>${index + 1}</i>${option}</span></label>`).join('')}</div><small>После выбора обязательно нажмите кнопку «Отправить».</small></section>` : '';
   const evidenceHtml = task.type === 'quiz' ? quizHtml : `<section class="task-evidence-rule ${task.evidence === 'note' ? 'note-required' : 'file-required'}"><div><span class="${hasNote ? 'ready' : ''}" data-evidence-note>${hasNote ? '✓' : '1'}</span><b>${task.evidence === 'file-or-link' ? 'Ссылка на Яндекс Форму · один из вариантов' : `Заметка ${task.evidence === 'note' ? '· обязательна' : '· по желанию'}`}</b></div><div><span class="${hasFile ? 'ready' : ''}" data-evidence-file>${hasFile ? '✓' : '2'}</span><b>Документ ${task.evidence === 'file' ? '· обязателен' : task.evidence === 'file-or-link' ? '· один из вариантов' : '· по желанию'}</b></div><p>${requiredText}</p></section><label class="task-note modal-task-note"><span>${task.noteLabel || 'Пояснение к результату'}</span><textarea data-task-note="${task.id}" rows="4" placeholder="${task.notePlaceholder || 'Кратко поясните результат или добавьте комментарий для проверяющего'}" ${editable ? '' : 'disabled'}>${note}</textarea><small>${editable ? 'Черновик сохраняется автоматически на этом устройстве' : 'Редактирование заблокировано до решения администратора'}</small></label><div id="filesArea"></div>`;
-  modalContent.innerHTML = `<div class="modal-body task-detail-modal"><span class="eyebrow">${week.level} · ${week.stageTitle} · ${task.tag}</span><h2>${task.title}</h2><div class="task-modal-status ${reviewStatus}"><b>${taskReviewLabel(task.id)}</b><span>${statusText}</span></div>${saveButton({ id: `task:${task.id}`, type: 'Задание', title: task.title, text: task.text, target: `task:${task.id}` })}<p class="modal-lead">${task.text}</p>${task.url ? `<a class="task-resource-link" href="${task.url}" target="_blank" rel="noopener"><span>Полезный источник</span><b>${task.urlLabel || 'Открыть официальный ресурс'} ↗</b></a>` : ''}${task.knowledgeAction === 'industry' ? '<button class="task-resource-link" data-task-knowledge="industry"><span>Материал в Базе знаний</span><b>Открыть «Структуру отрасли» →</b></button>' : ''}${task.workshopAction === 'event' ? '<button class="task-resource-link" data-task-workshop="event"><span>Рабочая мастерская</span><b>Открыть конструктор мероприятий →</b></button>' : ''}<div class="task-meaning"><div><span>Для кого</span><b>${week.forWhom}</b></div><div><span>Почему это важно</span><b>${week.youthResult}</b></div></div><div class="task-brief"><span>Что должно получиться</span><b>${task.deliverable}</b></div><h3>Как выполнить</h3><ol class="steps">${task.steps.map(step => `<li>${step}</li>`).join('')}</ol>${task.questions?.length ? `<section class="task-situations"><span>${task.questionsLabel || 'Обязательно включите в файл ответы'}</span><ol>${task.questions.map(question => `<li>${question}</li>`).join('')}</ol></section>` : ''}<section class="task-criteria"><span>Критерии проверки</span><ul>${task.criteria.map(criterion => `<li>${criterion}</li>`).join('')}</ul></section><div class="reflection-prompt"><span>Вопрос недели к себе</span><b>${week.reflection}</b></div>${evidenceHtml}<div class="task-submit-note"><b>После отправки</b><span>Задание сразу считается выполненным и открывает следующее. Результат также появляется у администратора и в очереди будущего ИИ-агента.</span></div><div class="button-row">${reviewStatus === 'accepted' ? '<span class="accepted-note">✓ Задание принято</span>' : reviewStatus === 'rejected' ? `<button class="primary-button" data-revise-task="${task.id}">Доработать</button>` : `<button class="primary-button" data-submit-task="${task.id}" ${reviewStatus === 'submitted' ? 'disabled' : ''}>${reviewStatus === 'submitted' ? 'Отправлено' : 'Отправить'}</button>`}</div></div>`;
+  modalContent.innerHTML = `<div class="modal-body task-detail-modal"><span class="eyebrow">${week.level} · ${week.stageTitle} · ${task.tag}</span><h2>${task.title}</h2><div class="task-modal-status ${reviewStatus}"><b>${taskReviewLabel(task.id)}</b><span>${statusText}</span></div>${saveButton({ id: `task:${task.id}`, type: 'Задание', title: task.title, text: task.text, target: `task:${task.id}` })}<p class="modal-lead">${task.text}</p>${task.url ? `<a class="task-resource-link" href="${task.url}" target="_blank" rel="noopener"><span>Полезный источник</span><b>${task.urlLabel || 'Открыть официальный ресурс'} ↗</b></a>` : ''}${task.knowledgeAction === 'industry' ? '<button class="task-resource-link" data-task-knowledge="industry"><span>Материал в Базе знаний</span><b>Открыть «Структуру отрасли» →</b></button>' : ''}${task.workshopAction ? `<button class="task-resource-link" data-task-workshop="${task.workshopAction}"><span>Рабочая мастерская</span><b>${task.workshopAction === 'project' ? 'Открыть конструктор проекта' : 'Открыть конструктор мероприятий'} →</b></button>` : ''}<div class="task-meaning"><div><span>Для кого</span><b>${week.forWhom}</b></div><div><span>Почему это важно</span><b>${week.youthResult}</b></div></div><div class="task-brief"><span>Что должно получиться</span><b>${task.deliverable}</b></div><h3>Как выполнить</h3><ol class="steps">${task.steps.map(step => `<li>${step}</li>`).join('')}</ol>${task.questions?.length ? `<section class="task-situations"><span>${task.questionsLabel || 'Обязательно включите в файл ответы'}</span><ol>${task.questions.map(question => `<li>${question}</li>`).join('')}</ol></section>` : ''}<section class="task-criteria"><span>Критерии проверки</span><ul>${task.criteria.map(criterion => `<li>${criterion}</li>`).join('')}</ul></section><div class="reflection-prompt"><span>Вопрос недели к себе</span><b>${week.reflection}</b></div>${evidenceHtml}<div class="task-submit-note"><b>После отправки</b><span>Задание сразу считается выполненным и открывает следующее. Результат также появляется у администратора и в очереди будущего ИИ-агента.</span></div><div class="button-row">${reviewStatus === 'accepted' ? '<span class="accepted-note">✓ Задание принято</span>' : reviewStatus === 'rejected' ? `<button class="primary-button" data-revise-task="${task.id}">Доработать</button>` : `<button class="primary-button" data-submit-task="${task.id}" ${reviewStatus === 'submitted' ? 'disabled' : ''}>${reviewStatus === 'submitted' ? 'Отправлено' : 'Отправить'}</button>`}</div></div>`;
   modal.showModal();
   if (task.type !== 'quiz') renderFilesArea(taskFileSectionKey(task.id), editable, ['file', 'file-or-link'].includes(task.evidence) ? 'Файл с выполненным заданием' : 'Дополнительный документ', task.evidence === 'file' ? 'Прикрепить обязательный файл' : task.evidence === 'file-or-link' ? 'Прикрепить файл вместо ссылки' : 'Добавить файл по желанию', 'Материалы заблокированы до решения администратора.');
 }
@@ -2562,10 +2706,11 @@ async function submitTask(id) {
   if (!task || !isTaskUnlocked(id) || (state.taskReviews?.[id]?.status !== undefined && state.taskReviews[id].status !== 'draft')) return;
   const hasNote = Boolean(state.taskNotes?.[id]?.trim());
   let hasDocument = Boolean(state.taskEvidence?.[id]);
-  if (['file', 'file-or-link'].includes(task.evidence) && !hasDocument) {
+  let attachedFiles = [];
+  if (['file', 'file-or-link'].includes(task.evidence)) {
     try {
-      const files = await getFiles(taskFileSectionKey(id));
-      hasDocument = files.length > 0;
+      attachedFiles = await getFiles(taskFileSectionKey(id));
+      hasDocument = attachedFiles.length > 0;
       updateTaskEvidenceState(taskFileSectionKey(id), hasDocument);
     } catch {
       if (!hasNote) return showToast('Не удалось проверить приложенный документ');
@@ -2580,6 +2725,13 @@ async function submitTask(id) {
       if (!/(^|\.)forms\.yandex\.(ru|com)$/i.test(link.hostname)) return showToast('Укажите рабочую ссылку на Яндекс Форму');
     } catch { return showToast('Укажите корректную ссылку на Яндекс Форму'); }
   }
+  const extensions = attachedFiles.map(file => fileExtension(file.name).toLowerCase());
+  if (task.minFiles && attachedFiles.length < task.minFiles) return showToast(`Прикрепите не менее ${task.minFiles} файлов`);
+  if (task.requiredExtensions?.length) {
+    const missing = task.requiredExtensions.filter(extension => !extensions.includes(extension));
+    if (missing.length) return showToast(`Добавьте файлы форматов: ${missing.map(extension => `.${extension}`).join(' и ')}`);
+  }
+  if (task.allowedExtensions?.length && !extensions.some(extension => task.allowedExtensions.includes(extension))) return showToast(`Прикрепите файл формата ${task.allowedExtensions.map(extension => `.${extension}`).join(' или ')}`);
   if (task.evidence === 'quiz' && state.taskAnswers?.[id] === undefined) return showToast('Выберите один вариант ответа');
   if (task.id === 'grants-world') {
     const sentences = (state.taskNotes[id].match(/[^.!?]+[.!?]?/g) || []).map(item => item.trim()).filter(Boolean);
@@ -2958,7 +3110,12 @@ document.addEventListener('click', async event => {
   const taskKnowledgeButton = event.target.closest('[data-task-knowledge]');
   if (taskKnowledgeButton) { modal.close(); setView('knowledge'); return renderIndustryStructure(); }
   const taskWorkshopButton = event.target.closest('[data-task-workshop]');
-  if (taskWorkshopButton) { modal.close(); setView('workshop'); return renderEventHub(); }
+  if (taskWorkshopButton) {
+    const tool = taskWorkshopButton.dataset.taskWorkshop;
+    modal.close();
+    setView('workshop');
+    return tool === 'project' ? openWorkshopTool('project') : renderEventHub();
+  }
   const scenarioButton = event.target.closest('[data-scenario]');
   if (scenarioButton) return openScenario(scenarioButton.dataset.scenario);
   const workshopTool = event.target.closest('[data-workshop-tool]');
