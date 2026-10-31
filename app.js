@@ -727,6 +727,7 @@ const taskStages = [
 const taskWeeks = taskStages.flatMap(stage => stage.weeks.map(week => ({ ...week, stageId: stage.id, stageTitle: stage.title })));
 const tasks = taskWeeks.flatMap((week, weekIndex) => week.tasks.map(task => ({ ...task, week: weekIndex, stageId: week.stageId })));
 const TOTAL_PLANNED_TASKS = taskStages.reduce((sum, stage) => sum + stage.planned, 0);
+const TASK_ROUTE_VERSION = 'route-37-2026-10-31';
 
 const knowledge = [
   { icon: '§', title: 'Нормативная база', text: 'Актуальные НПА и официальные источники', action: 'regulations' },
@@ -912,7 +913,7 @@ const vsksDirections = ['Подготовка добровольцев к дей
 const mgerDirections = ['Гуманитарная миссия', 'Волонтёрская помощь', 'Патриотические и памятные мероприятия', 'Политпросвещение молодёжи'];
 
 const ADMIN_NAME = 'Инесса Артющенко';
-const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', profilePhoto: '', stage: 'Первый день', completed: [], taskNotes: {}, taskAnswers: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, workshopDrafts: {}, workWeek: {}, workWeeks: {}, workCalendar: {}, calendarSelected: '', partners: [], missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
+const defaultState = { welcomeSeen: false, onboarded: false, startedAt: 0, userId: '', name: '', location: '', organization: '', workplace: '', profilePhoto: '', stage: 'Первый день', taskRouteVersion: TASK_ROUTE_VERSION, completed: [], taskNotes: {}, taskAnswers: {}, taskEvidence: {}, taskReviews: {}, savedItems: [], dailyTaskAssignments: {}, dailyCalendarTasks: {}, dailyMissions: {}, dailyReflections: {}, eventDrafts: {}, eventPlans: {}, workshopDrafts: {}, workWeek: {}, workWeeks: {}, workCalendar: {}, calendarSelected: '', partners: [], missionTestAnswers: {}, developmentProfile: null, isAdmin: false, gameBest: 0, gameBlock: null, gameResults: {} };
 let state = loadState();
 let analytics = loadAnalytics();
 let currentView = 'home';
@@ -929,7 +930,19 @@ const modalContent = document.getElementById('modalContent');
 
 function loadState() {
   try {
-    const loaded = { ...defaultState, ...JSON.parse(localStorage.getItem('digitalMentorState')) };
+    const saved = JSON.parse(localStorage.getItem('digitalMentorState')) || {};
+    const routeChanged = saved.taskRouteVersion !== TASK_ROUTE_VERSION;
+    const loaded = { ...defaultState, ...saved, taskRouteVersion: TASK_ROUTE_VERSION };
+    if (routeChanged) {
+      loaded.completed = [];
+      loaded.taskNotes = {};
+      loaded.taskAnswers = {};
+      loaded.taskEvidence = {};
+      loaded.taskReviews = {};
+      loaded.dailyTaskAssignments = {};
+      loaded.missionTestAnswers = {};
+      loaded.developmentProfile = null;
+    }
     loaded.isAdmin = Boolean(loaded.isAdmin && isAdminDevice());
     loaded.taskReviews = { ...(loaded.taskReviews || {}) };
     loaded.taskAnswers = { ...(loaded.taskAnswers || {}) };
@@ -965,6 +978,15 @@ function loadAnalytics() {
   try {
     const loaded = { users: {}, events: [], ...JSON.parse(localStorage.getItem('digitalMentorAnalytics')) };
     Object.values(loaded.users).forEach(user => {
+      if (user.taskRouteVersion !== TASK_ROUTE_VERSION) {
+        user.taskReviews = {};
+        user.taskAnswers = {};
+        user.taskNotes = {};
+        user.taskEvidence = {};
+        user.completed = [];
+        user.progress = 0;
+        user.taskRouteVersion = TASK_ROUTE_VERSION;
+      }
       user.taskReviews = { ...(user.taskReviews || {}) };
       user.taskAnswers = { ...(user.taskAnswers || {}) };
       Object.entries(user.taskReviews).forEach(([id, review]) => {
@@ -998,6 +1020,7 @@ function recordUser() {
     firstSeen: previous.firstSeen || Date.now(),
     lastSeen: Date.now(),
     visits: previous.visits || 0,
+    taskRouteVersion: TASK_ROUTE_VERSION,
     completed: tasks.filter(task => isTaskComplete(task.id)).map(task => task.id),
     taskReviews: state.taskReviews || {},
     taskNotes: state.taskNotes || {},
@@ -1045,6 +1068,10 @@ function taskReviewLabel(id) {
   if (status === 'accepted') return 'Принято';
   if (status === 'rejected') return 'Требует доработки';
   return 'Черновик';
+}
+
+function taskFileSectionKey(id) {
+  return `task:${TASK_ROUTE_VERSION}:${id}`;
 }
 
 function completedCount() { return tasks.filter(task => isTaskComplete(task.id)).length; }
@@ -2049,7 +2076,7 @@ function openTask(id) {
   const evidenceHtml = task.type === 'quiz' ? quizHtml : `<section class="task-evidence-rule ${task.evidence === 'note' ? 'note-required' : 'file-required'}"><div><span class="${hasNote ? 'ready' : ''}" data-evidence-note>${hasNote ? '✓' : '1'}</span><b>${task.evidence === 'file-or-link' ? 'Ссылка на Яндекс Форму · один из вариантов' : `Заметка ${task.evidence === 'note' ? '· обязательна' : '· по желанию'}`}</b></div><div><span class="${hasFile ? 'ready' : ''}" data-evidence-file>${hasFile ? '✓' : '2'}</span><b>Документ ${task.evidence === 'file' ? '· обязателен' : task.evidence === 'file-or-link' ? '· один из вариантов' : '· по желанию'}</b></div><p>${requiredText}</p></section><label class="task-note modal-task-note"><span>${task.noteLabel || 'Пояснение к результату'}</span><textarea data-task-note="${task.id}" rows="4" placeholder="${task.notePlaceholder || 'Кратко поясните результат или добавьте комментарий для проверяющего'}" ${editable ? '' : 'disabled'}>${note}</textarea><small>${editable ? 'Черновик сохраняется автоматически на этом устройстве' : 'Редактирование заблокировано до решения администратора'}</small></label><div id="filesArea"></div>`;
   modalContent.innerHTML = `<div class="modal-body task-detail-modal"><span class="eyebrow">${week.level} · ${week.stageTitle} · ${task.tag}</span><h2>${task.title}</h2><div class="task-modal-status ${reviewStatus}"><b>${taskReviewLabel(task.id)}</b><span>${statusText}</span></div>${saveButton({ id: `task:${task.id}`, type: 'Задание', title: task.title, text: task.text, target: `task:${task.id}` })}<p class="modal-lead">${task.text}</p>${task.url ? `<a class="task-resource-link" href="${task.url}" target="_blank" rel="noopener"><span>Полезный источник</span><b>${task.urlLabel || 'Открыть официальный ресурс'} ↗</b></a>` : ''}${task.knowledgeAction === 'industry' ? '<button class="task-resource-link" data-task-knowledge="industry"><span>Материал в Базе знаний</span><b>Открыть «Структуру отрасли» →</b></button>' : ''}${task.workshopAction === 'event' ? '<button class="task-resource-link" data-task-workshop="event"><span>Рабочая мастерская</span><b>Открыть конструктор мероприятий →</b></button>' : ''}<div class="task-meaning"><div><span>Для кого</span><b>${week.forWhom}</b></div><div><span>Почему это важно</span><b>${week.youthResult}</b></div></div><div class="task-brief"><span>Что должно получиться</span><b>${task.deliverable}</b></div><h3>Как выполнить</h3><ol class="steps">${task.steps.map(step => `<li>${step}</li>`).join('')}</ol>${task.questions?.length ? `<section class="task-situations"><span>${task.questionsLabel || 'Обязательно включите в файл ответы'}</span><ol>${task.questions.map(question => `<li>${question}</li>`).join('')}</ol></section>` : ''}<section class="task-criteria"><span>Критерии проверки</span><ul>${task.criteria.map(criterion => `<li>${criterion}</li>`).join('')}</ul></section><div class="reflection-prompt"><span>Вопрос недели к себе</span><b>${week.reflection}</b></div>${evidenceHtml}<div class="task-submit-note"><b>После отправки</b><span>Задание сразу считается выполненным и открывает следующее. Результат также появляется у администратора и в очереди будущего ИИ-агента.</span></div><div class="button-row">${reviewStatus === 'accepted' ? '<span class="accepted-note">✓ Задание принято</span>' : reviewStatus === 'rejected' ? `<button class="primary-button" data-revise-task="${task.id}">Доработать</button>` : `<button class="primary-button" data-submit-task="${task.id}" ${reviewStatus === 'submitted' ? 'disabled' : ''}>${reviewStatus === 'submitted' ? 'Отправлено' : 'Отправить'}</button>`}</div></div>`;
   modal.showModal();
-  if (task.type !== 'quiz') renderFilesArea(`task:${task.id}`, editable, ['file', 'file-or-link'].includes(task.evidence) ? 'Файл с выполненным заданием' : 'Дополнительный документ', task.evidence === 'file' ? 'Прикрепить обязательный файл' : task.evidence === 'file-or-link' ? 'Прикрепить файл вместо ссылки' : 'Добавить файл по желанию', 'Материалы заблокированы до решения администратора.');
+  if (task.type !== 'quiz') renderFilesArea(taskFileSectionKey(task.id), editable, ['file', 'file-or-link'].includes(task.evidence) ? 'Файл с выполненным заданием' : 'Дополнительный документ', task.evidence === 'file' ? 'Прикрепить обязательный файл' : task.evidence === 'file-or-link' ? 'Прикрепить файл вместо ссылки' : 'Добавить файл по желанию', 'Материалы заблокированы до решения администратора.');
 }
 
 async function hashPin(value) {
@@ -2304,7 +2331,7 @@ async function renderFilesArea(sectionKey, canUpload, title = 'Материал�
 }
 
 function updateTaskEvidenceState(sectionKey, hasFiles) {
-  const taskId = sectionKey.replace(/^task:/, '');
+  const taskId = sectionKey.replace(/^task:(?:[^:]+:)?/, '');
   state.taskEvidence = { ...(state.taskEvidence || {}), [taskId]: hasFiles };
   localStorage.setItem('digitalMentorState', JSON.stringify(state));
   const marker = document.querySelector('[data-evidence-file]');
@@ -2537,9 +2564,9 @@ async function submitTask(id) {
   let hasDocument = Boolean(state.taskEvidence?.[id]);
   if (['file', 'file-or-link'].includes(task.evidence) && !hasDocument) {
     try {
-      const files = await getFiles(`task:${id}`);
+      const files = await getFiles(taskFileSectionKey(id));
       hasDocument = files.length > 0;
-      updateTaskEvidenceState(`task:${id}`, hasDocument);
+      updateTaskEvidenceState(taskFileSectionKey(id), hasDocument);
     } catch {
       if (!hasNote) return showToast('Не удалось проверить приложенный документ');
     }
