@@ -1700,11 +1700,15 @@ const regionalForYoungDocs = [
 ];
 
 function renderProjectsLibrary() {
+  content.innerHTML = `<div class="page-title"><div><button class="back-link" data-view="knowledge">← База знаний</button><span class="eyebrow">База знаний · Проекты и программы</span><h1>Проекты и программы</h1><p>Материалы о региональных и федеральных программах. Выберите направление, чтобы открыть подробную информацию и документы.</p></div></div><section class="projects-library-grid"><button class="rfy-project-card" data-project-detail="regional-for-young-2026"><span class="rfy-project-mark">РДМ</span><span class="rfy-project-copy"><span class="eyebrow">Конкурс Росмолодёжи · 2026</span><b>Регион для молодых</b><small>Что это за конкурс, кто участвует, как устроена программа, сроки отбора и документы.</small></span><span class="rfy-project-arrow">↗</span></button></section>`;
+}
+
+function renderRegionalForYoungDetail() {
   const docCards = regionalForYoungDocs.map((doc, index) => {
     const href = `documents/regional-for-young-2026-competition/${encodeURIComponent(doc.file)}`;
     return `<article class="rfy-document"><span class="rfy-document-index">${String(index + 1).padStart(2, '0')}</span><div class="rfy-document-info"><span class="rfy-document-kind">${doc.kind} · DOCX</span><h3>${doc.title}</h3></div><div class="rfy-document-actions"><a href="${href}" target="_blank" rel="noopener">Открыть ↗</a><a href="${href}" download="${doc.file}">Скачать ↓</a></div></article>`;
   }).join('');
-  content.innerHTML = `<div class="page-title"><div><button class="back-link" data-view="knowledge">← База знаний</button><span class="eyebrow">Проекты и программы · конкурс Росмолодёжи</span><h1>Регион для молодых · 2026</h1><p>Краткий гид для знакомства с конкурсом и комплект документов, чтобы быстро сориентироваться в программе.</p></div><div class="route-summary"><b>${regionalForYoungDocs.length}</b><span>документов конкурса</span></div></div>
+  content.innerHTML = `<div class="page-title"><div><button class="back-link" data-projects-home>← Проекты и программы</button><span class="eyebrow">Проекты и программы · конкурс Росмолодёжи</span><h1>Регион для молодых · 2026</h1><p>Краткий гид для знакомства с конкурсом и комплект документов, чтобы быстро сориентироваться в программе.</p></div><div class="route-summary"><b>${regionalForYoungDocs.length}</b><span>документов конкурса</span></div></div>
     <section class="rfy-hero"><span class="rfy-kicker">ВСЕРОССИЙСКИЙ КОНКУРС ПРОГРАММ КОМПЛЕКСНОГО РАЗВИТИЯ МОЛОДЁЖНОЙ ПОЛИТИКИ</span><h2>Регион для молодых</h2><p>Краткий гид для карточки проекта <i>по Положению о конкурсе 2026 года</i></p><div class="rfy-hero-tags"><span>Конкурс Росмолодёжи</span><span>Программы регионов</span><span>Реализация — 2027 год</span></div></section>
     <div class="rfy-content"><section class="rfy-section"><div class="rfy-section-title"><span>01</span><div><span class="eyebrow">Суть конкурса</span><h2>Что это за конкурс?</h2></div></div><p>«Регион для молодых» — конкурс Росмолодёжи, в котором субъекты РФ представляют программы развития молодёжной политики. Победители получают федеральную субсидию, чтобы обновить пространства для молодёжи и организовать в них регулярную, полезную и интересную работу.</p><div class="rfy-callout"><b>Главная идея</b><span>Важен не просто красивый ремонт, а работающие молодёжные центры и программы, которые продолжают приносить пользу.</span></div></section>
     <section class="rfy-section"><div class="rfy-section-title"><span>02</span><div><span class="eyebrow">Цель</span><h2>Зачем он нужен?</h2></div></div><p>Чтобы у молодых людей в регионах было больше возможностей учиться, общаться, создавать проекты, развивать таланты и реализовывать свои идеи рядом с домом.</p></section>
@@ -3269,6 +3273,9 @@ document.addEventListener('click', async event => {
   if (youthTrack) return openYouthTrack(youthTrack.dataset.youthTrack);
   const knowledgeButton = event.target.closest('[data-knowledge]');
   if (knowledgeButton) return openKnowledge(Number(knowledgeButton.dataset.knowledge));
+  if (event.target.closest('[data-projects-home]')) return renderProjectsLibrary();
+  const projectDetail = event.target.closest('[data-project-detail]');
+  if (projectDetail?.dataset.projectDetail === 'regional-for-young-2026') return renderRegionalForYoungDetail();
   const templateSection = event.target.closest('[data-template-section]');
   if (templateSection) return renderTemplates(templateSection.dataset.templateSection);
   const reportSection = event.target.closest('[data-report-section]');
