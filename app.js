@@ -940,7 +940,11 @@ const reportSections = [
         providers: ['Муниципальные образования ЛНР', 'Новые учреждения молодёжной политики'],
         destination: 'Министерство молодежной политики ЛНР',
         deadline: 'Еженедельно по средам, начиная с июля 2026 года',
-        file: 'Форма отчета по реализации ремонтных работ.xlsx'
+        file: 'Форма отчета по реализации ремонтных работ.xlsx',
+        forms: [
+          { title: 'Форма отчета по реализации ремонтных работ.xlsx', file: 'Форма отчета по реализации ремонтных работ.xlsx' },
+          { title: 'Шаблон_сопроводительного_письма.docx', file: 'Шаблон_сопроводительного_письма.docx' }
+        ]
       }
     ]
   }
@@ -1686,7 +1690,7 @@ function renderTemplates(section = '', query = '', focusId = '') {
 
 function renderReportTemplates(reportSection = reportSections[0].id) {
   const active = reportSections.find(item => item.id === reportSection) || reportSections[0];
-  const additionalReports = (active.additionalReports || []).map(report => `<section class="report-detail additional-report-detail"><header><span class="eyebrow">Отдельная еженедельная форма · 2026</span><h2>${report.title}</h2><p>${report.text}</p></header><div class="report-facts"><section><span>Кто предоставляет отчётность</span><ul>${report.providers.map(provider => `<li>${provider}</li>`).join('')}</ul></section><section><span>Куда направлять</span><b>${report.destination}</b></section><section><span>Когда</span><b>${report.deadline}</b></section></div><section class="report-forms"><h3>Форма отчётности</h3><div><article><span>XLSX</span><b>${report.file}</b><div><a href="documents/${active.filesPath}/${encodeURIComponent(report.file)}" target="_blank" rel="noopener">Открыть ↗</a><a href="documents/${active.filesPath}/${encodeURIComponent(report.file)}" download="${report.file}">Скачать ↓</a></div></article></div></section></section>`).join('');
+  const additionalReports = (active.additionalReports || []).map(report => `<section class="report-detail additional-report-detail"><header><span class="eyebrow">Отдельная еженедельная форма · 2026</span><h2>${report.title}</h2><p>${report.text}</p></header><div class="report-facts"><section><span>Кто предоставляет отчётность</span><ul>${report.providers.map(provider => `<li>${provider}</li>`).join('')}</ul></section><section><span>Куда направлять</span><b>${report.destination}</b></section><section><span>Когда</span><b>${report.deadline}</b></section></div><section class="report-forms"><h3>Форма отчётности и сопроводительное письмо</h3><div>${report.forms.map(form => { const href = `documents/${active.filesPath}/${encodeURIComponent(form.file)}`; return `<article><span>${form.file.split('.').pop().toUpperCase()}</span><b>${form.title}</b><div><a href="${href}" target="_blank" rel="noopener">Открыть ↗</a><a href="${href}" download="${form.file}">Скачать ↓</a></div></article>`; }).join('')}</div></section></section>`).join('');
   const navigation = `<nav class="template-navigation compact" aria-label="Разделы рабочих материалов">${templateSections.map(item => `<button class="${item.id === 'reports' ? 'active' : ''}" data-template-section="${item.id}"><span>${item.icon}</span><b>${item.title}</b><small>${item.id === 'checklists' ? `${checklists.length} документов` : item.text}</small></button>`).join('')}</nav>`;
   const reportNavigation = `<nav class="report-navigation" aria-label="Виды отчётности">${reportSections.map(item => `<button class="${item.id === active.id ? 'active' : ''}" data-report-section="${item.id}"><span>▥</span><b>${item.title}</b></button>`).join('')}</nav>`;
   const deadlineContent = Array.isArray(active.deadline) ? `<ul>${active.deadline.map(item => `<li>${item}</li>`).join('')}</ul>` : `<b>${active.deadline}</b>`;
