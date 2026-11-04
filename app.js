@@ -900,6 +900,19 @@ const templateSections = [
   { id: 'checklists', icon: '✓', title: 'Чек-листы', text: 'Пошаговые памятки, трекеры и листы планирования' }
 ];
 
+const letterTemplates = [
+  {
+    title: 'Шаблон письма поддержки Росмолодёжь.Гранты',
+    file: 'Шаблон письма поддержки Росмолодежь.Гранты.docx',
+    description: 'Заготовка письма поддержки для инициатив и заявок на конкурс Росмолодёжь.Гранты.'
+  },
+  {
+    title: 'Шаблон письма-вызова на мероприятия',
+    file: 'Шаблон письма-вызова на мероприятия.docx',
+    description: 'Шаблон приглашения и вызова участников на молодёжные мероприятия.'
+  }
+];
+
 const reportSections = [
   {
     id: 'regional-project-indicators',
@@ -1684,8 +1697,18 @@ function renderTemplates(section = '', query = '', focusId = '') {
   }
   if (section === 'checklists') return renderChecklistLibrary(query, focusId);
   if (section === 'reports') return renderReportTemplates();
+  if (section === 'letters') return renderLetterTemplates();
   content.innerHTML = `<div class="page-title"><div><button class="back-link" data-template-section="">← Все рабочие материалы</button><span class="eyebrow">Рабочие материалы · ${active.title}</span><h1>${active.title}</h1><p>${active.text}.</p></div></div>${navigation}<div id="filesArea"></div>`;
   renderFilesArea(`knowledge:templates:${section}`, state.isAdmin, active.title, `Добавить в раздел «${active.title}»`);
+}
+
+function renderLetterTemplates(query = '') {
+  const normalized = query.trim().toLocaleLowerCase('ru');
+  const matches = letterTemplates.filter(item => !normalized || `${item.title} ${item.description}`.toLocaleLowerCase('ru').includes(normalized));
+  const navigation = `<nav class="template-navigation compact" aria-label="Разделы рабочих материалов">${templateSections.map(item => `<button class="${item.id === 'letters' ? 'active' : ''}" data-template-section="${item.id}"><span>${item.icon}</span><b>${item.title}</b><small>${item.id === 'checklists' ? `${checklists.length} документов` : item.text}</small></button>`).join('')}</nav>`;
+  content.innerHTML = `<div class="page-title"><div><button class="back-link" data-template-section="">← Все рабочие материалы</button><span class="eyebrow">Готовые документы · Рабочие материалы</span><h1>Шаблоны писем</h1><p>Выберите подходящий шаблон, откройте его для просмотра или скачайте, чтобы заполнить и адаптировать под свою задачу.</p></div><div class="route-summary"><b>${letterTemplates.length}</b><span>шаблона письма</span></div></div>${navigation}<section class="letter-library-intro"><span>✉</span><div><h2>Письмо — уже наполовину готово</h2><p>Скачайте документ и проверьте адресата, сроки, реквизиты и актуальность формулировок перед отправкой.</p></div></section><div class="letter-toolbar"><label class="search-box"><span>⌕</span><input id="letterSearch" type="search" value="${escapeHtml(query)}" placeholder="Найти шаблон письма" autocomplete="off"></label><span>${matches.length} из ${letterTemplates.length}</span></div><section class="letter-template-grid">${matches.length ? matches.map((item,index) => { const href = `documents/work-letter-templates/${encodeURIComponent(item.file)}`; return `<article class="letter-template-card"><div class="letter-template-top"><span class="letter-template-number">${String(index + 1).padStart(2,'0')}</span><span class="letter-file-badge">DOCX</span></div><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.description)}</p><div class="letter-template-actions"><a class="letter-open" href="${href}" target="_blank" rel="noopener">Открыть <span>↗</span></a><a class="letter-download" href="${href}" download="${escapeHtml(item.file)}">Скачать <span>↓</span></a></div></article>`; }).join('') : '<div class="empty checklist-empty"><b>Шаблоны не найдены</b><span>Попробуйте изменить поисковый запрос.</span></div>'}</section>`;
+  const input = document.getElementById('letterSearch');
+  input?.addEventListener('input', event => renderLetterTemplates(event.target.value));
 }
 
 function renderReportTemplates(reportSection = reportSections[0].id) {
