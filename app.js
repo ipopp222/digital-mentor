@@ -907,7 +907,11 @@ const reportSections = [
     text: 'Ежемесячная отчётность о достижении показателей региональных проектов.',
     providers: ['Муниципальные образования ЛНР', 'ГБУ МП ЛНР МЦ «Дом молодёжи»'],
     deadline: 'До 25 числа ежемесячно',
-    period: 'Месяц (с 1 по 25 число месяца)'
+    period: 'Месяц (с 1 по 25 число месяца)',
+    forms: [
+      { title: 'Форма журнала мероприятий (показатели РП)', file: 'Форма журнала мероприятий (показатели РП).docx' },
+      { title: 'Форма отчета по показателям РП', file: 'Форма отчета по показателям РП.docx' }
+    ]
   }
 ];
 
@@ -1653,7 +1657,7 @@ function renderReportTemplates(reportSection = reportSections[0].id) {
   const active = reportSections.find(item => item.id === reportSection) || reportSections[0];
   const navigation = `<nav class="template-navigation compact" aria-label="Разделы рабочих материалов">${templateSections.map(item => `<button class="${item.id === 'reports' ? 'active' : ''}" data-template-section="${item.id}"><span>${item.icon}</span><b>${item.title}</b><small>${item.id === 'checklists' ? `${checklists.length} документов` : item.text}</small></button>`).join('')}</nav>`;
   const reportNavigation = `<nav class="report-navigation" aria-label="Виды отчётности">${reportSections.map(item => `<button class="${item.id === active.id ? 'active' : ''}" data-report-section="${item.id}"><span>▥</span><b>${item.title}</b></button>`).join('')}</nav>`;
-  content.innerHTML = `<div class="page-title"><div><button class="back-link" data-template-section="">← Все рабочие материалы</button><span class="eyebrow">Рабочие материалы · Формы отчётов</span><h1>Формы отчётов</h1><p>Рабочие формы, сроки и параметры предоставления отчётности.</p></div></div>${navigation}${reportNavigation}<section class="report-detail"><header><span class="eyebrow">Ежемесячная отчётность</span><h2>${active.title}</h2><p>${active.text}</p></header><div class="report-facts"><section><span>Кто предоставляет отчётность</span><ul>${active.providers.map(provider => `<li>${provider}</li>`).join('')}</ul></section><section><span>Когда</span><b>${active.deadline}</b></section><section><span>Отчётный период</span><b>${active.period}</b></section></div></section><div id="filesArea"></div>`;
+  content.innerHTML = `<div class="page-title"><div><button class="back-link" data-template-section="">← Все рабочие материалы</button><span class="eyebrow">Рабочие материалы · Формы отчётов</span><h1>Формы отчётов</h1><p>Рабочие формы, сроки и параметры предоставления отчётности.</p></div></div>${navigation}${reportNavigation}<section class="report-detail"><header><span class="eyebrow">Ежемесячная отчётность</span><h2>${active.title}</h2><p>${active.text}</p></header><div class="report-facts"><section><span>Кто предоставляет отчётность</span><ul>${active.providers.map(provider => `<li>${provider}</li>`).join('')}</ul></section><section><span>Когда</span><b>${active.deadline}</b></section><section><span>Отчётный период</span><b>${active.period}</b></section></div><section class="report-forms"><h3>Формы отчётности</h3><div>${active.forms.map(form => { const href = `documents/regional-project-reports/${encodeURIComponent(form.file)}`; return `<article><span>DOCX</span><b>${form.title}</b><div><a href="${href}" target="_blank" rel="noopener">Открыть ↗</a><a href="${href}" download="${form.file}">Скачать ↓</a></div></article>`; }).join('')}</div></section></section><div id="filesArea"></div>`;
   renderFilesArea(`knowledge:templates:reports:${active.id}`, state.isAdmin, 'Материалы и формы отчётности', 'Добавить форму отчётности');
 }
 
