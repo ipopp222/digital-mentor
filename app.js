@@ -1833,8 +1833,10 @@ function renderIndustryStructure() {
   content.innerHTML = `
     <div class="page-title industry-title"><div><button class="back-link" data-view="knowledge">← База знаний</button><span class="eyebrow">Интерактивная карта</span><h1>Структура отрасли</h1><p>Нажмите на любой элемент схемы, чтобы открыть состав и подробную информацию.</p></div><div class="industry-legend"><span><i class="legend-dot regional"></i>Региональный уровень</span><span><i class="legend-dot municipal"></i>Муниципальный уровень</span></div></div>
     <section class="industry-map" aria-label="Схема отрасли молодежной политики ЛНР">
-      <div class="map-caption">Региональный орган исполнительной власти</div>
-      <button class="industry-node ministry-node" data-industry="ministry"><span class="node-icon">МП</span><span class="node-copy"><small>Региональный уровень</small><b>Министерство молодежной политики ЛНР</b><em>Руководство и 8 отделов</em></span><span class="node-arrow">↗</span></button>
+        <div class="map-caption">Федеральный и региональный уровни молодёжной политики</div>
+        <button class="industry-node federal-node" data-industry="federal-agency"><span class="node-icon">РМ</span><span class="node-copy"><small>Федеральный уровень</small><b>Федеральное агентство по делам молодёжи</b><em>Росмолодёжь · федеральная политика и поддержка молодёжных инициатив</em></span><span class="node-arrow">↗</span></button>
+        <div class="map-connector federal-connector" aria-hidden="true"></div>
+        <button class="industry-node ministry-node" data-industry="ministry"><span class="node-icon">МП</span><span class="node-copy"><small>Региональный уровень</small><b>Министерство молодежной политики ЛНР</b><em>Руководство и 8 отделов</em></span><span class="node-arrow">↗</span></button>
       <div class="map-connector main-connector" aria-hidden="true"></div>
       <button class="industry-node house-node" data-industry="youth-house"><span class="node-icon">ДМ</span><span class="node-copy"><small>Подведомственное учреждение</small><b>ГБУ МП ЛНР МЦ «Дом молодежи»</b><em>Руководство, контакты и фотогалерея</em></span><span class="node-arrow">↗</span></button>
       <div class="ecosystem-divider"><span>Муниципальный и общественный уровни</span></div>
@@ -1844,7 +1846,7 @@ function renderIndustryStructure() {
       </div>
       <div class="map-note"><b>Как читать схему</b><span>Вертикальные линии показывают прямую подведомственность. НКО представлены как самостоятельный общественный сектор отрасли.</span></div>
     </section>
-    <div class="industry-stats"><div><b>1</b><span>региональное министерство</span></div><div><b>28</b><span>подразделений ОМСУ</span></div><div><b>4</b><span>действующих МБУ</span></div><div><b>3</b><span>пространства без юрлица</span></div></div>`;
+    <div class="industry-stats"><div><b>1</b><span>федеральное агентство</span></div><div><b>1</b><span>региональное министерство</span></div><div><b>28</b><span>подразделений ОМСУ</span></div><div><b>4</b><span>действующих МБУ</span></div></div>`;
 }
 
 const partnerCategories = ['Образование', 'НКО и объединения', 'Эксперты', 'Волонтёры', 'СМИ', 'Бизнес и спонсоры', 'Органы власти', 'Другое'];
@@ -1981,6 +1983,13 @@ function renderMunicipalInstitutionBody(institution) {
 
 function openIndustrySection(section) {
   const sections = {
+    'federal-agency': {
+      eyebrow: 'Федеральный уровень',
+      title: 'Федеральное агентство по делам молодёжи',
+      lead: 'Росмолодёжь — федеральный орган исполнительной власти, который реализует государственную молодёжную политику и координирует федеральные меры поддержки молодёжи и молодёжных инициатив.',
+      body: `<section class="federal-overview"><div class="federal-leader"><span>Руководитель Росмолодёжи</span><h3>Григорий Александрович Гуров</h3><p>Руководит федеральным агентством и отвечает за реализацию государственной молодёжной политики на федеральном уровне.</p></div><div class="federal-links"><a href="https://fadm.gov.ru/" target="_blank" rel="noopener"><span>Официальный ресурс</span><b>fadm.gov.ru ↗</b></a><a href="https://myrosmol.ru/" target="_blank" rel="noopener"><span>ФГАИС «Молодёжь России»</span><b>myrosmol.ru ↗</b></a></div></section><section class="federal-directions"><h3 class="structure-heading">Что делает Росмолодёжь</h3><div class="federal-direction-grid"><article><b>01</b><span>Формирует и реализует меры государственной молодёжной политики.</span></article><article><b>02</b><span>Проводит конкурсы, предоставляет грантовую поддержку и развивает систему возможностей для молодёжи.</span></article><article><b>03</b><span>Поддерживает молодёжные проекты, добровольчество, патриотическое воспитание, форумы и профессиональное развитие.</span></article><article><b>04</b><span>Координирует взаимодействие федерального центра, регионов, учреждений и общественных организаций.</span></article></div></section><section class="federal-subordinates"><h3 class="structure-heading">Федеральная инфраструктура и сервисы</h3><p>В работе Росмолодёжи используются федеральные учреждения, проекты и цифровые платформы. Их актуальный состав и правовой статус следует проверять по официальным сведениям агентства.</p><div class="federal-resource-list"><article><b>ФГБУ «Роспатриотцентр»</b><span>Федеральная инфраструктура патриотического воспитания и поддержки соответствующих проектов.</span></article><article><b>ФГАИС «Молодёжь России»</b><span>Цифровая система для профиля участника, событий, проектов и подачи заявок на грантовые конкурсы.</span></article><article><b>Росмолодёжь.Гранты</b><span>Федеральная грантовая поддержка молодёжных проектов и методическое сопровождение заявителей.</span></article><article><b>Росмолодёжь.События</b><span>Федеральная платформа мероприятий, форумов и возможностей для участия.</span></article></div></section><div class="federal-note"><b>Связь с регионом</b><span>Федеральное агентство задаёт общие направления и инструменты поддержки, а региональные министерства и органы местного самоуправления организуют работу с молодёжью на территориях.</span></div>`,
+      fileKey: 'industry:federal-agency'
+    },
     ministry: {
       eyebrow: 'Региональный уровень',
       title: 'Министерство молодежной политики ЛНР',
