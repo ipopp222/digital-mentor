@@ -1335,7 +1335,7 @@ function updateProfile() {
 
 const THEME_KEY = 'digitalMentorTheme';
 
-function applyTheme(theme = localStorage.getItem(THEME_KEY) || 'light') {
+function applyTheme(theme = localStorage.getItem(THEME_KEY) || 'graphite') {
   const light = theme === 'light';
   document.body.classList.toggle('light-theme', light);
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? '#eee7db' : '#242421');
