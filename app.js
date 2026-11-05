@@ -1375,7 +1375,7 @@ function renderHome() {
   const greeting = state.name ? `, ${escapeHtml(state.name.split(' ')[0])}` : '';
   const dayIndex = mentorDayIndex();
   const dayNumber = dayIndex + 1;
-  const activeWeekIndex = unlockedWeekIndex();
+  const activeWeekIndex = currentRouteWeekIndex(dayIndex);
   const activeWeek = taskWeeks[activeWeekIndex];
   const dailyTask = dailyTaskForDay(dayIndex);
   const isCalendarTask = Boolean(dailyTask.virtual);
@@ -1524,6 +1524,10 @@ function mentorDayIndex(now = new Date()) {
   return Math.min(mentorPrinciples.length - 1, Math.max(0, elapsedDays));
 }
 
+function currentRouteWeekIndex(dayIndex = mentorDayIndex()) {
+  return Math.min(taskWeeks.length - 1, Math.max(0, Math.floor(dayIndex / 7)));
+}
+
 function dailyTaskForDay(dayIndex = mentorDayIndex()) {
   const availableTask = tasks.find(task => !isTaskComplete(task.id)) || tasks[0];
   if (availableTask) return availableTask;
@@ -1660,7 +1664,7 @@ function renderRoute() {
         <div class="stage-dot">${stage.day}</div><div><h3>${stage.title}</h3><p>${stage.text}</p></div><span class="stage-status">${i < activeIndex ? `Пройдено · ${formatRouteDate(Number(stage.day) - 1)}` : i === activeIndex ? `Сейчас · ${formatRouteDate(currentDayIndex)}` : `День ${stage.day} · ${formatRouteDate(Number(stage.day) - 1)}`}</span>
       </article>`).join('')}</div>
     <div class="section-head values-heading"><div><span class="eyebrow">13 ценностей маршрута</span><h2>Как растёт роль специалиста</h2><p>Каждая неделя добавляет не только навык, но и новый профессиональный смысл.</p></div></div>
-    <div class="values-route">${taskWeeks.map((week, index) => `<article class="value-card ${index === unlockedWeekIndex() ? 'active' : ''} ${index < unlockedWeekIndex() ? 'done' : ''}"><span>${String(index + 1).padStart(2, '0')}</span><small>Неделя ${index + 1}</small><h3>${week.value}</h3><b>${week.motto}</b><p>${week.youthResult}</p></article>`).join('')}</div>
+    <div class="values-route">${taskWeeks.map((week, index) => `<article class="value-card ${index === currentRouteWeekIndex(currentDayIndex) ? 'active' : ''} ${index < currentRouteWeekIndex(currentDayIndex) ? 'done' : ''}"><span>${String(index + 1).padStart(2, '0')}</span><small>Неделя ${index + 1}</small><h3>${week.value}</h3><b>${week.motto}</b><p>${week.youthResult}</p></article>`).join('')}</div>
     <section class="personal-mission"><span>Финальный вопрос маршрута</span><h2>Какую возможность для молодёжи создаёт моя работа?</h2><p>Ответ на него станет вашей личной профессиональной миссией.</p><button class="primary-button" data-view="tasks">Перейти к заданиям</button></section>`;
 }
 
