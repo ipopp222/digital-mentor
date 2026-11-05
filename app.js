@@ -1931,7 +1931,8 @@ function renderNormativeBase(scope = '', query = '') {
   const sections = {
     federal: { title: 'Федеральные НПА/законы', short: 'Документы Российской Федерации', mark: 'РФ' },
     regional: { title: 'Региональные НПА/законы', short: 'Документы Луганской Народной Республики', mark: 'ЛНР' },
-    standards: { title: 'Стандарты Росмолодёжи', short: 'Рекомендации и справочные материалы', mark: 'РМ' }
+    standards: { title: 'Стандарты Росмолодёжи', short: 'Рекомендации и справочные материалы', mark: 'РМ' },
+    methodical: { title: 'Методические рекомендации', short: 'Практические материалы для специалистов', mark: 'МР' }
   };
   const activeScope = Object.hasOwn(sections, scope) ? scope : '';
   const normalized = normalizeGlossaryText(query);

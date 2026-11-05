@@ -44,6 +44,22 @@ const normativeDocuments = {
       file: 'documents/standards/student-spaces-standard.pdf'
     }
   ],
+  methodical: [
+    {
+      type: 'Методические рекомендации', number: 'МР-01', registrationDate: 'Дата не указана',
+      title: 'Методическое пособие',
+      description: 'Методическое пособие для использования в практической работе специалистами сферы молодёжной политики.',
+      sourceName: 'Методическое пособие.pdf', size: '19,6 МБ',
+      file: 'documents/methodological-recommendations/Методическое пособие.pdf'
+    },
+    {
+      type: 'Методические рекомендации', number: 'МР-02', registrationDate: 'Дата не указана',
+      title: 'Методические рекомендации для специалиста по работе с молодежью',
+      description: 'Методические рекомендации для специалиста по работе с молодёжью.',
+      sourceName: 'Методические рекомендации для специалиста по работе с молодежью.pdf', size: '453 КБ',
+      file: 'documents/methodological-recommendations/Методические рекомендации для специалиста по работе с молодежью.pdf'
+    }
+  ],
   regional: [
     {
       type: 'Закон ЛНР', number: '104-I', registrationDate: '05.11.2024',
