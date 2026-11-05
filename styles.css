@@ -626,6 +626,9 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .leader-card.deputy img { object-position: center 28%; }
 .leader-card > div:not(.leader-placeholder) { padding: 17px 18px 20px; }
 .leader-card.deputy { color: var(--green); background: var(--lime); }
+.leader-card.role-only { grid-template-rows: 1fr; min-height: 170px; }
+.leader-card.role-only > div { display: flex; align-items: center; padding: 24px; }
+.leader-card.role-only b { font: 700 20px/1.2 var(--serif); }
 .leader-card.vacancy { grid-template-rows: 170px 1fr; color: var(--green); background: #eef2ed; }
 .leader-placeholder { display: grid; place-items: center; color: var(--green); background: linear-gradient(135deg, #dfe9e3, #f7f8f2); font: 700 35px var(--serif); }
 .leader-card span, .leader-card b { display: block; }
