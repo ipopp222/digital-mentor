@@ -1831,7 +1831,7 @@ function renderGlossary(query = '') {
 
 function renderIndustryStructure() {
   content.innerHTML = `
-    <div class="page-title industry-title"><div><button class="back-link" data-view="knowledge">← База знаний</button><span class="eyebrow">Интерактивная карта</span><h1>Структура отрасли</h1><p>Нажмите на любой элемент схемы, чтобы открыть состав и подробную информацию.</p></div><div class="industry-legend"><span><i class="legend-dot regional"></i>Региональный уровень</span><span><i class="legend-dot municipal"></i>Муниципальный уровень</span></div></div>
+    <div class="page-title industry-title"><div><button class="back-link" data-view="knowledge">← База знаний</button><span class="eyebrow">Интерактивная карта</span><h1>Структура отрасли</h1><p>Нажмите на любой элемент схемы, чтобы открыть состав и подробную информацию.</p></div><div class="industry-legend"><span><i class="legend-dot federal"></i>Федеральный уровень</span><span><i class="legend-dot regional"></i>Региональный уровень</span><span><i class="legend-dot municipal"></i>Муниципальный уровень</span></div></div>
     <section class="industry-map" aria-label="Схема отрасли молодежной политики ЛНР">
         <div class="map-caption">Федеральный и региональный уровни молодёжной политики</div>
         <button class="industry-node federal-node" data-industry="federal-agency"><span class="node-icon">РМ</span><span class="node-copy"><small>Федеральный уровень</small><b>Федеральное агентство по делам молодёжи</b><em>Росмолодёжь · федеральная политика и поддержка молодёжных инициатив</em></span><span class="node-arrow">↗</span></button>
@@ -2042,7 +2042,7 @@ function openIndustrySection(section) {
   };
   const item = sections[section];
   if (!item) return;
-  modalContent.innerHTML = `<div class="modal-body structure-detail ${section === 'youth-house' || section === 'institution-0' || section === 'institution-3' || section === 'institution-4' || section === 'space-sverdlovsk' ? 'youth-house-detail' : ''}"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
+  modalContent.innerHTML = `<div class="modal-body structure-detail ${section === 'federal-agency' ? 'federal-detail' : ''} ${section === 'youth-house' || section === 'institution-0' || section === 'institution-3' || section === 'institution-4' || section === 'space-sverdlovsk' ? 'youth-house-detail' : ''}"><span class="eyebrow">${item.eyebrow}</span><h2>${item.title}</h2>${saveButton({ id: `industry:${section}`, type: 'Структура', title: item.title, text: item.lead, target: `industry:${section}` })}${item.lead ? `<p class="modal-lead">${item.lead}</p>` : ''}${item.body}<div id="filesArea"></div></div>`;
   modal.classList.add('structure-modal');
   if (!modal.open) modal.showModal();
   renderFilesArea(item.fileKey, state.isAdmin, 'Материалы раздела');

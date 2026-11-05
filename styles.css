@@ -582,6 +582,7 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .industry-legend { display: flex; gap: 14px; padding-bottom: 5px; color: var(--muted); font-size: 9px; }
 .industry-legend span { display: flex; align-items: center; gap: 5px; }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.legend-dot.federal { background: #8659d5; }
 .legend-dot.municipal { background: var(--orange); }
 .industry-map { position: relative; padding: 34px; overflow: hidden; border: 1px solid rgba(22,61,53,.1); border-radius: 28px; background: radial-gradient(circle at 10% 5%, rgba(216,245,107,.3), transparent 25%), radial-gradient(circle at 94% 90%, rgba(233,112,62,.1), transparent 27%), var(--paper); box-shadow: 0 16px 50px rgba(25,51,44,.08); }
 .industry-map::after { content: 'ЛНР'; position: absolute; right: -14px; top: -52px; color: rgba(22,61,53,.035); font: 800 150px/1 var(--serif); pointer-events: none; }
@@ -596,11 +597,16 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .node-copy em { margin-top: 4px; color: var(--muted); font-size: 8px; font-style: normal; }
 .node-arrow { margin-left: auto; color: var(--green-2); font-size: 18px; }
 .ministry-node { max-width: 610px; margin: auto; padding: 22px; border: 0; color: #fff; background: linear-gradient(125deg, var(--green), #286a59); box-shadow: 0 16px 35px rgba(22,61,53,.25); }
-.federal-node { max-width: 720px; margin: auto; border-color: #cbdba3; background: linear-gradient(120deg, #fbfff0, #fffef9); }
-.federal-node .node-icon { color: var(--green); background: var(--lime); }
-.federal-node .node-copy b { font: 700 18px/1.2 var(--serif); }
-.federal-node .node-copy small { color: #758b58; }
-.federal-connector { height: 35px; }
+.federal-node { max-width: 720px; min-height: 104px; margin: auto; overflow: hidden; border: 0; border-radius: 28px 10px 28px 10px; color: #fff; background: linear-gradient(115deg, #8054cc 0%, #9164d9 62%, #a879e1 100%); box-shadow: 0 16px 35px rgba(103,67,173,.28); }
+.federal-node::before { content: ''; position: absolute; z-index: 0; top: -25%; left: -7%; width: 17%; height: 150%; background: #e8ff00; transform: rotate(13deg); }
+.federal-node::after { content: ''; position: absolute; z-index: 0; right: -42px; bottom: -70px; width: 210px; height: 150px; border: 2px solid rgba(255,255,255,.7); border-radius: 50%; transform: rotate(-18deg); }
+.federal-node > * { position: relative; z-index: 1; }
+.federal-node .node-icon { width: 56px; height: 56px; color: #17131e; border-radius: 18px 18px 18px 5px; background: #e8ff00; font-size: 11px; }
+.federal-node .node-copy b { font: 700 20px/1.1 var(--serif); letter-spacing: -.02em; }
+.federal-node .node-copy small { color: #e8ff00; }
+.federal-node .node-copy em, .federal-node .node-arrow { color: #f4edff; }
+.federal-node:hover { border-color: transparent; box-shadow: 0 20px 42px rgba(103,67,173,.35); }
+.federal-connector { height: 35px; background: linear-gradient(#8659d5, #a0dff4); }
 .ministry-node .node-icon { width: 56px; height: 56px; color: var(--green); background: var(--lime); }
 .ministry-node .node-copy small, .ministry-node .node-copy em, .ministry-node .node-arrow { color: #cce0da; }
 .ministry-node .node-copy b { font: 700 18px/1.2 var(--serif); }
@@ -616,25 +622,34 @@ h1 { margin-bottom: 16px; font: 700 clamp(34px, 5vw, 60px)/.98 var(--serif); let
 .map-note { display: flex; gap: 12px; margin-top: 22px; padding: 12px 14px; border-radius: 13px; color: #49615a; background: #edf4f0; font-size: 9px; }
 .map-note b { flex: 0 0 auto; color: var(--green); }
 .federal-overview { display: grid; grid-template-columns: 1.25fr .75fr; gap: 12px; margin: 22px 0; }
-.federal-leader, .federal-links a, .federal-direction-grid article, .federal-resource-list article { padding: 16px; border-radius: 14px 4px 14px 4px; background: #f1f5e7; }
-.federal-leader > span, .federal-links span { color: #71834b; font-size: 8px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
-.federal-leader h3 { margin: 8px 0 5px; color: var(--green); font: 700 22px/1.1 var(--serif); }
-.federal-leader p, .federal-subordinates > p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
+.federal-detail { position: relative; isolation: isolate; overflow: hidden; }
+.federal-detail::before { content: ''; position: absolute; z-index: -1; top: -80px; right: -90px; width: 330px; height: 210px; border: 2px solid rgba(134,89,213,.25); border-radius: 50%; transform: rotate(-20deg); }
+.federal-detail .eyebrow { color: #8054cc; }
+.federal-detail .modal-lead { max-width: 760px; }
+.federal-leader, .federal-links a, .federal-direction-grid article, .federal-resource-list article { padding: 16px; border-radius: 20px 6px 20px 6px; background: #e9f8ff; }
+.federal-leader { position: relative; overflow: hidden; color: #fff; background: linear-gradient(115deg, #8054cc, #9b6add); }
+.federal-leader::after { content: 'РМ'; position: absolute; right: 17px; bottom: -18px; color: rgba(232,255,0,.9); font: 900 72px/1 var(--serif); transform: rotate(-10deg); }
+.federal-leader > span, .federal-links span { color: #8054cc; font-size: 8px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.federal-leader > span { color: #e8ff00; }
+.federal-leader h3 { position: relative; z-index: 1; margin: 8px 0 5px; color: #fff; font: 700 22px/1.1 var(--serif); }
+.federal-leader p { position: relative; z-index: 1; color: #f5efff; }
+.federal-leader p { margin: 0; font-size: 9px; line-height: 1.55; }
+.federal-subordinates > p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
 .federal-links { display: grid; gap: 8px; }
-.federal-links a { display: grid; gap: 5px; color: var(--green); text-decoration: none; background: #fffef9; border: 1px solid var(--line); }
-.federal-links a:hover { border-color: var(--green); }
+.federal-links a { display: grid; gap: 5px; color: #8054cc; text-decoration: none; background: #fffef9; border: 1px solid var(--line); }
+.federal-links a:hover { border-color: #8659d5; }
 .federal-links b { font-size: 10px; }
 .federal-direction-grid, .federal-resource-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
 .federal-direction-grid article { display: grid; grid-template-columns: 27px 1fr; gap: 10px; align-items: start; }
-.federal-direction-grid b { color: #78934b; font: 700 18px var(--serif); }
+.federal-direction-grid b { color: #8054cc; font: 700 18px var(--serif); }
 .federal-direction-grid span, .federal-resource-list span { color: #59635e; font-size: 9px; line-height: 1.5; }
 .federal-subordinates { margin-top: 20px; }
 .federal-subordinates > p { margin-bottom: 10px; }
 .federal-resource-list article { display: grid; gap: 5px; background: #f7f8f3; }
-.federal-resource-list b { color: var(--green); font-size: 10px; }
-.federal-note { display: flex; gap: 12px; margin-top: 16px; padding: 13px 15px; border-left: 3px solid var(--orange); border-radius: 0 10px 10px 0; background: #fff5e8; }
-.federal-note b { flex: 0 0 auto; color: #8a512b; font-size: 9px; }
-.federal-note span { color: #765b43; font-size: 9px; line-height: 1.5; }
+.federal-resource-list b { color: #8054cc; font-size: 10px; }
+.federal-note { display: flex; gap: 12px; margin-top: 16px; padding: 13px 15px; border-left: 4px solid #e8ff00; border-radius: 0 12px 12px 0; background: #f0eaff; }
+.federal-note b { flex: 0 0 auto; color: #8054cc; font-size: 9px; }
+.federal-note span { color: #5d4d77; font-size: 9px; line-height: 1.5; }
 .industry-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
 .industry-stats div { padding: 14px 15px; border: 1px solid var(--line); border-radius: 15px; background: var(--paper); }
 .industry-stats b, .industry-stats span { display: block; }
